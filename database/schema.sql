@@ -73,3 +73,14 @@ CREATE TABLE IF NOT EXISTS `ads` (
   `status` ENUM('active', 'inactive') DEFAULT 'active',
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- Default Admin User (Password: admin123)
+INSERT INTO `users` (`username`, `email`, `password`, `full_name`, `role`) VALUES
+('admin', 'admin@lankanews.lk', '$2y$10$wT8KskY6aG.WJkM7hB4Qce0mN9BfW3k4pB/d9G5C3A5N5S1X0E2tK', 'Main Administrator', 'admin');
+
+-- Categories
+INSERT INTO `categories` (`name`, `slug`) VALUES
+('දේශීය', 'local'),
+('ලෝක පුවත්', 'world'),
+('ක්‍රීඩා', 'sports'),
+('තාක්ෂණය', 'technology'),
+('ව්‍යාපාරික', 'business');
