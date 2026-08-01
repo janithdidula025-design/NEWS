@@ -1,3 +1,18 @@
+<?php
+require_once 'includes/db.php';
+
+// Breaking News ලබාගැනීම
+$breaking_stmt = $pdo->query("SELECT title, slug FROM news WHERE is_breaking = 1 AND status = 'published' ORDER BY id DESC LIMIT 1");
+$breaking_news = $breaking_stmt->fetch();
+
+// Hero / Featured News ලබාගැනීම
+$hero_stmt = $pdo->query("SELECT n.*, c.name as category_name FROM news n JOIN categories c ON n.category_id = c.id WHERE n.is_featured = 1 AND n.status = 'published' ORDER BY n.id DESC LIMIT 1");
+$hero_news = $hero_stmt->fetch();
+
+// Latest News (6 Cards)
+$latest_stmt = $pdo->query("SELECT n.*, c.name as category_name FROM news n JOIN categories c ON n.category_id = c.id WHERE n.status = 'published' ORDER BY n.id DESC LIMIT 6");
+$latest_news = $latest_stmt->fetchAll();
+?>
 <!DOCTYPE html>
 <html lang="si">
 <head>
