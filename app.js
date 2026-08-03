@@ -5,7 +5,7 @@ async function fetchNews() {
     const statusMsg = document.getElementById('status-msg');
 
     try {
-        // Cache buster එකක් එකතු කර ඇත
+        // Cache buster එකක් එකතු කර ඇත (නිරන්තරයෙන්ම අලුත් JSON data එක ලබාගැනීමට)
         const response = await fetch('./derana_news.json?t=' + new Date().getTime());
         
         if (!response.ok) {
@@ -47,22 +47,23 @@ function renderNews(newsList) {
         const card = document.createElement('div');
         card.className = 'news-card';
 
-        // Clean HTML tags from summary
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = item.summary || '';
-        const cleanSummary = tempDiv.textContent || tempDiv.innerText || '';
+        // Image එකක් තිබේ නම් පමණක් පෙන්නුම් කිරීමට
+        const imageHtml = item.image 
+            ? `<img src="${item.image}" alt="${item.title}" style="width:100%; max-height:280px; object-fit:cover; border-radius:8px; margin-bottom:12px;" onerror="this.style.display='none'" />` 
+            : '';
 
         card.innerHTML = `
+            ${imageHtml}
             <h3><a href="${item.link}" target="_blank" rel="noopener">${item.title}</a></h3>
             <div class="news-date">📅 ${item.published || item.fetched_at}</div>
-            <div class="news-summary">${cleanSummary}</div>
+            <div class="news-summary">${item.summary || ''}</div>
         `;
 
         newsContainer.appendChild(card);
     });
 }
 
-// 3. Safe Search Functionality
+// 3. Search Functionality
 const searchInput = document.getElementById('search-input');
 if (searchInput) {
     searchInput.addEventListener('input', (e) => {
@@ -75,23 +76,17 @@ if (searchInput) {
     });
 }
 
-// 4. Safe Dark Mode Toggle
+// 4. Dark Mode Toggle
 const themeBtn = document.getElementById('theme-toggle');
 if (themeBtn) {
     themeBtn.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
         const isDark = document.body.classList.contains('dark-mode');
         themeBtn.innerText = isDark ? 'Light Mode' : 'Dark Mode';
-        
-        // Safety check for icon if exists
-        const themeIcon = document.getElementById('theme-icon');
-        if (themeIcon) {
-            themeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-        }
     });
 }
 
-// Start Fetching Data
+// Page එක Load වූ පසු News ගෙන්නවා ගැනීම
 document.addEventListener('DOMContentLoaded', () => {
     fetchNews();
 });
