@@ -3,273 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ada Derana Live News Archive</title>
-    
-    <!-- Google Fonts & FontAwesome Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <title>Ada Derana News Archive</title>
     <style>
         :root {
-            --bg-color: #f8fafc;
+            --bg-color: #f4f6f9;
             --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-sub: #475569;
-            --primary-red: #e11d48;
-            --border-color: #e2e8f0;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --text-color: #222222;
+            --accent-color: #e63946;
+            --border-color: #dddddd;
         }
 
-        [data-theme="dark"] {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-sub: #94a3b8;
-            --border-color: #334155;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-            transition: background-color 0.3s, color 0.3s;
+        body.dark-mode {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #f1f1f1;
+            --border-color: #333333;
         }
 
         body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-main);
-            padding-bottom: 50px;
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: background 0.3s, color 0.3s;
         }
 
-        /* Header Layout */
-        header {
-            background-color: var(--card-bg);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: var(--shadow);
-        }
-
-        .header-container {
-            max-width: 1200px;
+        .container {
+            max-width: 900px;
             margin: 0 auto;
-            padding: 1rem 1.5rem;
+        }
+
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
         }
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        h1 {
+            margin: 0;
+            color: var(--accent-color);
+            font-size: 1.8rem;
         }
 
-        .logo-badge {
-            background-color: var(--primary-red);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        .logo-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
-
-        /* Controls Area */
         .controls {
             display: flex;
-            gap: 15px;
-            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        .theme-toggle {
-            background: none;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        /* Main Container */
-        main {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
-        }
-
-        /* Search & Filter Bar */
-        .filter-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .search-box {
-            position: relative;
+        input[type="text"] {
             flex: 1;
-            min-width: 280px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 12px 16px 12px 42px;
-            border-radius: 10px;
+            padding: 10px;
             border: 1px solid var(--border-color);
-            background-color: var(--card-bg);
-            color: var(--text-main);
-            outline: none;
-            font-size: 0.95rem;
+            border-radius: 5px;
+            background: var(--card-bg);
+            color: var(--text-color);
         }
 
-        .search-box i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-sub);
+        button {
+            padding: 10px 15px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
-        .news-stats {
-            color: var(--text-sub);
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        /* News Grid Layout */
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.5rem;
-        }
-
-        /* News Cards */
         .news-card {
-            background-color: var(--card-bg);
+            background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.25rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: var(--shadow);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        .news-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        .news-card h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
         }
 
-        .news-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-            color: var(--text-sub);
+        .news-card a {
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .news-card a:hover {
+            color: var(--accent-color);
+        }
+
+        .news-date {
+            font-size: 0.85rem;
+            opacity: 0.7;
             margin-bottom: 10px;
         }
 
-        .news-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            line-height: 1.4;
-            margin-bottom: 12px;
-            color: var(--text-main);
-        }
-
         .news-summary {
-            font-size: 0.9rem;
-            color: var(--text-sub);
+            font-size: 0.95rem;
             line-height: 1.5;
-            margin-bottom: 15px;
-            flex-grow: 1;
         }
 
-        .read-more-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--primary-red);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.85rem;
-            align-self: flex-start;
-        }
-
-        .read-more-btn:hover {
-            text-decoration: underline;
-        }
-
-        /* State Indicator UI */
-        .loading-state, .empty-state {
+        #status-msg {
             text-align: center;
-            padding: 4rem 1rem;
-            color: var(--text-sub);
-            grid-column: 1 / -1;
-        }
-
-        .spinner {
-            border: 4px solid var(--border-color);
-            border-top: 4px solid var(--primary-red);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            font-weight: bold;
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>Ada Derana News Archive</h1>
+            <button id="theme-toggle">Dark Mode</button>
+        </header>
 
-    <header>
-        <div class="header-container">
-            <div class="logo-area">
-                <span class="logo-badge">LIVE</span>
-                <span class="logo-title">Ada Derana Backup Feed</span>
-            </div>
-            <div class="controls">
-                <button class="theme-toggle" id="themeToggle" title="Toggle Light/Dark Mode">
-                    <i class="fa-solid fa-moon"></i>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <main>
-        <div class="filter-section">
-            <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Search news titles or keywords...">
-            </div>
-            <div class="news-stats" id="newsStats">
-                Loading archive count...
-            </div>
+        <div class="controls">
+            <input type="text" id="search-input" placeholder="පුවත් සෙවීම සඳහා මෙහි Type කරන්න...">
         </div>
 
-        <div class="news-grid" id="newsContainer">
-            <div class="loading-state">
-                <div class="spinner"></div>
-                <p>Loading news from GitHub repository...</p>
-            </div>
-        </div>
-    </main>
+        <div id="status-msg">පුවත් පූරණය වෙමින් පවතී...</div>
+        <div id="news-container"></div>
+    </div>
 
     <script src="app.js"></script>
 </body>
