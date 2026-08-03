@@ -3,36 +3,34 @@ import json
 import os
 import re
 from datetime import datetime
-from bs4 import BeautifulSoup
 
 # Ada Derana Sinhala RSS Feed URL
 SINHALA_RSS_URL = "http://sinhala.adaderana.lk/rss.php"
 BACKUP_FILE = "derana_news.json"
 
 def extract_image(entry):
-    """Extracts image URL from media tags or embedded HTML img tags."""
-    # 1. Try fetching from media_thumbnail or media_content tags
+    """Extracts image URL using feedparser attributes or regex."""
+    # 1. Check media_thumbnail / media_content
     if 'media_thumbnail' in entry and len(entry.media_thumbnail) > 0:
         return entry.media_thumbnail[0].get('url', '')
     if 'media_content' in entry and len(entry.media_content) > 0:
         return entry.media_content[0].get('url', '')
 
-    # 2. Try extracting from embedded <img> tags inside summary/description
+    # 2. Extract <img> src using regex from summary
     summary_html = getattr(entry, 'summary', getattr(entry, 'description', ''))
     if summary_html:
-        soup = BeautifulSoup(summary_html, 'html.parser')
-        img_tag = soup.find('img')
-        if img_tag and img_tag.get('src'):
-            return img_tag['src']
+        match = re.search(r'<img[^>]+src=["\'](.*?)["\']', summary_html, re.IGNORECASE)
+        if match:
+            return match.group(1)
 
     return ""
 
-def clean_html(text):
-    """Removes raw HTML tags from the summary text."""
-    if not text:
+def clean_html(raw_html):
+    """Removes HTML tags using built-in regex."""
+    if not raw_html:
         return ""
-    soup = BeautifulSoup(text, 'html.parser')
-    return soup.get_text().strip()
+    clean_text = re.sub(r'<[^>]+>', '', raw_html)
+    return clean_text.strip()
 
 def run_backup():
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Fetching Sinhala news & images...")
@@ -46,7 +44,6 @@ def run_backup():
         print("[-] RSS feed is empty or failed to respond.")
         return
 
-    # Read existing json data
     existing_data = []
     if os.path.exists(BACKUP_FILE):
         try:
@@ -68,7 +65,7 @@ def run_backup():
                 "id": len(existing_data) + 1,
                 "title": getattr(entry, 'title', ''),
                 "link": news_link,
-                "image": extract_image(entry),  # <--- Thumbnail URL
+                "image": extract_image(entry),
                 "published": getattr(entry, 'published', getattr(entry, 'updated', '')),
                 "summary": clean_html(raw_summary),
                 "fetched_at": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -77,7 +74,6 @@ def run_backup():
             existing_links.add(news_link)
             new_count += 1
 
-    # Save back to file
     with open(BACKUP_FILE, "w", encoding="utf-8") as f:
         json.dump(existing_data, f, ensure_ascii=False, indent=4)
 
