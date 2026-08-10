@@ -103,7 +103,7 @@
   .modal-card img{width:100%;max-height:360px;object-fit:cover;border-radius:4px;margin-bottom:16px;}
   .modal-card .kicker{color:var(--maroon);font-weight:700;font-size:12px;margin-bottom:6px;}
   .modal-card h2{font-size:26px;margin:0 0 12px;line-height:1.3;}
-  .modal-card .content{font-size:15.5px;line-height:1.7;color:var(--ink);}
+  .modal-card .content{font-size:15.5px;line-height:1.7;color:var(--ink);white-space:pre-wrap;}
 
   footer{border-top:1px solid var(--line);margin-top:50px;padding:26px 24px 40px;max-width:1180px;margin-left:auto;margin-right:auto;
     display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--ink-soft);}
@@ -263,6 +263,14 @@ let currentLang = localStorage.getItem(LANG_KEY) || 'si';
 let siteData = null;
 let currentCat = 'home';
 
+function updateDate() {
+  const d = new Date();
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const langCode = currentLang === 'si' ? 'si-LK' : currentLang === 'ta' ? 'ta-LK' : 'en-US';
+  document.getElementById('today-date').textContent = d.toLocaleDateString(langCode, options);
+  document.getElementById('year').textContent = d.getFullYear();
+}
+
 function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem(LANG_KEY, lang);
@@ -288,12 +296,13 @@ function setLanguage(lang) {
   document.getElementById('txt-contact').textContent = t.contact;
   document.getElementById('txt-privacy').textContent = t.privacy;
 
+  updateDate();
   buildNav();
   if(siteData) renderSite();
 }
 
 async function loadData(){
-  if(SCRIPT_URL && !SCRIPT_URL.includes('https://script.google.com/macros/s/AKfycbxPKA-lhmoD0kxTYOzJzZx8Krdxy3XXL1_UG2Ow1NRHmDol26-0vrIvtdbr26n7Q3If/exec')){
+  if(SCRIPT_URL && SCRIPT_URL.trim() !== ""){
     try{
       const res = await fetch(SCRIPT_URL, {method:'GET'});
       const json = await res.json();
@@ -339,7 +348,16 @@ function navigateTo(catKey){
     document.getElementById('homeView').style.display = 'none';
     document.getElementById('categoryView').style.display = 'block';
     document.getElementById('catTitle').textContent = catKey;
-    const items = siteData.articles.filter(a=>a.category === catKey);
+    
+    // Category matching for multi-language or exact string
+    const items = siteData.articles.filter(a => 
+      a.category === catKey || 
+      (catKey === 'ක්‍රීඩා' && a.category === 'Sports') || 
+      (catKey === 'Sports' && a.category === 'ක්‍රීඩා') ||
+      (catKey === 'ව්‍යාපාර' && a.category === 'Business') || 
+      (catKey === 'Business' && a.category === 'ව්‍යාපාර')
+    );
+
     document.getElementById('catGrid').innerHTML = items.map(a=>`
       <article class="card" onclick="openModal('${a.id}')">
         ${imgTag(a.img)}
@@ -435,13 +453,7 @@ function doSearch(){
     </article>`).join('') || `<div class="empty-note">ප්‍රතිඵල හමු නොවීය / No results found</div>`;
 }
 
-// Date Setup
-const days=['ඉරිදා','සඳුදා','අඟහරුවාදා','බදාදා','බ්‍රහස්පතින්දා','සිකුරාදා','සෙනසුරාදා'];
-const months=['ජනවාරි','පෙබරවාරි','මාර්තු','අප්‍රේල්','මැයි','ජූනි','ජූලි','අගෝස්තු','සැප්තැම්බර්','ඔක්තෝබර්','නොවැම්බර්','දෙසැම්බර්'];
-const d = new Date();
-document.getElementById('today-date').textContent = days[d.getDay()]+', '+d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear();
-document.getElementById('year').textContent = d.getFullYear();
-
+// Initialize Application
 setLanguage(currentLang);
 loadData();
 </script>
