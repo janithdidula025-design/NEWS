@@ -6,27 +6,36 @@
 <title>ලංකා පුවත් — නවතම ප්‍රවෘත්ති</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700&family=Yaldevi:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Yaldevi:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#1c2430; --ink-soft:#4a5262; --paper:#f2ede2; --paper-raised:#ffffff;
     --maroon:#8a2b25; --maroon-deep:#5f1b17; --gold:#b8862f; --line:#d8cfb8; --green:#1f4d3c;
   }
   *{box-sizing:border-box;}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Noto Sans Sinhala','Yaldevi',sans-serif;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Noto Sans Sinhala','Noto Sans Tamil','Yaldevi',sans-serif;}
   h1,h2,h3,.headline{font-family:'Abhaya Libre',serif;color:var(--ink);}
   a{color:inherit;text-decoration:none;cursor:pointer;}
   img.ph{width:100%;display:block;object-fit:cover;background:linear-gradient(135deg,#dfd6bd,#c9bd9d);}
 
-  .utility{background:var(--ink);color:#e9e2cf;font-family:'Yaldevi',sans-serif;font-size:12.5px;
-    display:flex;justify-content:space-between;align-items:center;padding:6px 24px;}
-  .utility .lang-tag{border:1px solid #4a5262;padding:2px 8px;border-radius:2px;color:#c9a24a}
+  .utility{background:var(--ink);color:#e9e2cf;font-size:12.5px;display:flex;justify-content:space-between;align-items:center;padding:6px 24px;flex-wrap:wrap;gap:10px;}
+  .utility .right-tools{display:flex;align-items:center;gap:12px;}
+  
+  /* Language Picker */
+  .lang-picker{display:flex;gap:4px;background:rgba(255,255,255,0.1);padding:2px;border-radius:3px;}
+  .lang-btn{background:none;border:none;color:#efe6cf;padding:3px 7px;font-size:11.5px;cursor:pointer;border-radius:2px;font-weight:600;}
+  .lang-btn.active{background:var(--maroon);color:#fff;}
+
+  /* Search Box */
+  .search-box{display:flex;align-items:center;background:#fff;border-radius:3px;padding:2px 6px;}
+  .search-box input{border:none;outline:none;font-size:12px;padding:3px;width:120px;font-family:inherit;}
+  .search-box button{background:none;border:none;cursor:pointer;font-size:12px;color:var(--ink);}
 
   .masthead{background:var(--paper);padding:26px 24px 16px;text-align:center;border-bottom:3px solid var(--ink);}
-  .masthead .eyebrow{font-family:'Yaldevi',sans-serif;font-size:11.5px;letter-spacing:.18em;color:var(--maroon);text-transform:uppercase;margin-bottom:6px;}
+  .masthead .eyebrow{font-size:11.5px;letter-spacing:.18em;color:var(--maroon);text-transform:uppercase;margin-bottom:6px;}
   .masthead h1{font-size:clamp(40px,7vw,72px);margin:0;font-weight:800;line-height:1;cursor:pointer;}
   .masthead h1 span{color:var(--maroon);}
-  .masthead .tagline{margin-top:8px;font-size:14px;color:var(--ink-soft);font-family:'Yaldevi',sans-serif;}
+  .masthead .tagline{margin-top:8px;font-size:14px;color:var(--ink-soft);}
 
   nav.cats{background:var(--paper-raised);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;}
   nav.cats ul{list-style:none;display:flex;gap:2px;margin:0;padding:0 24px;overflow-x:auto;}
@@ -35,11 +44,11 @@
   nav.cats li.active a{border-bottom-color:var(--maroon);color:var(--maroon);}
 
   .breaking{background:var(--maroon);color:#fdf6ea;display:flex;align-items:stretch;overflow:hidden;}
-  .breaking .tag{background:var(--maroon-deep);padding:9px 16px;font-weight:700;font-size:12.5px;letter-spacing:.08em;flex-shrink:0;display:flex;align-items:center;font-family:'Yaldevi',sans-serif;}
+  .breaking .tag{background:var(--maroon-deep);padding:9px 16px;font-weight:700;font-size:12.5px;letter-spacing:.08em;flex-shrink:0;display:flex;align-items:center;}
   .breaking .tag::before{content:"●";color:#f2c14e;margin-right:6px;font-size:9px;animation:blink 1.6s infinite;}
   @keyframes blink{50%{opacity:.25;}}
   .ticker-wrap{overflow:hidden;flex:1;display:flex;align-items:center;}
-  .ticker{white-space:nowrap;animation:scroll 26s linear infinite;font-size:13.5px;padding:9px 0;font-family:'Yaldevi',sans-serif;}
+  .ticker{white-space:nowrap;animation:scroll 26s linear infinite;font-size:13.5px;padding:9px 0;}
   .ticker span{margin-right:56px;}
   @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
@@ -51,29 +60,31 @@
   .divider .rule{flex:1;height:1px;background:var(--line);}
 
   .hero{display:grid;grid-template-columns:1.6fr 1fr;gap:32px;}
+  .hero-main{cursor:pointer;}
   .hero-main img.ph{height:380px;border-radius:2px;}
-  .hero-main .kicker{color:var(--maroon);font-weight:700;font-size:12.5px;letter-spacing:.1em;margin:16px 0 8px;font-family:'Yaldevi',sans-serif;}
+  .hero-main .kicker{color:var(--maroon);font-weight:700;font-size:12.5px;letter-spacing:.1em;margin:16px 0 8px;}
   .hero-main h2{font-size:34px;line-height:1.18;margin:0 0 10px;}
   .hero-main p.dek{color:var(--ink-soft);font-size:15.5px;line-height:1.6;margin:0 0 10px;}
-  .byline{font-size:12px;color:var(--ink-soft);font-family:'Yaldevi',sans-serif;}
+  .byline{font-size:12px;color:var(--ink-soft);}
 
   .hero-side{display:flex;flex-direction:column;gap:20px;}
-  .side-item{display:flex;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--line);}
+  .side-item{display:flex;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--line);cursor:pointer;}
   .side-item:last-child{border-bottom:none;}
   .side-item img.ph{width:96px;height:72px;flex-shrink:0;border-radius:2px;}
-  .side-item .kicker{color:var(--green);font-weight:700;font-size:11px;letter-spacing:.08em;font-family:'Yaldevi',sans-serif;}
+  .side-item .kicker{color:var(--green);font-weight:700;font-size:11px;letter-spacing:.08em;}
   .side-item h3{font-size:16px;line-height:1.3;margin:4px 0 0;font-weight:600;}
 
-  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));gap:26px;}
+  .card{cursor:pointer;}
   .card img.ph{height:170px;border-radius:2px;margin-bottom:12px;}
-  .card .kicker{font-weight:700;font-size:11px;letter-spacing:.08em;color:var(--maroon);font-family:'Yaldevi',sans-serif;}
+  .card .kicker{font-weight:700;font-size:11px;letter-spacing:.08em;color:var(--maroon);}
   .card h3{font-size:19px;line-height:1.32;margin:6px 0 6px;font-weight:600;}
   .card p{font-size:14px;color:var(--ink-soft);line-height:1.55;margin:0;}
 
   .strip{display:grid;grid-template-columns:1fr 1fr;gap:30px;}
   .strip-block h4{font-family:'Abhaya Libre',serif;font-size:15px;color:var(--paper-raised);background:var(--green);display:inline-block;padding:5px 14px;margin:0 0 16px;border-radius:2px;}
   .strip-block.biz h4{background:var(--gold);color:var(--ink);}
-  .strip-row{display:flex;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line);align-items:baseline;}
+  .strip-row{display:flex;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line);align-items:baseline;cursor:pointer;}
   .strip-row:last-child{border-bottom:none;}
   .strip-row .num{font-family:'Abhaya Libre',serif;font-weight:700;color:var(--maroon);font-size:15px;width:22px;flex-shrink:0;}
   .strip-row a{font-size:14.5px;line-height:1.4;font-weight:500;}
@@ -84,29 +95,47 @@
   #categoryView .cat-heading h2{font-size:30px;margin:0;}
   #categoryView .cat-heading .back{font-size:13px;color:var(--maroon);font-weight:600;border-bottom:1px dotted var(--maroon);}
 
+  /* Article Detail Modal */
+  .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:100;justify-content:center;align-items:center;padding:20px;}
+  .modal-overlay.active{display:flex;}
+  .modal-card{background:#fff;max-width:700px;width:100%;max-height:90vh;overflow-y:auto;border-radius:6px;padding:28px;position:relative;}
+  .modal-close{position:absolute;top:14px;right:18px;font-size:22px;background:none;border:none;cursor:pointer;color:var(--ink-soft);}
+  .modal-card img{width:100%;max-height:360px;object-fit:cover;border-radius:4px;margin-bottom:16px;}
+  .modal-card .kicker{color:var(--maroon);font-weight:700;font-size:12px;margin-bottom:6px;}
+  .modal-card h2{font-size:26px;margin:0 0 12px;line-height:1.3;}
+  .modal-card .content{font-size:15.5px;line-height:1.7;color:var(--ink);}
+
   footer{border-top:1px solid var(--line);margin-top:50px;padding:26px 24px 40px;max-width:1180px;margin-left:auto;margin-right:auto;
-    display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--ink-soft);font-family:'Yaldevi',sans-serif;}
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--ink-soft);}
   footer .fcats{display:flex;gap:16px;flex-wrap:wrap;}
 
   @media(max-width:820px){
-    .hero{grid-template-columns:1fr;} .grid3{grid-template-columns:1fr;} .strip{grid-template-columns:1fr;}
+    .hero{grid-template-columns:1fr;} .strip{grid-template-columns:1fr;}
     .masthead h1{font-size:44px;}
   }
-  a:focus-visible{outline:2px solid var(--maroon);outline-offset:2px;}
-  @media (prefers-reduced-motion: reduce){ .ticker{animation:none;} .breaking .tag::before{animation:none;} }
 </style>
 </head>
 <body>
 
   <div class="utility">
     <div class="date" id="today-date">—</div>
-    <div class="lang-tag">සිංහල</div>
+    <div class="right-tools">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="සොයන්න..." onkeyup="if(event.key==='Enter') doSearch()">
+        <button onclick="doSearch()">🔍</button>
+      </div>
+      <div class="lang-picker">
+        <button class="lang-btn active" id="btn-lang-si" onclick="setLanguage('si')">සිංහල</button>
+        <button class="lang-btn" id="btn-lang-en" onclick="setLanguage('en')">English</button>
+        <button class="lang-btn" id="btn-lang-ta" onclick="setLanguage('ta')">தமிழ்</button>
+      </div>
+    </div>
   </div>
 
   <header class="masthead">
-    <div class="eyebrow">දිනපතා ප්‍රකාශනය · කොළඹ</div>
-    <h1 onclick="navigateTo('home')">ලංකා<span>පුවත්</span></h1>
-    <div class="tagline">දිවයින පුරා සිදුවන දේ, ඇත්තටම වැදගත් දේ පමණයි</div>
+    <div class="eyebrow" id="txt-eyebrow">දිනපතා ප්‍රකාශනය · කොළඹ</div>
+    <h1 onclick="navigateTo('home')"><span id="txt-brand-1">ලංකා</span><span id="txt-brand-2">පුවත්</span></h1>
+    <div class="tagline" id="txt-tagline">දිවයින පුරා සිදුවන දේ, ඇත්තටම වැදගත් දේ පමණයි</div>
   </header>
 
   <nav class="cats">
@@ -114,7 +143,7 @@
   </nav>
 
   <div class="breaking">
-    <div class="tag">නවතම</div>
+    <div class="tag" id="txt-breaking">නවතම</div>
     <div class="ticker-wrap">
       <div class="ticker" id="tickerText">පූරණය වෙමින්...</div>
     </div>
@@ -125,24 +154,24 @@
       <section class="hero" id="heroSection"></section>
 
       <div class="divider">
-        <svg viewBox="0 0 60 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 9c4-8 8-8 12 0s8 8 12 0 8-8 12 0 8 8 12 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        <span class="label">ප්‍රවෘත්ති සාරාංශය</span>
+        <svg viewBox="0 0 60 18" fill="none"><path d="M2 9c4-8 8-8 12 0s8 8 12 0 8-8 12 0 8 8 12 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="label" id="txt-summary-title">ප්‍රවෘත්ති සාරාංශය</span>
         <div class="rule"></div>
       </div>
       <section class="grid3" id="gridSection"></section>
 
       <div class="divider">
-        <svg viewBox="0 0 60 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 9c4-8 8-8 12 0s8 8 12 0 8-8 12 0 8 8 12 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        <span class="label">ක්‍රීඩා සහ ව්‍යාපාර</span>
+        <svg viewBox="0 0 60 18" fill="none"><path d="M2 9c4-8 8-8 12 0s8 8 12 0 8-8 12 0 8 8 12 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="label" id="txt-sports-biz-title">ක්‍රීඩා සහ ව්‍යාපාර</span>
         <div class="rule"></div>
       </div>
       <section class="strip">
         <div class="strip-block">
-          <h4>ක්‍රීඩා</h4>
+          <h4 id="txt-sports-hdr">ක්‍රීඩා</h4>
           <div id="sportsList"></div>
         </div>
         <div class="strip-block biz">
-          <h4>ව්‍යාපාර</h4>
+          <h4 id="txt-biz-hdr">ව්‍යාපාර</h4>
           <div id="bizList"></div>
         </div>
       </section>
@@ -151,87 +180,135 @@
     <div id="categoryView">
       <div class="cat-heading">
         <h2 id="catTitle"></h2>
-        <a class="back" onclick="navigateTo('home')">← ප්‍රධාන පිටුවට</a>
+        <a class="back" onclick="navigateTo('home')" id="txt-back-home">← ප්‍රධාන පිටුවට</a>
       </div>
       <section class="grid3" id="catGrid"></section>
     </div>
   </main>
 
+  <!-- Article Detail Modal -->
+  <div class="modal-overlay" id="articleModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
   <footer>
-    <div>© <span id="year"></span> ලංකාපුවත් — සියලු හිමිකම් ඇවිරිණි (නියැදි අඩවියකි)</div>
+    <div>© <span id="year"></span> <span id="txt-footer-copy">ලංකාපුවත් — සියලු හිමිකම් ඇවිරිණි</span></div>
     <div class="fcats">
-      <a href="#">අප ගැන</a>
-      <a href="#">සම්බන්ධ වන්න</a>
-      <a href="#">පෞද්ගලිකත්ව ප්‍රතිපත්තිය</a>
+      <a href="#" id="txt-about">අප ගැන</a>
+      <a href="#" id="txt-contact">සම්බන්ධ වන්න</a>
+      <a href="#" id="txt-privacy">පෞද්ගලිකත්ව ප්‍රතිපත්තිය</a>
     </div>
   </footer>
 
 <script>
-// admin.html එකේ Web App URL එකම මෙතනටත් paste කරන්න:
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPKA-lhmoD0kxTYOzJzZx8Krdxy3XXL1_UG2Ow1NRHmDol26-0vrIvtdbr26n7Q3If/exec";
-
 const STORAGE_KEY = "site-data";
-const CATEGORIES = ['ප්‍රධාන පුවත්','දේශපාලනය','ක්‍රීඩා','ව්‍යාපාර','ලෝකය','විනෝදාංශය','තාක්ෂණය','ජීවන රටාව'];
+const LANG_KEY = "admin-lang";
 
-const DEFAULT_DATA = {
-  ticker: [
-    "කොළඹ නගරයට අද සවස තාවකාලික වර්ෂාවක් අපේක්ෂා කෙරේ",
-    "මහාමාර්ග අධිකාරියෙන් නව මාර්ග සංවර්ධන සැලැස්මක්",
-    "ශ්‍රී ලංකා ක්‍රිකට් කණ්ඩායම සඳහා නව පුහුණුකරු පත් කෙරේ",
-    "අපනයන ආදායමේ ඉහළ යාමක් වාර්තා වේ"
-  ],
-  articles: [
-    {id:"a1",category:"ප්‍රධාන පුවත්",position:"hero",title:"නාගරික ජල සම්පාදන ව්‍යාපෘතිය ලබන මාසයේ අවසන් අදියරට",
-      desc:"වසර තුනක් තිස්සේ ක්‍රියාත්මක වූ නාගරික ජල සම්පාදන ව්‍යාපෘතියේ අවසන් අදියර ලබන මාසය තුළ සම්පූර්ණ කිරීමට නියමිත බව අදාළ බලධාරීන් පවසයි.",
-      img:"https://images.unsplash.com/photo-1580746738099-71f7a2f1c6a4?w=900&h=600&fit=crop"},
-    {id:"a2",category:"දේශපාලනය",position:"side",title:"නව රෙගුලාසි කෙටුම්පත පාර්ලිමේන්තුවට ඉදිරිපත් කෙරේ",desc:"රෙගුලාසි කෙටුම්පත සම්බන්ධයෙන් සාකච්ඡා ලබන සතියේ පැවැත්වේ.",img:"https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=200&h=150&fit=crop"},
-    {id:"a3",category:"ක්‍රීඩා",position:"side",title:"පළාත් තරගාවලියේ අවසන් මහා තරගය හෙට",desc:"ප්‍රධාන දෙකෝරළිය ක්‍රීඩාංගණයේදී තරගය පැවැත්වේ.",img:"https://images.unsplash.com/photo-1546519638-68e109498ffc?w=200&h=150&fit=crop"},
-    {id:"a4",category:"ව්‍යාපාර",position:"side",title:"කුඩා හා මධ්‍ය පරිමාණ ව්‍යාපාර සඳහා නව ණය යෝජනා ක්‍රමයක්",desc:"අඩු පොලී අනුපාතයක් සහිත ණය යෝජනා ක්‍රමයක් හඳුන්වා දී ඇත.",img:"https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=200&h=150&fit=crop"},
-    {id:"a5",category:"තාක්ෂණය",position:"side",title:"ගම්මාන මට්ටමින් අන්තර්ජාල පහසුකම් පුළුල් කිරීමේ වැඩසටහන",desc:"ග්‍රාමීය ප්‍රදේශවලට වේගවත් අන්තර්ජාල පහසුකම් ලබාදීම අරමුණයි.",img:"https://images.unsplash.com/photo-1526401485004-46910ecc8e51?w=200&h=150&fit=crop"},
-    {id:"a6",category:"ලෝකය",position:"grid",title:"කලාපීය රටවල් අතර නව වෙළඳ ගිවිසුමක් සාකච්ඡා වෙමින්",desc:"අර්ථ ශාස්ත්‍රඥයන් පවසන්නේ මෙම ගිවිසුම කලාපීය අපනයන වෙළඳපොළට ධනාත්මක බලපෑමක් ඇති කළ හැකි බවයි.",img:"https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=400&h=260&fit=crop"},
-    {id:"a7",category:"විනෝදාංශය",position:"grid",title:"ජාතික චිත්‍රපට උළෙල සඳහා නිර්මාණ තෝරාගැනීම ආරම්භ වේ",desc:"මෙවර උළෙලට රටපුරා විවිධ අධ්‍යක්ෂවරුන්ගෙන් නිර්මාණ විශාල ප්‍රමාණයක් ඉදිරිපත් වී ඇති බව සංවිධායකයෝ පවසති.",img:"https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=260&fit=crop"},
-    {id:"a8",category:"ජීවන රටාව",position:"grid",title:"ගාමීය ශිල්පීන් අතරින් සුවිශේෂී අත්කම් ප්‍රදර්ශනයක්",desc:"සම්ප්‍රදායික අත්කම් කලාව නංවාලීමේ අරමුණින් පැවැත්වෙන මෙම ප්‍රදර්ශනය මාසයක් තිස්සේ විවෘතව තැබේ.",img:"https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=260&fit=crop"},
-    {id:"a9",category:"ක්‍රීඩා",position:"none",title:"යෞවන කණ්ඩායම ආසියානු තරගාවලියට තේරී පත් වේ",desc:"",img:""},
-    {id:"a10",category:"ක්‍රීඩා",position:"none",title:"දිස්ත්‍රික් මට්ටමේ මලල ක්‍රීඩා උළෙල ලබන සතියේ",desc:"",img:""},
-    {id:"a11",category:"ක්‍රීඩා",position:"none",title:"නව ක්‍රීඩා සංකීර්ණයක් ඉදිකිරීමට යෝජනා",desc:"",img:""},
-    {id:"a12",category:"ක්‍රීඩා",position:"none",title:"පාසල් රග්බි තරගාවලිය අද ආරම්භ වේ",desc:"",img:""},
-    {id:"a13",category:"ව්‍යාපාර",position:"none",title:"වාහන ආනයන ප්‍රතිපත්තියේ වෙනසක් යෝජනා වේ",desc:"",img:""},
-    {id:"a14",category:"ව්‍යාපාර",position:"none",title:"දේශීය කෘෂි නිෂ්පාදන අපනයනය සඳහා නව වෙළඳපොළවල්",desc:"",img:""},
-    {id:"a15",category:"ව්‍යාපාර",position:"none",title:"තරුණ ව්‍යවසායකයින් සඳහා පුහුණු වැඩසටහනක්",desc:"",img:""},
-    {id:"a16",category:"ව්‍යාපාර",position:"none",title:"බැංකු පොලී අනුපාත සම්බන්ධයෙන් නව නිවේදනයක්",desc:"",img:""}
-  ]
+const i18n = {
+  si: {
+    eyebrow: "දිනපතා ප්‍රකාශනය · කොළඹ",
+    brand1: "ලංකා", brand2: "පුවත්",
+    tagline: "දිවයින පුරා සිදුවන දේ, ඇත්තටම වැදගත් දේ පමණයි",
+    breaking: "නවතම",
+    summaryTitle: "ප්‍රවෘත්ති සාරාංශය",
+    sportsBizTitle: "ක්‍රීඩා සහ ව්‍යාපාර",
+    sportsHdr: "ක්‍රීඩා", bizHdr: "ව්‍යාපාර",
+    backHome: "← ප්‍රධාන පිටුවට",
+    searchPlaceholder: "සොයන්න...",
+    noNews: "පුවත් තවම නැත",
+    byline: "කාර්ය මණ්ඩලය · විනාඩි 3ක කියවීම",
+    footerCopy: "ලංකාපුවත් — සියලු හිමිකම් ඇවිරිණි",
+    about: "අප ගැන", contact: "සම්බන්ධ වන්න", privacy: "පෞද්ගලිකත්ව ප්‍රතිපත්තිය",
+    categories: ['ප්‍රධාන පුවත්','දේශපාලනය','ක්‍රීඩා','ව්‍යාපාර','ලෝකය','විනෝදාංශය','තාක්ෂණය','ජීවන රටාව']
+  },
+  en: {
+    eyebrow: "Daily Publication · Colombo",
+    brand1: "Lanka", brand2: "News",
+    tagline: "What happens island-wide, only what truly matters",
+    breaking: "BREAKING",
+    summaryTitle: "News Summary",
+    sportsBizTitle: "Sports & Business",
+    sportsHdr: "Sports", bizHdr: "Business",
+    backHome: "← Back to Home",
+    searchPlaceholder: "Search...",
+    noNews: "No news available",
+    byline: "By Staff · 3 min read",
+    footerCopy: "LankaNews — All Rights Reserved",
+    about: "About Us", contact: "Contact", privacy: "Privacy Policy",
+    categories: ['Main News','Politics','Sports','Business','World','Entertainment','Technology','Lifestyle']
+  },
+  ta: {
+    eyebrow: "தினசரி வெளியீடு · கொழும்பு",
+    brand1: "லங்கா", brand2: "செய்திகள்",
+    tagline: "தீவு முழுவதும் நடப்பவை, உண்மையில் முக்கியமானவை மட்டுமே",
+    breaking: "முக்கிய செய்தி",
+    summaryTitle: "செய்திச் சுருக்கம்",
+    sportsBizTitle: "விளையாட்டு & வணிகம்",
+    sportsHdr: "விளையாட்டு", bizHdr: "வணிகம்",
+    backHome: "← முகப்புக்குச் செல்லவும்",
+    searchPlaceholder: "தேடுக...",
+    noNews: "செய்திகள் எதுவும் இல்லை",
+    byline: "செய்திப் பிரிவு · 3 நிமிட வாசிப்பு",
+    footerCopy: "லங்கா நியூஸ் — அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை",
+    about: "எங்களைப் பற்றி", contact: "தொடர்பு கொள்ள", privacy: "தனியுரிமைக் கொள்கை",
+    categories: ['முக்கிய செய்திகள்','அரசியல்','விளையாட்டு','வணிகம்','உலகம்','பொழுதுபோக்கு','தொழில்நுட்பம்','வாழ்க்கைமுறை']
+  }
 };
 
+let currentLang = localStorage.getItem(LANG_KEY) || 'si';
 let siteData = null;
 let currentCat = 'home';
 
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem(LANG_KEY, lang);
+  
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`btn-lang-${lang}`).classList.add('active');
+  document.documentElement.lang = lang;
+  
+  const t = i18n[lang];
+  document.getElementById('txt-eyebrow').textContent = t.eyebrow;
+  document.getElementById('txt-brand-1').textContent = t.brand1;
+  document.getElementById('txt-brand-2').textContent = t.brand2;
+  document.getElementById('txt-tagline').textContent = t.tagline;
+  document.getElementById('txt-breaking').textContent = t.breaking;
+  document.getElementById('txt-summary-title').textContent = t.summaryTitle;
+  document.getElementById('txt-sports-biz-title').textContent = t.sportsBizTitle;
+  document.getElementById('txt-sports-hdr').textContent = t.sportsHdr;
+  document.getElementById('txt-biz-hdr').textContent = t.bizHdr;
+  document.getElementById('txt-back-home').textContent = t.backHome;
+  document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+  document.getElementById('txt-footer-copy').textContent = t.footerCopy;
+  document.getElementById('txt-about').textContent = t.about;
+  document.getElementById('txt-contact').textContent = t.contact;
+  document.getElementById('txt-privacy').textContent = t.privacy;
+
+  buildNav();
+  if(siteData) renderSite();
+}
+
 async function loadData(){
-  // Google Sheet එකෙන් data ගන්න උත්සාහ කරනවා. Fail වුනොත් localStorage එකට,
-  // ඒකත් නැත්නම් built-in nියැදි (default) දත්තවලට fall back වෙනවා.
-  if(SCRIPT_URL && SCRIPT_URL.indexOf('PASTE_YOUR') === -1){
+  if(SCRIPT_URL && !SCRIPT_URL.includes('PASTE_YOUR')){
     try{
       const res = await fetch(SCRIPT_URL, {method:'GET'});
       const json = await res.json();
       if(json && json.articles){
         siteData = json;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData)); // offline fallback cache
-        buildNav();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData));
         renderSite();
         return;
       }
     }catch(e){
-      console.error('Sheet fetch failed, falling back:', e);
+      console.error('Sheet fetch failed:', e);
     }
   }
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    siteData = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_DATA));
-  }catch(e){
-    siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
-  }
-  if(!siteData.articles) siteData.articles = [];
-  if(!siteData.ticker) siteData.ticker = [];
-  buildNav();
+  const raw = localStorage.getItem(STORAGE_KEY);
+  siteData = raw ? JSON.parse(raw) : { ticker: [], articles: [] };
   renderSite();
 }
 
@@ -243,8 +320,9 @@ function imgTag(src, cls){
 
 function buildNav(){
   const nav = document.getElementById('navList');
-  nav.innerHTML = CATEGORIES.map(c=>{
-    const key = c === 'ප්‍රධාන පුවත්' ? 'home' : c;
+  const cats = i18n[currentLang].categories;
+  nav.innerHTML = cats.map((c, i)=>{
+    const key = i === 0 ? 'home' : c;
     return `<li data-navkey="${esc(key)}"><a onclick="navigateTo('${esc(key)}')">${esc(c)}</a></li>`;
   }).join('');
 }
@@ -263,70 +341,109 @@ function navigateTo(catKey){
     document.getElementById('catTitle').textContent = catKey;
     const items = siteData.articles.filter(a=>a.category === catKey);
     document.getElementById('catGrid').innerHTML = items.map(a=>`
-      <article class="card">
+      <article class="card" onclick="openModal('${a.id}')">
         ${imgTag(a.img)}
         <div class="kicker">${esc(a.category)}</div>
         <h3>${esc(a.title)}</h3>
         <p>${esc(a.desc)}</p>
-      </article>`).join('') || '<div class="empty-note">මෙම කාණ්ඩයේ පුවත් තවම නැත</div>';
+      </article>`).join('') || `<div class="empty-note">${i18n[currentLang].noNews}</div>`;
   }
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
 function renderSite(){
-  const arts = siteData.articles;
+  if(!siteData) return;
+  const t = i18n[currentLang];
+  const arts = siteData.articles || [];
   const hero = arts.find(a=>a.position==='hero');
   const sides = arts.filter(a=>a.position==='side').slice(0,4);
   const grid = arts.filter(a=>a.position==='grid').slice(0,3);
-  const sports = arts.filter(a=>a.category==='ක්‍රීඩා').slice(0,4);
-  const biz = arts.filter(a=>a.category==='ව්‍යාපාර').slice(0,4);
+  const sports = arts.filter(a=>a.category==='ක්‍රීඩා' || a.category==='Sports').slice(0,4);
+  const biz = arts.filter(a=>a.category==='ව්‍යාපාර' || a.category==='Business').slice(0,4);
 
   document.getElementById('heroSection').innerHTML = `
-    <article class="hero-main">
+    <article class="hero-main" onclick="${hero ? `openModal('${hero.id}')` : ''}">
       ${hero ? imgTag(hero.img) : `<div class="ph" style="height:380px;"></div>`}
-      <div class="kicker">${esc(hero ? hero.category : 'ප්‍රධාන පුවත්')}</div>
-      <h2>${esc(hero ? hero.title : 'තවම ප්‍රධාන පුවතක් එකතු කර නැත')}</h2>
+      <div class="kicker">${esc(hero ? hero.category : t.categories[0])}</div>
+      <h2>${esc(hero ? hero.title : t.noNews)}</h2>
       <p class="dek">${esc(hero ? hero.desc : '')}</p>
-      <div class="byline">ලේඛක: කාර්ය මණ්ඩලය · විනාඩි 3ක කියවීම</div>
+      <div class="byline">${t.byline}</div>
     </article>
     <aside class="hero-side">
       ${sides.map(s=>`
-        <div class="side-item">
+        <div class="side-item" onclick="openModal('${s.id}')">
           ${imgTag(s.img)}
           <div><div class="kicker">${esc(s.category)}</div><h3>${esc(s.title)}</h3></div>
-        </div>`).join('') || '<div class="empty-note">තවම පැති පුවත් නැත</div>'}
+        </div>`).join('') || `<div class="empty-note">${t.noNews}</div>`}
     </aside>`;
 
   document.getElementById('gridSection').innerHTML = grid.map(g=>`
-    <article class="card">
+    <article class="card" onclick="openModal('${g.id}')">
       ${imgTag(g.img)}
       <div class="kicker">${esc(g.category)}</div>
       <h3>${esc(g.title)}</h3>
       <p>${esc(g.desc)}</p>
-    </article>`).join('') || '<div class="empty-note">තවම කාණ්ඩ පුවත් නැත</div>';
+    </article>`).join('') || `<div class="empty-note">${t.noNews}</div>`;
 
   document.getElementById('sportsList').innerHTML = sports.map((s,i)=>`
-    <div class="strip-row"><span class="num">${i+1}</span><a onclick="navigateTo('ක්‍රීඩා')">${esc(s.title)}</a></div>`).join('') || '<div class="empty-note">තවම ක්‍රීඩා පුවත් නැත</div>';
+    <div class="strip-row" onclick="openModal('${s.id}')"><span class="num">${i+1}</span><a>${esc(s.title)}</a></div>`).join('') || `<div class="empty-note">${t.noNews}</div>`;
 
   document.getElementById('bizList').innerHTML = biz.map((b,i)=>`
-    <div class="strip-row"><span class="num">${i+1}</span><a onclick="navigateTo('ව්‍යාපාර')">${esc(b.title)}</a></div>`).join('') || '<div class="empty-note">තවම ව්‍යාපාර පුවත් නැත</div>';
+    <div class="strip-row" onclick="openModal('${b.id}')"><span class="num">${i+1}</span><a>${esc(b.title)}</a></div>`).join('') || `<div class="empty-note">${t.noNews}</div>`;
 
-  const t = siteData.ticker.length ? siteData.ticker : ['තවම නවතම පුවත් නැත'];
-  const doubled = t.concat(t);
+  const tick = siteData.ticker && siteData.ticker.length ? siteData.ticker : [t.noNews];
+  const doubled = tick.concat(tick);
   document.getElementById('tickerText').innerHTML = doubled.map(x=>`<span>${esc(x)}</span>`).join('');
 
   if(currentCat !== 'home') navigateTo(currentCat);
 }
 
-/* date/year */
+function openModal(id){
+  const a = siteData.articles.find(x=>x.id === id);
+  if(!a) return;
+  document.getElementById('modalContent').innerHTML = `
+    ${a.img ? `<img src="${esc(a.img)}">` : ''}
+    <div class="kicker">${esc(a.category)}</div>
+    <h2>${esc(a.title)}</h2>
+    <div class="content">${esc(a.desc)}</div>
+  `;
+  document.getElementById('articleModal').classList.add('active');
+}
+
+function closeModal(){
+  document.getElementById('articleModal').classList.remove('active');
+}
+
+function doSearch(){
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  if(!q) return;
+  document.getElementById('homeView').style.display = 'none';
+  document.getElementById('categoryView').style.display = 'block';
+  document.getElementById('catTitle').textContent = `Search: "${q}"`;
+  
+  const matches = siteData.articles.filter(a=> 
+    (a.title && a.title.toLowerCase().includes(q)) || 
+    (a.desc && a.desc.toLowerCase().includes(q))
+  );
+  
+  document.getElementById('catGrid').innerHTML = matches.map(a=>`
+    <article class="card" onclick="openModal('${a.id}')">
+      ${imgTag(a.img)}
+      <div class="kicker">${esc(a.category)}</div>
+      <h3>${esc(a.title)}</h3>
+      <p>${esc(a.desc)}</p>
+    </article>`).join('') || `<div class="empty-note">ප්‍රතිඵල හමු නොවීය / No results found</div>`;
+}
+
+// Date Setup
 const days=['ඉරිදා','සඳුදා','අඟහරුවාදා','බදාදා','බ්‍රහස්පතින්දා','සිකුරාදා','සෙනසුරාදා'];
 const months=['ජනවාරි','පෙබරවාරි','මාර්තු','අප්‍රේල්','මැයි','ජූනි','ජූලි','අගෝස්තු','සැප්තැම්බර්','ඔක්තෝබර්','නොවැම්බර්','දෙසැම්බර්'];
-const d=new Date();
+const d = new Date();
 document.getElementById('today-date').textContent = days[d.getDay()]+', '+d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear();
 document.getElementById('year').textContent = d.getFullYear();
 
+setLanguage(currentLang);
 loadData();
 </script>
-
 </body>
 </html>
