@@ -293,7 +293,7 @@ function setLanguage(lang) {
 }
 
 async function loadData(){
-  if(SCRIPT_URL && !SCRIPT_URL.includes('PASTE_YOUR')){
+  if(SCRIPT_URL && !SCRIPT_URL.includes('https://script.google.com/macros/s/AKfycbxPKA-lhmoD0kxTYOzJzZx8Krdxy3XXL1_UG2Ow1NRHmDol26-0vrIvtdbr26n7Q3If/exec')){
     try{
       const res = await fetch(SCRIPT_URL, {method:'GET'});
       const json = await res.json();
