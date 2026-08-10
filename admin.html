@@ -6,27 +6,33 @@
 <title>පරිපාලක පැනලය — ලංකා පුවත්</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700&family=Yaldevi:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Yaldevi:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#1c2430; --ink-soft:#4a5262; --paper:#f2ede2; --paper-raised:#ffffff;
     --maroon:#8a2b25; --gold:#b8862f; --line:#d8cfb8; --green:#1f4d3c;
   }
   *{box-sizing:border-box;}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Noto Sans Sinhala','Yaldevi',sans-serif;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Noto Sans Sinhala','Noto Sans Tamil','Yaldevi',sans-serif;}
   h1,h2,h3{font-family:'Abhaya Libre',serif;color:var(--ink);}
   a{color:inherit;}
   button{font-family:inherit;}
 
-  header.top{background:var(--ink);color:#efe6cf;padding:16px 26px;display:flex;justify-content:space-between;align-items:center;}
+  header.top{background:var(--ink);color:#efe6cf;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
   header.top h1{color:#efe6cf;font-size:20px;margin:0;}
+  .header-actions{display:flex;align-items:center;gap:14px;}
   header.top a{font-size:13px;color:#c9a24a;text-decoration:none;border-bottom:1px dotted #c9a24a;}
+
+  /* Language Selector Styles */
+  .lang-picker{display:flex;gap:4px;background:rgba(255,255,255,0.1);padding:3px;border-radius:4px;}
+  .lang-btn{background:none;border:none;color:#efe6cf;padding:4px 8px;font-size:12px;cursor:pointer;border-radius:3px;font-weight:600;}
+  .lang-btn.active{background:var(--maroon);color:#fff;}
 
   .wrap{max-width:900px;margin:0 auto;padding:34px 20px 60px;}
 
-  .login-box{max-width:320px;margin:60px auto;text-align:center;background:#fff;padding:30px 26px;border-radius:6px;box-shadow:0 6px 24px rgba(0,0,0,.08);}
+  .login-box{max-width:340px;margin:60px auto;text-align:center;background:#fff;padding:30px 26px;border-radius:6px;box-shadow:0 6px 24px rgba(0,0,0,.08);}
   .login-box p{color:var(--ink-soft);font-size:13.5px;margin-bottom:16px;}
-  .login-box input{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:3px;font-size:14px;margin-bottom:10px;font-family:'Noto Sans Sinhala',sans-serif;}
+  .login-box input{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:3px;font-size:14px;margin-bottom:10px;font-family:inherit;}
   .login-box button,.btn{width:100%;padding:11px;background:var(--maroon);color:#fff;border:none;border-radius:3px;font-weight:700;cursor:pointer;font-size:14px;}
   .login-box button:hover,.btn:hover{background:#a3342c;}
   .login-error{color:var(--maroon);font-size:12.5px;margin-top:6px;min-height:16px;}
@@ -37,8 +43,8 @@
 
   .panel{background:#fff;border-radius:6px;padding:24px;box-shadow:0 2px 10px rgba(0,0,0,.05);}
   .field{margin-bottom:14px;}
-  .field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:5px;font-family:'Yaldevi',sans-serif;}
-  .field input,.field select,.field textarea{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:3px;font-size:14px;font-family:'Noto Sans Sinhala',sans-serif;}
+  .field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:5px;}
+  .field input,.field select,.field textarea{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:3px;font-size:14px;font-family:inherit;}
   .field textarea{resize:vertical;min-height:64px;}
   .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
   .save-msg{font-size:13px;color:var(--green);font-weight:600;margin-top:8px;min-height:18px;}
@@ -57,7 +63,7 @@
   .empty-note{color:var(--ink-soft);font-size:13.5px;font-style:italic;padding:8px 0;}
 
   .ticker-editor .t-row{display:flex;gap:8px;margin-bottom:8px;}
-  .ticker-editor .t-row input{flex:1;padding:9px 12px;border:1px solid var(--line);border-radius:3px;font-size:14px;font-family:'Noto Sans Sinhala',sans-serif;}
+  .ticker-editor .t-row input{flex:1;padding:9px 12px;border:1px solid var(--line);border-radius:3px;font-size:14px;font-family:inherit;}
   .ticker-editor .t-row button{background:none;border:1px solid var(--line);border-radius:3px;padding:0 12px;cursor:pointer;color:var(--maroon);}
   a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{outline:2px solid var(--maroon);outline-offset:2px;}
 </style>
@@ -65,61 +71,70 @@
 <body>
 
   <header class="top">
-    <h1>ලංකා පුවත් · පරිපාලක පැනලය</h1>
-    <a href="index.html">← වෙබ් අඩවියට යන්න</a>
+    <h1 id="txt-app-title">ලංකා පුවත් · පරිපාලක පැනලය</h1>
+    <div class="header-actions">
+      <!-- Language Switcher -->
+      <div class="lang-picker">
+        <button class="lang-btn active" id="btn-lang-si" onclick="setLanguage('si')">සිංහල</button>
+        <button class="lang-btn" id="btn-lang-en" onclick="setLanguage('en')">English</button>
+        <button class="lang-btn" id="btn-lang-ta" onclick="setLanguage('ta')">தமிழ்</button>
+      </div>
+      <a href="index.html" id="txt-back-link">← වෙබ් අඩවියට යන්න</a>
+    </div>
   </header>
 
   <div class="wrap">
 
     <div id="loginView" class="login-box">
-      <p>ඉදිරියට යාමට රහස්පදය ඇතුළත් කරන්න.</p>
+      <p id="txt-login-desc">ඉදිරියට යාමට රහස්පදය ඇතුළත් කරන්න.</p>
       <input type="password" id="pwInput" placeholder="රහස්පදය" onkeydown="if(event.key==='Enter')tryLogin()">
-      <button onclick="tryLogin()">ඇතුල් වන්න</button>
+      <button onclick="tryLogin()" id="btn-login">ඇතුල් වන්න</button>
       <div class="login-error" id="loginErr"></div>
     </div>
 
     <div id="dashView" style="display:none;">
       <div id="sheetWarning" style="display:none;background:#fdf0e3;border:1px solid var(--gold);color:#7a5a1e;padding:10px 14px;border-radius:4px;font-size:13px;margin-bottom:18px;">
-        ⚠ Google Sheet එකට connect වී නැත — දැනට save වෙන්නේ මේ browser එකේ පමණි. SCRIPT_URL එක admin.html code එකේ set කරන්න.
+        ⚠ <span id="txt-sheet-warn">Google Sheet එකට connect වී නැත — දැනට save වෙන්නේ මේ browser එකේ පමණි.</span>
       </div>
       <div class="admin-tabs">
-        <button class="active" data-tab="articles" onclick="switchTab('articles')">පුවත් කළමනාකරණය</button>
-        <button data-tab="ticker" onclick="switchTab('ticker')">නවතම පට්ටිය (Ticker)</button>
+        <button class="active" data-tab="articles" id="tab-btn-articles" onclick="switchTab('articles')">පුවත් කළමනාකරණය</button>
+        <button data-tab="ticker" id="tab-btn-ticker" onclick="switchTab('ticker')">නවතම පට්ටිය (Ticker)</button>
       </div>
 
       <div id="tab-articles">
         <div class="panel">
-          <h3 style="font-size:16px;margin:0 0 12px;">නව පුවතක් එකතු කරන්න</h3>
+          <h3 style="font-size:16px;margin:0 0 12px;" id="txt-form-title">නව පුවතක් එකතු කරන්න / සංස්කරණය කරන්න</h3>
           <div class="form-row">
-            <div class="field"><label>කාණ්ඩය</label><select id="f-category"></select></div>
-            <div class="field"><label>මුල් පිටුවේ පෙනුම</label>
+            <div class="field"><label id="lbl-category">කාණ්ඩය</label><select id="f-category"></select></div>
+            <div class="field"><label id="lbl-position">මුල් පිටුවේ පෙනුම</label>
               <select id="f-position">
-                <option value="hero">ප්‍රධාන පුවත (Hero)</option>
-                <option value="side">පැති පුවත (Side)</option>
-                <option value="grid" selected>සාරාංශ කාණ්ඩ (Grid)</option>
-                <option value="none">මුල් පිටුවේ නොපෙන්වන්න</option>
+                <option value="hero" id="opt-pos-hero">ප්‍රධාන පුවත (Hero)</option>
+                <option value="side" id="opt-pos-side">පැති පුවත (Side)</option>
+                <option value="grid" selected id="opt-pos-grid">සාරාංශ කාණ්ඩ (Grid)</option>
+                <option value="none" id="opt-pos-none">මුල් පිටුවේ නොපෙන්වන්න</option>
               </select>
             </div>
           </div>
-          <div class="field"><label>ශීර්ෂ පාඨය</label><input id="f-title" placeholder="පුවත් ශීර්ෂය"></div>
-          <div class="field"><label>විස්තරය</label><textarea id="f-desc" placeholder="කෙටි විස්තරයක්..."></textarea></div>
-          <div class="field"><label>රූප URL (විකල්ප)</label><input id="f-img" placeholder="https://..."></div>
+          <div class="field"><label id="lbl-title">ශීර්ෂ පාඨය</label><input id="f-title" placeholder="පුවත් ශීර්ෂය"></div>
+          <div class="field"><label id="lbl-desc">විස්තරය</label><textarea id="f-desc" placeholder="කෙටි විස්තරයක්..."></textarea></div>
+          <div class="field"><label id="lbl-img">රූප URL (විකල්ප)</label><input id="f-img" placeholder="https://..."></div>
           <input type="hidden" id="f-id">
-          <button class="btn wide" onclick="saveArticle()">සුරකින්න</button>
+          <button class="btn wide" onclick="saveArticle()" id="btn-save-art">සුරකින්න</button>
+          <button class="btn wide" style="background:#6c757d; margin-left:8px;" onclick="resetForm()" id="btn-reset-art">නව පුවතක් (Reset)</button>
           <div class="save-msg" id="artMsg"></div>
         </div>
 
-        <h3 style="font-size:16px;margin:26px 0 4px;">දැනට ඇති පුවත්</h3>
+        <h3 style="font-size:16px;margin:26px 0 4px;" id="txt-existing-title">දැනට ඇති පුවත්</h3>
         <div class="panel" id="articleListPanel"><div id="articleList"></div></div>
       </div>
 
       <div id="tab-ticker" style="display:none;">
         <div class="panel">
-          <h3 style="font-size:16px;margin:0 0 12px;">නවතම පට්ටියේ පෙළ</h3>
+          <h3 style="font-size:16px;margin:0 0 12px;" id="txt-ticker-title">නවතම පට්ටියේ පෙළ</h3>
           <div class="ticker-editor" id="tickerEditor"></div>
-          <button class="btn wide" onclick="addTickerRow('')">+ පේළියක් එකතු කරන්න</button>
+          <button class="btn wide" onclick="addTickerRow('')" id="btn-add-ticker">+ පේළියක් එකතු කරන්න</button>
           <br><br>
-          <button class="btn wide" onclick="saveTicker()">සුරකින්න</button>
+          <button class="btn wide" onclick="saveTicker()" id="btn-save-ticker">සුරකින්න</button>
           <div class="save-msg" id="tickerMsg"></div>
         </div>
       </div>
@@ -129,19 +144,184 @@
 
 <script>
 const ADMIN_PASSWORD = "lanka2026";
-
-// Google Apps Script Web App එකේ URL එක මෙතන paste කරන්න (Deploy > Web app):
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPKA-lhmoD0kxTYOzJzZx8Krdxy3XXL1_UG2Ow1NRHmDol26-0vrIvtdbr26n7Q3If/exec";
 
 const STORAGE_KEY = "site-data";
-const CATEGORIES = ['ප්‍රධාන පුවත්','දේශපාලනය','ක්‍රීඩා','ව්‍යාපාර','ලෝකය','විනෝදාංශය','තාක්ෂණය','ජීවන රටාව'];
+const LANG_KEY = "admin-lang";
 
+// Translations Dictionary
+const i18n = {
+  si: {
+    appTitle: "ලංකා පුවත් · පරිපාලක පැනලය",
+    backLink: "← වෙබ් අඩවියට යන්න",
+    loginDesc: "ඉදිරියට යාමට රහස්පදය ඇතුළත් කරන්න.",
+    pwPlaceholder: "රහස්පදය",
+    loginBtn: "ඇතුල් වන්න",
+    pwError: "රහස්පදය වැරදියි. නැවත උත්සාහ කරන්න.",
+    loading: "පූරණය වෙමින්...",
+    sheetWarn: "Google Sheet එකට connect වී නැත — දැනට save වෙන්නේ මේ browser එකේ පමණි.",
+    tabArticles: "පුවත් කළමනාකරණය",
+    tabTicker: "නවතම පට්ටිය (Ticker)",
+    formTitle: "නව පුවතක් එකතු කරන්න / සංස්කරණය කරන්න",
+    lblCategory: "කාණ්ඩය",
+    lblPosition: "මුල් පිටුවේ පෙනුම",
+    posHero: "ප්‍රධාන පුවත (Hero)",
+    posSide: "පැති පුවත (Side)",
+    posGrid: "සාරාංශ කාණ්ඩ (Grid)",
+    posNone: "මුල් පිටුවේ නොපෙන්වන්න",
+    lblTitle: "ශීර්ෂ පාඨය",
+    titlePlaceholder: "පුවත් ශීර්ෂය",
+    lblDesc: "විස්තරය",
+    descPlaceholder: "කෙටි විස්තරයක්...",
+    lblImg: "රූප URL (විකල්ප)",
+    btnSave: "සුරකින්න",
+    btnReset: "නව පුවතක් (Reset)",
+    existingTitle: "දැනට ඇති පුවත්",
+    noArticles: "පුවත් නොමැත",
+    btnEdit: "සංස්කරණය",
+    btnDelete: "මකන්න",
+    tickerTitle: "නවතම පට්ටියේ පෙළ",
+    tickerPlaceholder: "පුවත් පේළිය...",
+    btnAddTicker: "+ පේළියක් එකතු කරන්න",
+    errNoTitle: "ශීර්ෂ පාඨයක් ඇතුළත් කරන්න.",
+    savingSheet: "සුරකිමින්... (Sheet එකට)",
+    savedLocal: "සුරැකිණි ✓ (browser එකේ පමණි)",
+    savedSheet: "සුරැකිණි ✓ (Google Sheet එකට)",
+    errSheet: "Sheet එකට save කිරීම අසාර්ථකයි.",
+    categories: ['ප්‍රධාන පුවත්','දේශපාලනය','ක්‍රීඩා','ව්‍යාපාර','ලෝකය','විනෝදාංශය','තාක්ෂණය','ජීවන රටාව']
+  },
+  en: {
+    appTitle: "Lanka News · Admin Panel",
+    backLink: "← Go to Website",
+    loginDesc: "Enter password to continue.",
+    pwPlaceholder: "Password",
+    loginBtn: "Login",
+    pwError: "Incorrect password. Please try again.",
+    loading: "Loading...",
+    sheetWarn: "Not connected to Google Sheet — Saving to browser storage only.",
+    tabArticles: "Article Management",
+    tabTicker: "News Ticker",
+    formTitle: "Add / Edit Article",
+    lblCategory: "Category",
+    lblPosition: "Homepage Position",
+    posHero: "Main Story (Hero)",
+    posSide: "Side Story",
+    posGrid: "Category Grid",
+    posNone: "Do not display on Homepage",
+    lblTitle: "Headline",
+    titlePlaceholder: "Article headline",
+    lblDesc: "Description",
+    descPlaceholder: "Short description...",
+    lblImg: "Image URL (Optional)",
+    btnSave: "Save",
+    btnReset: "New Article (Reset)",
+    existingTitle: "Existing Articles",
+    noArticles: "No articles found",
+    btnEdit: "Edit",
+    btnDelete: "Delete",
+    tickerTitle: "Ticker Items",
+    tickerPlaceholder: "Ticker text line...",
+    btnAddTicker: "+ Add Line",
+    errNoTitle: "Please enter a headline.",
+    savingSheet: "Saving... (to Sheet)",
+    savedLocal: "Saved ✓ (Browser only)",
+    savedSheet: "Saved ✓ (to Google Sheet)",
+    errSheet: "Failed to save to Google Sheet.",
+    categories: ['Main News','Politics','Sports','Business','World','Entertainment','Technology','Lifestyle']
+  },
+  ta: {
+    appTitle: "லங்கா நியூஸ் · நிர்வாகக் குழு",
+    backLink: "← இணையதளத்திற்குச் செல்லவும்",
+    loginDesc: "தொடர கடவுச்சொல்லை உள்ளிடவும்.",
+    pwPlaceholder: "கடவுச்சொல்",
+    loginBtn: "உள்நுழைக",
+    pwError: "தவறான கடவுச்சொல். மீண்டும் முயற்சிக்கவும்.",
+    loading: "ஏற்றப்படுகிறது...",
+    sheetWarn: "Google Sheet உடன் இணைக்கப்படவில்லை — உலாவி நினைவகத்தில் மட்டுமே சேமிக்கப்படும்.",
+    tabArticles: "செய்தி மேலாண்மை",
+    tabTicker: "செய்தித் துளிகள் (Ticker)",
+    formTitle: "செய்தியைச் சேர் / திருத்து",
+    lblCategory: "பிரிவு",
+    lblPosition: "முகப்புப் பக்கத் தோற்றம்",
+    posHero: "முக்கிய செய்தி (Hero)",
+    posSide: "பக்கச் செய்தி (Side)",
+    posGrid: "பிரிவுத் தொகுப்பு (Grid)",
+    posNone: "முகப்பில் காட்ட வேண்டாம்",
+    lblTitle: "தலைப்பு",
+    titlePlaceholder: "செய்தித் தலைப்பு",
+    lblDesc: "விளக்கம்",
+    descPlaceholder: "குறுகிய விளக்கம்...",
+    lblImg: "படம் URL (விருப்பத்தேர்வு)",
+    btnSave: "சேமிக்கவும்",
+    btnReset: "புதிய செய்தி (Reset)",
+    existingTitle: "தற்போதைய செய்திகள்",
+    noArticles: "செய்திகள் எதுவும் இல்லை",
+    btnEdit: "திருத்து",
+    btnDelete: "நீக்கு",
+    tickerTitle: "செய்தித் துளிகள் உரை",
+    tickerPlaceholder: "செய்தி வரி...",
+    btnAddTicker: "+ வரியைச் சேர்",
+    errNoTitle: "தயவுசெய்து தலைப்பை உள்ளிடவும்.",
+    savingSheet: "சேமிக்கப்படுகிறது... (Sheet-இல்)",
+    savedLocal: "சேமிக்கப்பட்டது ✓ (உலாவியில் மட்டும்)",
+    savedSheet: "சேமிக்கப்பட்டது ✓ (Google Sheet-இல்)",
+    errSheet: "Google Sheet-இல் சேமிக்க முடியவில்லை.",
+    categories: ['முக்கிய செய்திகள்','அரசியல்','விளையாட்டு','வணிகம்','உலகம்','பொழுதுபோக்கு','தொழில்நுட்பம்','வாழ்க்கைமுறை']
+  }
+};
+
+let currentLang = localStorage.getItem(LANG_KEY) || 'si';
 const DEFAULT_DATA = { ticker: [], articles: [] };
-
 let siteData = null;
 let sheetConnected = false;
 
-function sheetReady(){ return SCRIPT_URL && SCRIPT_URL.indexOf('PASTE_YOUR') === -1; }
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem(LANG_KEY, lang);
+  
+  // Toggle Active Button UI
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`btn-lang-${lang}`).classList.add('active');
+  
+  // Apply HTML lang attribute
+  document.documentElement.lang = lang;
+  
+  // Update UI Elements
+  const t = i18n[lang];
+  document.getElementById('txt-app-title').textContent = t.appTitle;
+  document.getElementById('txt-back-link').textContent = t.backLink;
+  document.getElementById('txt-login-desc').textContent = t.loginDesc;
+  document.getElementById('pwInput').placeholder = t.pwPlaceholder;
+  document.getElementById('btn-login').textContent = t.loginBtn;
+  document.getElementById('txt-sheet-warn').textContent = t.sheetWarn;
+  document.getElementById('tab-btn-articles').textContent = t.tabArticles;
+  document.getElementById('tab-btn-ticker').textContent = t.tabTicker;
+  document.getElementById('txt-form-title').textContent = t.formTitle;
+  document.getElementById('lbl-category').textContent = t.lblCategory;
+  document.getElementById('lbl-position').textContent = t.lblPosition;
+  document.getElementById('opt-pos-hero').textContent = t.posHero;
+  document.getElementById('opt-pos-side').textContent = t.posSide;
+  document.getElementById('opt-pos-grid').textContent = t.posGrid;
+  document.getElementById('opt-pos-none').textContent = t.posNone;
+  document.getElementById('lbl-title').textContent = t.lblTitle;
+  document.getElementById('f-title').placeholder = t.titlePlaceholder;
+  document.getElementById('lbl-desc').textContent = t.lblDesc;
+  document.getElementById('f-desc').placeholder = t.descPlaceholder;
+  document.getElementById('lbl-img').textContent = t.lblImg;
+  document.getElementById('btn-save-art').textContent = t.btnSave;
+  document.getElementById('btn-reset-art').textContent = t.btnReset;
+  document.getElementById('txt-existing-title').textContent = t.existingTitle;
+  document.getElementById('txt-ticker-title').textContent = t.tickerTitle;
+  document.getElementById('btn-add-ticker').textContent = t.btnAddTicker;
+  document.getElementById('btn-save-ticker').textContent = t.btnSave;
+
+  populateCategorySelect();
+  if(siteData) renderArticleList();
+}
+
+function sheetReady(){ 
+  return SCRIPT_URL && SCRIPT_URL.startsWith("https://script.google.com"); 
+}
 
 async function loadData(){
   if(sheetReady()){
@@ -171,10 +351,10 @@ async function loadData(){
 }
 
 async function callSheet(payload){
-  // text/plain content-type avoids a CORS preflight, which Apps Script doesn't handle.
-  await fetch(SCRIPT_URL, {
+  return fetch(SCRIPT_URL, {
     method: 'POST',
-    headers: {'Content-Type': 'text/plain;charset=utf-8'},
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(payload)
   });
 }
@@ -183,36 +363,46 @@ function persist(){
   try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData)); }
   catch(e){ console.error("Storage save failed", e); }
 }
+
 function esc(s){ return (s||"").replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
 async function tryLogin(){
   const pw = document.getElementById('pwInput').value;
+  const t = i18n[currentLang];
   if(pw === ADMIN_PASSWORD){
-    document.getElementById('loginErr').textContent = 'පූරණය වෙමින්...';
+    document.getElementById('loginErr').textContent = t.loading;
     await loadData();
     document.getElementById('loginView').style.display = 'none';
     document.getElementById('dashView').style.display = 'block';
-    if(!sheetReady()){
+    
+    if(!sheetConnected){
       document.getElementById('sheetWarning').style.display = 'block';
+    } else {
+      document.getElementById('sheetWarning').style.display = 'none';
     }
+    
     populateCategorySelect();
     renderArticleList();
     renderTickerEditor();
   }else{
-    document.getElementById('loginErr').textContent = 'රහස්පදය වැරදියි. නැවත උත්සාහ කරන්න.';
+    document.getElementById('loginErr').textContent = t.pwError;
   }
 }
+
 function switchTab(tab){
   document.querySelectorAll('.admin-tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
   document.getElementById('tab-articles').style.display = tab==='articles' ? 'block':'none';
   document.getElementById('tab-ticker').style.display = tab==='ticker' ? 'block':'none';
 }
+
 function populateCategorySelect(){
+  const cats = i18n[currentLang].categories;
   document.getElementById('f-category').innerHTML =
-    CATEGORIES.filter(c=>c!=='ප්‍රධාන පුවත්').map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+    cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
 }
 
 function renderArticleList(){
+  const t = i18n[currentLang];
   const posLabel = {hero:'Hero',side:'Side',grid:'Grid',none:'—'};
   document.getElementById('articleList').innerHTML = siteData.articles.map(a=>`
     <div class="art-row">
@@ -222,10 +412,10 @@ function renderArticleList(){
         <h4>${esc(a.title)}</h4>
       </div>
       <div class="acts">
-        <button onclick="editArticle('${a.id}')">සංස්කරණය</button>
-        <button class="del" onclick="deleteArticle('${a.id}')">මකන්න</button>
+        <button onclick="editArticle('${a.id}')">${t.btnEdit}</button>
+        <button class="del" onclick="deleteArticle('${a.id}')">${t.btnDelete}</button>
       </div>
-    </div>`).join('') || '<div class="empty-note">පුවත් නොමැත</div>';
+    </div>`).join('') || `<div class="empty-note">${t.noArticles}</div>`;
 }
 
 function editArticle(id){
@@ -240,6 +430,15 @@ function editArticle(id){
   document.getElementById('artMsg').textContent = '';
   window.scrollTo({top:0,behavior:'smooth'});
 }
+
+function resetForm(){
+  document.getElementById('f-id').value = '';
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-desc').value = '';
+  document.getElementById('f-img').value = '';
+  document.getElementById('artMsg').textContent = '';
+}
+
 async function deleteArticle(id){
   siteData.articles = siteData.articles.filter(a=>a.id!==id);
   persist();
@@ -249,11 +448,13 @@ async function deleteArticle(id){
     catch(e){ console.error(e); }
   }
 }
+
 async function saveArticle(){
+  const t = i18n[currentLang];
   const title = document.getElementById('f-title').value.trim();
   if(!title){
     document.getElementById('artMsg').style.color = '#a3342c';
-    document.getElementById('artMsg').textContent = 'ශීර්ෂ පාඨයක් ඇතුළත් කරන්න.';
+    document.getElementById('artMsg').textContent = t.errNoTitle;
     return;
   }
   const id = document.getElementById('f-id').value;
@@ -264,6 +465,7 @@ async function saveArticle(){
     desc: document.getElementById('f-desc').value.trim(),
     img: document.getElementById('f-img').value.trim()
   };
+  
   if(id){
     data.id = id;
     const idx = siteData.articles.findIndex(a=>a.id===id);
@@ -272,26 +474,25 @@ async function saveArticle(){
     data.id = 'a' + Date.now();
     siteData.articles.push(data);
   }
+  
   persist();
   renderArticleList();
+  
   document.getElementById('artMsg').style.color = 'var(--green)';
-  document.getElementById('artMsg').textContent = sheetConnected ? 'සුරකිමින්... (Sheet එකට)' : 'සුරැකිණි ✓ (browser එකේ පමණි)';
+  document.getElementById('artMsg').textContent = sheetConnected ? t.savingSheet : t.savedLocal;
 
   if(sheetConnected){
     try{
       await callSheet({action:'saveArticle', article:data});
-      document.getElementById('artMsg').textContent = 'සුරැකිණි ✓ (Google Sheet එකට)';
+      document.getElementById('artMsg').textContent = t.savedSheet;
     }catch(e){
       console.error(e);
       document.getElementById('artMsg').style.color = '#a3342c';
-      document.getElementById('artMsg').textContent = 'Sheet එකට save කිරීම අසාර්ථකයි — connection එක බලන්න.';
+      document.getElementById('artMsg').textContent = t.errSheet;
     }
   }
 
-  document.getElementById('f-id').value = '';
-  document.getElementById('f-title').value='';
-  document.getElementById('f-desc').value='';
-  document.getElementById('f-img').value='';
+  resetForm();
   setTimeout(()=>{ document.getElementById('artMsg').textContent=''; }, 3500);
 }
 
@@ -301,32 +502,40 @@ function renderTickerEditor(){
   siteData.ticker.forEach(text=> addTickerRow(text));
   if(siteData.ticker.length === 0) addTickerRow('');
 }
+
 function addTickerRow(value){
+  const t = i18n[currentLang];
   const wrap = document.getElementById('tickerEditor');
   const row = document.createElement('div');
   row.className = 't-row';
-  row.innerHTML = `<input value="${esc(value)}" placeholder="පුවත් පේළිය..."><button onclick="this.parentElement.remove()">✕</button>`;
+  row.innerHTML = `<input value="${esc(value)}" placeholder="${t.tickerPlaceholder}"><button onclick="this.parentElement.remove()">✕</button>`;
   wrap.appendChild(row);
 }
+
 async function saveTicker(){
+  const t = i18n[currentLang];
   const rows = Array.from(document.querySelectorAll('#tickerEditor .t-row input'));
   siteData.ticker = rows.map(r=>r.value.trim()).filter(Boolean);
   persist();
   const msg = document.getElementById('tickerMsg');
   msg.style.color = 'var(--green)';
-  msg.textContent = sheetConnected ? 'සුරකිමින්... (Sheet එකට)' : 'සුරැකිණි ✓ (browser එකේ පමණි)';
+  msg.textContent = sheetConnected ? t.savingSheet : t.savedLocal;
+  
   if(sheetConnected){
     try{
       await callSheet({action:'saveTicker', ticker: siteData.ticker});
-      msg.textContent = 'සුරැකිණි ✓ (Google Sheet එකට)';
+      msg.textContent = t.savedSheet;
     }catch(e){
       console.error(e);
       msg.style.color = '#a3342c';
-      msg.textContent = 'Sheet එකට save කිරීම අසාර්ථකයි.';
+      msg.textContent = t.errSheet;
     }
   }
   setTimeout(()=>{ msg.textContent=''; }, 3500);
 }
+
+// Initial Language Setup
+setLanguage(currentLang);
 </script>
 </body>
 </html>
