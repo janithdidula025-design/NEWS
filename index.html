@@ -124,7 +124,7 @@
     }
     .search-box button:hover { background: var(--dark-maroon); }
 
-    /* Navigation Bar (Mobile Smooth Scroll) */
+    /* Navigation Bar */
     nav { 
       background-color: var(--maroon); 
       position: sticky; 
@@ -184,7 +184,7 @@
       white-space: nowrap; 
       z-index: 2;
     }
-    .ticker-text { display: flex; white-space: nowrap; animation: ticker 30s linear infinite; }
+    .ticker-text { display: flex; white-space: nowrap; animation: ticker 80s linear infinite; }
     .ticker-text span { padding: 0 20px; font-size: 13.5px; color: var(--text-main); font-weight: 500; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
@@ -273,23 +273,28 @@
     .card h3 { font-size: 15px; padding: 6px 14px; line-height: 1.4; color: var(--text-main); font-weight: 700; }
     .card p { font-size: 13px; color: var(--text-muted); padding: 0 14px 14px; margin-top: auto; }
 
-    /* Category View Header */
-    .back-btn { 
+    /* Category View Header & Load More */
+    .back-btn, .load-more-btn { 
       background: var(--maroon); 
       color: #fff; 
       border: none; 
-      padding: 8px 16px; 
+      padding: 10px 20px; 
       border-radius: var(--radius-sm); 
       cursor: pointer; 
-      margin-bottom: 20px; 
       display: inline-flex; 
       align-items: center;
       gap: 6px;
-      font-size: 13px; 
+      font-size: 14px; 
       font-weight: 600;
       transition: background 0.2s ease;
     }
-    .back-btn:hover { background: var(--dark-maroon); }
+    .back-btn { margin-bottom: 20px; }
+    .back-btn:hover, .load-more-btn:hover { background: var(--dark-maroon); }
+    
+    .load-more-container {
+      text-align: center;
+      margin: 20px 0 40px;
+    }
 
     /* Split Section (Sports & Business) */
     .split-section { 
@@ -364,7 +369,7 @@
       z-index: 5;
     }
     .modal-close:hover { background: #e2e8f0; color: var(--text-main); }
-    .modal-box img { width: 100%; max-height: 300px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 14px; }
+    .modal-box img { width: 100%; max-height: 360px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 14px; }
 
     .empty-note { padding: 24px; text-align: center; color: var(--text-muted); font-style: italic; width: 100%; background: var(--card-bg); border-radius: var(--radius); border: 1px dashed var(--border-color); }
 
@@ -381,27 +386,19 @@
     .footer-links a:hover { color: var(--gold); }
     #txt-footer-copy { color: #f8fafc; font-weight: 600; }
 
-    /* ==========================================================================
-       RESPONSIVE BREAKPOINTS (Tablet & Desktop Enhancements)
-       ========================================================================== */
-    
-    /* Tablet & Medium Screens (640px and up) */
+    /* Responsive Breakpoints */
     @media (min-width: 640px) {
       .card-grid { grid-template-columns: repeat(2, 1fr); }
       .split-section { grid-template-columns: repeat(2, 1fr); }
       .hero-main img, .hero-main .ph { height: 300px; }
       .modal-box { padding: 28px; }
-      .modal-box img { max-height: 360px; }
     }
 
-    /* Desktop Screens (850px and up) */
     @media (min-width: 850px) {
       .hero-grid { grid-template-columns: 2fr 1.1fr; gap: 24px; }
       .hero-main img, .hero-main .ph { height: 360px; }
-      .utility-bar { padding: 8px 5%; }
     }
 
-    /* Large Desktop Screens (1024px and up) */
     @media (min-width: 1024px) {
       .card-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
     }
@@ -472,6 +469,9 @@
       <button class="back-btn" onclick="navigateTo('home')" id="txt-back-home">← ප්‍රධාන පිටුවට</button>
       <div class="section-title" id="catTitle">Category</div>
       <div class="card-grid" id="catGrid"></div>
+      <div class="load-more-container" id="loadMoreBox" style="display:none;">
+        <button class="load-more-btn" onclick="loadMoreCategoryItems()" id="txt-load-more">තවත් පුවත් බලන්න</button>
+      </div>
     </div>
 
   </div>
@@ -510,6 +510,7 @@
         sportsBizTitle: "ක්‍රීඩා සහ ව්‍යාපාර",
         sportsHdr: "ක්‍රීඩා", bizHdr: "ව්‍යාපාර",
         backHome: "← ප්‍රධාන පිටුවට",
+        loadMore: "තවත් පුවත් බලන්න",
         searchPlaceholder: "සොයන්න...",
         noNews: "මෙම වර්ගීකරණය යටතේ පුවත් තවම නැත",
         byline: "කාර්ය මණ්ඩලය · විනාඩි 3ක කියවීම",
@@ -526,6 +527,7 @@
         sportsBizTitle: "Sports & Business",
         sportsHdr: "Sports", bizHdr: "Business",
         backHome: "← Back to Home",
+        loadMore: "Load More News",
         searchPlaceholder: "Search...",
         noNews: "No news available in this category",
         byline: "By Staff · 3 min read",
@@ -542,6 +544,7 @@
         sportsBizTitle: "விளையாட்டு & வணிகம்",
         sportsHdr: "விளையாட்டு", bizHdr: "வணிகம்",
         backHome: "← முகப்புக்குச் செல்லவும்",
+        loadMore: "மேலும் செய்திகளைப் பார்க்க",
         searchPlaceholder: "தேடுக...",
         noNews: "இந்த பிரிவில் செய்திகள் எதுவும் නැත",
         byline: "செய்திப் பிரிவு · 3 நிமிட வாசிப்பு",
@@ -554,6 +557,11 @@
     let currentLang = localStorage.getItem(LANG_KEY) || 'si';
     let siteData = { ticker: [], articles: [] };
     let currentCat = 'home';
+
+    // Pagination Controls (50+ News Handling)
+    let categoryFilteredArticles = [];
+    let currentCategoryPage = 1;
+    const ITEMS_PER_PAGE = 12;
 
     function updateDate() {
       const d = new Date();
@@ -582,6 +590,7 @@
       document.getElementById('txt-sports-hdr').textContent = t.sportsHdr;
       document.getElementById('txt-biz-hdr').textContent = t.bizHdr;
       document.getElementById('txt-back-home').textContent = t.backHome;
+      document.getElementById('txt-load-more').textContent = t.loadMore;
       document.getElementById('searchInput').placeholder = t.searchPlaceholder;
       document.getElementById('txt-footer-copy').textContent = t.footerCopy;
       document.getElementById('txt-about').textContent = t.about;
@@ -649,19 +658,48 @@
         document.getElementById('categoryView').style.display = 'block';
         document.getElementById('catTitle').textContent = catKey;
         
-        const items = (siteData.articles || []).filter(a => 
+        // Filter Category Items (Supports up to 50+ entries easily)
+        categoryFilteredArticles = (siteData.articles || []).filter(a => 
           a.category && a.category.trim().toLowerCase() === catKey.trim().toLowerCase()
         );
 
-        document.getElementById('catGrid').innerHTML = items.map(a=>`
-          <article class="card" onclick="openModal('${esc(a.id)}')">
-            ${imgTag(a.img)}
-            <div class="kicker">${esc(a.category)}</div>
-            <h3>${esc(a.title)}</h3>
-            <p>${esc(a.desc)}</p>
-          </article>`).join('') || `<div class="empty-note">${i18n[currentLang].noNews}</div>`;
+        currentCategoryPage = 1;
+        renderCategoryGrid();
       }
       window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function renderCategoryGrid() {
+      const catGrid = document.getElementById('catGrid');
+      const loadMoreBox = document.getElementById('loadMoreBox');
+
+      if (categoryFilteredArticles.length === 0) {
+        catGrid.innerHTML = `<div class="empty-note">${i18n[currentLang].noNews}</div>`;
+        loadMoreBox.style.display = 'none';
+        return;
+      }
+
+      const visibleItems = categoryFilteredArticles.slice(0, currentCategoryPage * ITEMS_PER_PAGE);
+
+      catGrid.innerHTML = visibleItems.map(a => `
+        <article class="card" onclick="openModal('${esc(a.id)}')">
+          ${imgTag(a.img)}
+          <div class="kicker">${esc(a.category)}</div>
+          <h3>${esc(a.title)}</h3>
+          <p>${esc(a.desc)}</p>
+        </article>`).join('');
+
+      // Toggle Load More Button
+      if (visibleItems.length < categoryFilteredArticles.length) {
+        loadMoreBox.style.display = 'block';
+      } else {
+        loadMoreBox.style.display = 'none';
+      }
+    }
+
+    function loadMoreCategoryItems() {
+      currentCategoryPage++;
+      renderCategoryGrid();
     }
 
     function renderSite(){
@@ -670,10 +708,10 @@
       const arts = siteData.articles || [];
       const hero = arts.find(a=>a.position==='hero') || arts[0];
       const sides = arts.filter(a=>a.position==='side').slice(0,4);
-      const grid = arts.filter(a=>a.position==='grid').slice(0,3);
+      const grid = arts.filter(a=>a.position==='grid').slice(0,6);
       
-      const sports = arts.filter(a=>['ක්‍රීඩා','sports','விளையாட்டு'].includes((a.category||'').trim().toLowerCase())).slice(0,4);
-      const biz = arts.filter(a=>['ව්‍යාපාර','business','வணிகம்'].includes((a.category||'').trim().toLowerCase())).slice(0,4);
+      const sports = arts.filter(a=>['ක්‍රීඩා','sports','விளையாட்டு'].includes((a.category||'').trim().toLowerCase())).slice(0,6);
+      const biz = arts.filter(a=>['ව්‍යාපාර','business','வணிகம்'].includes((a.category||'').trim().toLowerCase())).slice(0,6);
 
       document.getElementById('heroSection').innerHTML = `
         <article class="hero-main" onclick="${hero ? `openModal('${hero.id}')` : ''}">
@@ -737,19 +775,14 @@
       document.getElementById('categoryView').style.display = 'block';
       document.getElementById('catTitle').textContent = `Search: "${q}"`;
       
-      const matches = (siteData.articles || []).filter(a=> 
+      categoryFilteredArticles = (siteData.articles || []).filter(a=> 
         (a.title && a.title.toLowerCase().includes(q)) || 
         (a.desc && a.desc.toLowerCase().includes(q)) ||
         (a.category && a.category.toLowerCase().includes(q))
       );
       
-      document.getElementById('catGrid').innerHTML = matches.map(a=>`
-        <article class="card" onclick="openModal('${esc(a.id)}')">
-          ${imgTag(a.img)}
-          <div class="kicker">${esc(a.category)}</div>
-          <h3>${esc(a.title)}</h3>
-          <p>${esc(a.desc)}</p>
-        </article>`).join('') || `<div class="empty-note">ප්‍රතිඵල හමු නොවීය / No results found</div>`;
+      currentCategoryPage = 1;
+      renderCategoryGrid();
     }
 
     window.onclick = function(event) {
@@ -758,7 +791,7 @@
         closeModal();
       }
     };
-document.getElementById('tickerText').style.animationDuration = "80s";
+
     // App Initialization
     setLanguage(currentLang);
     loadData();
