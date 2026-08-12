@@ -41,7 +41,13 @@
       color: var(--text-main); 
       line-height: 1.6; 
       -webkit-font-smoothing: antialiased;
+      top: 0 !important; /* Fix for Google Translate Top Bar */
     }
+
+    /* Hide Google Translate original element & top frame */
+    .goog-te-banner-frame.skiptranslate { display: none !important; }
+    body { top: 0px !important; }
+    #google_translate_element { display: none; }
 
     /* Top Utility Bar */
     .utility-bar { 
@@ -70,8 +76,11 @@
       font-weight: 600;
       transition: all 0.2s ease; 
     }
-    .lang-btn:hover { background-color: var(--brand-red); color: #fff; border-color: var(--brand-red); }
-    .lang-btn.active { background-color: var(--brand-red); color: #fff; border-color: var(--brand-red); }
+    .lang-btn:hover, .lang-btn.active { 
+      background-color: var(--brand-red); 
+      color: #fff; 
+      border-color: var(--brand-red); 
+    }
 
     /* Main Header with Centered Logo */
     header { 
@@ -484,13 +493,16 @@
 </head>
 <body>
 
+  <!-- Google Translate Element (Hidden Container) -->
+  <div id="google_translate_element"></div>
+
   <!-- Top Utility Bar -->
   <div class="utility-bar">
     <div id="today-date">--</div>
     <div>
-      <button class="lang-btn" id="btn-lang-si" onclick="setLanguage('si')">සිංහල</button>
-      <button class="lang-btn" id="btn-lang-en" onclick="setLanguage('en')">English</button>
-      <button class="lang-btn" id="btn-lang-ta" onclick="setLanguage('ta')">தமிழ்</button>
+      <button class="lang-btn active" id="btn-lang-si" onclick="translatePage('si')">සිංහල</button>
+      <button class="lang-btn" id="btn-lang-en" onclick="translatePage('en')">English</button>
+      <button class="lang-btn" id="btn-lang-ta" onclick="translatePage('ta')">தமிழ்</button>
     </div>
   </div>
 
@@ -499,7 +511,7 @@
     <div class="eyebrow" id="txt-eyebrow">දිනපතා ප්‍රකාශනය · කොළඹ</div>
     
     <a href="#" class="brand-logo-wrap" onclick="navigateTo('home'); return false;">
-      <img src="WhatsApp Image 2026-08-12 at 20.07.49.jpeg" alt="ලංකා NEWS NOW" class="brand-logo">
+      <img src="https://raw.githubusercontent.com/janithdidula025-design/NEWS/f1a041b272990f893804db4da243cfa7b1ae3550/logo.jpeg" alt="ලංකා NEWS NOW" class="brand-logo">
     </a>
     
     <div class="tagline" id="txt-tagline">දිවයින පුරා සිදුවන දේ, ඇත්තටම වැදගත් දේ පමණයි</div>
@@ -524,20 +536,20 @@
   <!-- Main Content Area -->
   <div class="container">
     
-    <!-- Top Ad Placement 1 & 2 -->
+    <!-- Top Ad Placement 1 -->
     <div id="ad-slot-1"></div>
 
     <!-- Home View -->
     <div id="homeView">
       <div class="hero-grid" id="heroSection"></div>
       
-      <!-- Ad Placement 3 & 4 -->
+      <!-- Ad Placement 2 -->
       <div id="ad-slot-2"></div>
 
       <div class="section-title" id="txt-summary-title">ප්‍රවෘත්ති සාරාංශය</div>
       <div class="card-grid" id="gridSection"></div>
 
-      <!-- Ad Placement 5 & 6 -->
+      <!-- Ad Placement 3 -->
       <div id="ad-slot-3"></div>
 
       <div class="section-title" id="txt-sports-biz-title">ක්‍රීඩා සහ ව්‍යාපාර</div>
@@ -552,7 +564,7 @@
         </div>
       </div>
 
-      <!-- Ad Placement 7 to 10 -->
+      <!-- Ad Placement 4 -->
       <div id="ad-slot-4"></div>
     </div>
 
@@ -586,7 +598,7 @@
   <!-- Footer -->
   <footer>
     <div>
-      <img src="WhatsApp Image 2026-08-12 at 20.07.49.jpeg" alt="ලංකා NEWS NOW" class="footer-logo">
+      <img src="https://raw.githubusercontent.com/janithdidula025-design/NEWS/f1a041b272990f893804db4da243cfa7b1ae3550/logo.jpeg" alt="ලංකා NEWS NOW" class="footer-logo">
     </div>
     <div class="footer-links">
       <a href="#" id="txt-about">අප ගැන</a>
@@ -597,12 +609,24 @@
     <div style="font-size: 12px; color:#94a3b8; margin-top:8px;">&copy; <span id="year"></span> Lanka News Now</div>
   </footer>
 
+  <!-- Google Translate Engine Script -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'si',
+        includedLanguages: 'si,en,ta',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPKA-lhmoD0kxTYOzJzZx8Krdxy3XXL1_UG2Ow1NRHmDol26-0vrIvtdbr26n7Q3If/exec";
     const STORAGE_KEY = "site-data";
-    const LANG_KEY = "admin-lang";
 
-    // Dynamic Ad Slots Management (Up to 20 Ad Positions)
+    // Dynamic Ad Slots Management
     const siteAds = [
       { id: 1, title: "ඔබගේ விளம்பரம் / දැන්වීම් මෙහි පළකරන්න", subtitle: "සම්බන්ධ වන්න: 07X XXX XXXX | Lanka News Now", link: "#" },
       { id: 2, title: "Special Business Promotion Slot 02", subtitle: "Contact Us for Premium Banner Placements", link: "#" },
@@ -610,110 +634,37 @@
       { id: 4, title: "Brand Sponsorship Slot 04", subtitle: "24/7 High Visibility Banner Placement", link: "#" }
     ];
 
-    const i18n = {
-      si: {
-        eyebrow: "දිනපතා ප්‍රකාශනය · කොළඹ",
-        tagline: "දිවයින පුරා සිදුවන දේ, ඇත්තටම වැදගත් දේ පමණයි",
-        breaking: "නවතම",
-        summaryTitle: "ප්‍රවෘත්ති සාරාංශය",
-        sportsBizTitle: "ක්‍රීඩා සහ ව්‍යාපාර",
-        sportsHdr: "ක්‍රීඩා", bizHdr: "ව්‍යාපාර",
-        backHome: "← ප්‍රධාන පිටුවට",
-        loadMore: "තවත් පුවත් බලන්න",
-        searchPlaceholder: "සොයන්න...",
-        noNews: "මෙම වර්ගීකරණය යටතේ පුවත් තවම නැත",
-        byline: "කාර්ය මණ්ඩලය · විනාඩි 3ක කියවීම",
-        footerCopy: "ලංකා NEWS NOW — සියලු හිමිකම් ඇවිරිණි",
-        about: "අප ගැන", contact: "සම්බන්ධ වන්න", privacy: "පෞද්ගලිකත්ව ප්‍රතිපත්තිය",
-        // Category options without Politics, Entertainment, and Lifestyle
-        categories: ['ප්‍රධාන පුවත්','ක්‍රීඩා','ව්‍යාපාර','ලෝකය','තාක්ෂණය']
-      },
-      en: {
-        eyebrow: "Daily Publication · Colombo",
-        tagline: "What happens island-wide, only what truly matters",
-        breaking: "BREAKING",
-        summaryTitle: "News Summary",
-        sportsBizTitle: "Sports & Business",
-        sportsHdr: "Sports", bizHdr: "Business",
-        backHome: "← Back to Home",
-        loadMore: "Load More News",
-        searchPlaceholder: "Search...",
-        noNews: "No news available in this category",
-        byline: "By Staff · 3 min read",
-        footerCopy: "Lanka News Now — All Rights Reserved",
-        about: "About Us", contact: "Contact", privacy: "Privacy Policy",
-        categories: ['Main News','Sports','Business','World','Technology']
-      },
-      ta: {
-        eyebrow: "தினசரி வெளியீடு · கொழும்பு",
-        tagline: "தீவு முழுவதும் நடப்பவை, உண்மையில் முக்கியமானவை மட்டுமே",
-        breaking: "முக்கிய செய்தி",
-        summaryTitle: "செய்திச் சுරුக்கம்",
-        sportsBizTitle: "விளையாட்டு & வணிகம்",
-        sportsHdr: "விளையாட்டு", bizHdr: "வணிகம்",
-        backHome: "← முகப்புக்குச் செல்லவும்",
-        loadMore: "மேலும் செய்திகளைப் பார்க்க",
-        searchPlaceholder: "தேடுக...",
-        noNews: "இந்த பிரிவில் செய்திகள் எதுவும் இல்லை",
-        byline: "செய்திப் பிரிவு · 3 நிமிட வாசிப்பு",
-        footerCopy: "லங்கா நியூஸ் නවු — அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை",
-        about: "எங்களைப் பற்றி", contact: "தொடர்பு கொள்ள", privacy: "தனியுரிமைக் கொள்கை",
-        categories: ['முக்கிய செய்திகள்','விளையாட்டு','வணிகம்','உலகம்','தொழில்நுட்பம்']
-      }
-    };
+    const categories = ['ප්‍රධාන පුවත්','ක්‍රීඩා','ව්‍යාපාර','ලෝකය','තාක්ෂණය'];
 
-    let currentLang = localStorage.getItem(LANG_KEY) || 'si';
     let siteData = { ticker: [], articles: [], ads: [] };
     let currentCat = 'home';
-
     let categoryFilteredArticles = [];
     let currentCategoryPage = 1;
     const ITEMS_PER_PAGE = 12;
 
+    // Instant Google Translate Trigger Function
+    function translatePage(langCode) {
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(`btn-lang-${langCode}`).classList.add('active');
+
+      const select = document.querySelector('.goog-te-combo');
+      if (select) {
+        select.value = langCode;
+        select.dispatchEvent(new Event('change'));
+      }
+    }
+
     function updateDate() {
       const d = new Date();
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      const langCode = currentLang === 'si' ? 'si-LK' : currentLang === 'ta' ? 'ta-LK' : 'en-US';
-      document.getElementById('today-date').textContent = d.toLocaleDateString(langCode, options);
+      document.getElementById('today-date').textContent = d.toLocaleDateString('si-LK', options);
       document.getElementById('year').textContent = d.getFullYear();
-    }
-
-    function setLanguage(lang) {
-      currentLang = lang;
-      localStorage.setItem(LANG_KEY, lang);
-      
-      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(`btn-lang-${lang}`).classList.add('active');
-      document.documentElement.lang = lang;
-      
-      const t = i18n[lang];
-      document.getElementById('txt-eyebrow').textContent = t.eyebrow;
-      document.getElementById('txt-tagline').textContent = t.tagline;
-      document.getElementById('txt-breaking').textContent = t.breaking;
-      document.getElementById('txt-summary-title').textContent = t.summaryTitle;
-      document.getElementById('txt-sports-biz-title').textContent = t.sportsBizTitle;
-      document.getElementById('txt-sports-hdr').textContent = t.sportsHdr;
-      document.getElementById('txt-biz-hdr').textContent = t.bizHdr;
-      document.getElementById('txt-back-home').textContent = t.backHome;
-      document.getElementById('txt-load-more').textContent = t.loadMore;
-      document.getElementById('searchInput').placeholder = t.searchPlaceholder;
-      document.getElementById('txt-footer-copy').textContent = t.footerCopy;
-      document.getElementById('txt-about').textContent = t.about;
-      document.getElementById('txt-contact').textContent = t.contact;
-      document.getElementById('txt-privacy').textContent = t.privacy;
-
-      updateDate();
-      buildNav();
-      if(siteData) renderSite();
     }
 
     async function loadData(){
       if(SCRIPT_URL && SCRIPT_URL.trim() !== ""){
         try{
-          const res = await fetch(SCRIPT_URL, {
-            method: 'GET',
-            redirect: 'follow'
-          });
+          const res = await fetch(SCRIPT_URL, { method: 'GET', redirect: 'follow' });
           const json = await res.json();
           if(json && (json.articles || json.ticker)){
             siteData = {
@@ -762,8 +713,7 @@
 
     function buildNav(){
       const nav = document.getElementById('navList');
-      const cats = i18n[currentLang].categories;
-      nav.innerHTML = cats.map((c, i)=>{
+      nav.innerHTML = categories.map((c, i)=>{
         const key = i === 0 ? 'home' : c;
         return `<li data-navkey="${esc(key)}"><a onclick="navigateTo('${esc(key)}')">${esc(c)}</a></li>`;
       }).join('');
@@ -798,7 +748,7 @@
       const loadMoreBox = document.getElementById('loadMoreBox');
 
       if (categoryFilteredArticles.length === 0) {
-        catGrid.innerHTML = `<div class="empty-note">${i18n[currentLang].noNews}</div>`;
+        catGrid.innerHTML = `<div class="empty-note">මෙම වර්ගීකරණය යටතේ පුවත් තවම නැත</div>`;
         loadMoreBox.style.display = 'none';
         return;
       }
@@ -827,7 +777,6 @@
 
     function renderSite(){
       if(!siteData) return;
-      const t = i18n[currentLang];
       const arts = siteData.articles || [];
       const hero = arts.find(a=>a.position==='hero') || arts[0];
       const sides = arts.filter(a=>a.position==='side').slice(0,4);
@@ -839,17 +788,17 @@
       document.getElementById('heroSection').innerHTML = `
         <article class="hero-main" onclick="${hero ? `openModal('${hero.id}')` : ''}">
           ${hero ? imgTag(hero.img) : `<div class="ph"></div>`}
-          <div class="kicker">${esc(hero ? hero.category : t.categories[0])}</div>
-          <h2>${esc(hero ? hero.title : t.noNews)}</h2>
+          <div class="kicker">${esc(hero ? hero.category : categories[0])}</div>
+          <h2>${esc(hero ? hero.title : 'මෙම කොටසේ තවම පුවත් නොමැත')}</h2>
           <p class="dek">${esc(hero ? hero.desc : '')}</p>
-          <div class="byline">${t.byline}</div>
+          <div class="byline">කාර්ය මණ්ඩලය · විනාඩි 3ක කියවීම</div>
         </article>
         <aside class="hero-side">
           ${sides.map(s=>`
             <div class="side-item" onclick="openModal('${s.id}')">
               ${imgTag(s.img)}
               <div><div class="kicker">${esc(s.category)}</div><h3>${esc(s.title)}</h3></div>
-            </div>`).join('') || `<div class="empty-note">${t.noNews}</div>`}
+            </div>`).join('') || `<div class="empty-note">මෙම කොටසේ තවම පුවත් නොමැත</div>`}
         </aside>`;
 
       document.getElementById('gridSection').innerHTML = grid.map(g=>`
@@ -858,15 +807,15 @@
           <div class="kicker">${esc(g.category)}</div>
           <h3>${esc(g.title)}</h3>
           <p>${esc(g.desc)}</p>
-        </article>`).join('') || `<div class="empty-note">${t.noNews}</div>`;
+        </article>`).join('') || `<div class="empty-note">මෙම කොටසේ තවම පුවත් නොමැත</div>`;
 
       document.getElementById('sportsList').innerHTML = sports.map((s,i)=>`
-        <div class="strip-row" onclick="openModal('${s.id}')"><span class="num">${i+1}</span><a>${esc(s.title)}</a></div>`).join('') || `<div class="empty-note">${t.noNews}</div>`;
+        <div class="strip-row" onclick="openModal('${s.id}')"><span class="num">${i+1}</span><a>${esc(s.title)}</a></div>`).join('') || `<div class="empty-note">පුවත් නොමැත</div>`;
 
       document.getElementById('bizList').innerHTML = biz.map((b,i)=>`
-        <div class="strip-row" onclick="openModal('${b.id}')"><span class="num">${i+1}</span><a>${esc(b.title)}</a></div>`).join('') || `<div class="empty-note">${t.noNews}</div>`;
+        <div class="strip-row" onclick="openModal('${b.id}')"><span class="num">${i+1}</span><a>${esc(b.title)}</a></div>`).join('') || `<div class="empty-note">පුවත් නොමැත</div>`;
 
-      const tick = siteData.ticker && siteData.ticker.length ? siteData.ticker : [t.noNews];
+      const tick = siteData.ticker && siteData.ticker.length ? siteData.ticker : ['ලංකා NEWS NOW වෙත සාදරයෙන් පිළිගනිමු'];
       const doubled = tick.concat(tick);
       document.getElementById('tickerText').innerHTML = doubled.map(x=>`<span>${esc(x)}</span>`).join('');
 
@@ -911,7 +860,6 @@
       scrollToTop();
     }
 
-    // Scroll To Top Logic
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -933,7 +881,8 @@
     };
 
     // App Initialization
-    setLanguage(currentLang);
+    updateDate();
+    buildNav();
     loadData();
   </script>
 </body>
