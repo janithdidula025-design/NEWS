@@ -875,9 +875,13 @@
     // Extract YouTube Link from flexible properties
     function getArticleYouTubeLink(a) {
       if (!a) return null;
-      const possibleLink = a.youtube || a.youtubelink || a.youtube_link || a.video || a.videourl || a.img;
-      const ytId = getYouTubeId(possibleLink);
-      return ytId ? possibleLink : null;
+      const candidates = [a.youtube, a.youtubelink, a.youtube_link, a.video, a.videourl, a.img];
+      for (const link of candidates) {
+        if (link && getYouTubeId(link)) {
+          return link;
+        }
+      }
+      return null;
     }
 
     function getArticleImage(a) {
@@ -1235,4 +1239,4 @@
     loadData();
   </script>
 </body>
-</html>f
+</html>
