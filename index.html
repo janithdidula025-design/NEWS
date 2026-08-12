@@ -281,11 +281,16 @@
     .side-item h3 { font-size: 13.5px; line-height: 1.4; color: var(--text-main); font-weight: 700; }
     .side-item .time-badge { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
 
-    /* Dynamic Ads Container */
+    /* Dynamic Ads Container - Hidden by default if empty */
     .ad-slot-container {
-      margin: 20px 0;
+      margin: 0;
       width: 100%;
       text-align: center;
+      display: none;
+    }
+    .ad-slot-container.active {
+      margin: 20px 0;
+      display: block;
     }
     .ad-slot-container img {
       max-width: 100%;
@@ -791,46 +796,85 @@
 
     function esc(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
     
+    // Extract YouTube ID from any YouTube URL (watch, shorts, youtu.be, embed)
+    function getYouTubeId(url) {
+      if (!url || typeof url !== 'string') return null;
+      const regExp = /^.*(?:youtu\.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|&v=)([^#&?]*).*/;
+      const match = url.trim().match(regExp);
+      return (match && match[1].length === 11) ? match[1] : null;
+    }
+
+    // Helper to get image URL (or auto-generate HQ Youtube Thumbnail)
+    function getArticleImage(a) {
+      if (!a) return '';
+      
+      // Check direct image URL first
+      if (a.img && a.img.trim() !== '') {
+        const ytIdFromImg = getYouTubeId(a.img);
+        if (!ytIdFromImg) {
+          return a.img.trim();
+        }
+      }
+      
+      // Auto generate YouTube Thumbnail if youtube link is present
+      const ytLink = a.youtube || a.img;
+      if (ytLink) {
+        const ytId = getYouTubeId(ytLink);
+        if (ytId) {
+          return `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+        }
+      }
+      
+      return '';
+    }
+
     function imgTag(src, cls){
-      if(src) return `<img class="ph ${cls||''}" src="${esc(src)}" alt="" onerror="this.style.display='none'">`;
+      if(src && src.trim() !== '') {
+        return `<img class="ph ${cls||''}" src="${esc(src)}" alt="" onerror="this.style.display='none'">`;
+      }
       return `<div class="ph ${cls||''}"></div>`;
     }
 
-    // Helper: Convert YouTube URL to Embed Player
+    // Convert YouTube Link to Embed Player URL
     function getYouTubeEmbedUrl(url) {
-      if (!url) return null;
-      var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
-      var match = url.match(regExp);
-      return (match && match[2].length === 11) ? 'https://www.youtube.com/embed/' + match[2] : null;
+      const ytId = getYouTubeId(url);
+      return ytId ? `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0` : null;
     }
 
-    // Render Ads Dynamic Logic - Hide if empty
+    // Render Ads Dynamic Logic - Completely hide slot if empty (No black bar)
     function renderAdSlot(elementId, adIndex) {
       const slotEl = document.getElementById(elementId);
       if (!slotEl) return;
 
       const ad = (siteData.ads && siteData.ads[adIndex]) ? siteData.ads[adIndex] : null;
 
-      // If ad is missing or completely empty, hide slot
-      if (!ad || (!ad.img && !ad.title && !ad.link)) {
+      const img = ad && ad.img ? ad.img.trim() : '';
+      const title = ad && ad.title ? ad.title.trim() : '';
+      const subtitle = ad && ad.subtitle ? ad.subtitle.trim() : '';
+      const link = ad && ad.link ? ad.link.trim() : '#';
+
+      // Hide slot completely if no image and no title text
+      if (!img && !title) {
+        slotEl.className = 'ad-slot-container';
         slotEl.style.display = 'none';
         slotEl.innerHTML = '';
         return;
       }
 
+      slotEl.className = 'ad-slot-container active';
       slotEl.style.display = 'block';
       let content = '';
 
-      if (ad.img) {
-        content = `<a href="${esc(ad.link || '#')}" target="_blank" rel="noopener">
-                     <img src="${esc(ad.img)}" alt="${esc(ad.title || 'Advertisement')}">
+      if (img) {
+        content = `<a href="${esc(link)}" target="_blank" rel="noopener">
+                     <img src="${esc(img)}" alt="${esc(title || 'Advertisement')}" onerror="this.closest('.ad-slot-container').style.display='none'">
                    </a>`;
-      } else if (ad.title) {
-        content = `<a href="${esc(ad.link || '#')}" target="_blank" rel="noopener" style="text-decoration:none;">
+      } else if (title) {
+        content = `<a href="${esc(link)}" target="_blank" rel="noopener" style="text-decoration:none;">
                      <div class="ad-banner">
                        <span class="ad-tag">ADVERTISEMENT</span>
-                       <h5>${esc(ad.title)}</h5>
-                       ${ad.subtitle ? `<p>${esc(ad.subtitle)}</p>` : ''}
+                       <h5>${esc(title)}</h5>
+                       ${subtitle ? `<p>${esc(subtitle)}</p>` : ''}
                      </div>
                    </a>`;
       }
@@ -891,7 +935,7 @@
 
       catGrid.innerHTML = visibleItems.map(a => `
         <article class="card" onclick="openModal('${esc(a.id)}')">
-          ${imgTag(a.img)}
+          ${imgTag(getArticleImage(a))}
           <div class="meta-bar">
             <span class="kicker">${esc(a.category)}</span>
             ${a.time ? `<span class="time-badge">🕒 ${esc(a.time)}</span>` : ''}
@@ -924,7 +968,7 @@
 
       document.getElementById('heroSection').innerHTML = `
         <article class="hero-main" onclick="${hero ? `openModal('${hero.id}')` : ''}">
-          ${hero ? imgTag(hero.img) : `<div class="ph"></div>`}
+          ${hero ? imgTag(getArticleImage(hero)) : `<div class="ph"></div>`}
           <div class="kicker-wrap">
             <span class="kicker">${esc(hero ? hero.category : categories[0])}</span>
             ${hero && hero.time ? `<span class="time-badge">🕒 ${esc(hero.time)}</span>` : ''}
@@ -935,7 +979,7 @@
         <aside class="hero-side">
           ${sides.map(s=>`
             <div class="side-item" onclick="openModal('${s.id}')">
-              ${imgTag(s.img)}
+              ${imgTag(getArticleImage(s))}
               <div>
                 <div class="kicker">${esc(s.category)}</div>
                 <h3>${esc(s.title)}</h3>
@@ -946,7 +990,7 @@
 
       document.getElementById('gridSection').innerHTML = grid.map(g=>`
         <article class="card" onclick="openModal('${g.id}')">
-          ${imgTag(g.img)}
+          ${imgTag(getArticleImage(g))}
           <div class="meta-bar">
             <span class="kicker">${esc(g.category)}</span>
             ${g.time ? `<span class="time-badge">🕒 ${esc(g.time)}</span>` : ''}
@@ -982,14 +1026,16 @@
       const a = siteData.articles.find(x => String(x.id) === String(id));
       if(!a) return;
 
-      const ytEmbed = getYouTubeEmbedUrl(a.youtube);
+      const ytLink = a.youtube || (getYouTubeId(a.img) ? a.img : null);
+      const ytEmbed = getYouTubeEmbedUrl(ytLink);
+      const imgSrc = getArticleImage(a);
 
       document.getElementById('modalContent').innerHTML = `
         ${ytEmbed ? `
           <div class="video-wrapper">
-            <iframe src="${ytEmbed}" allowfullscreen></iframe>
+            <iframe src="${ytEmbed}" title="${esc(a.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
           </div>
-        ` : (a.img ? `<img src="${esc(a.img)}" alt="${esc(a.title)}">` : '')}
+        ` : (imgSrc ? `<img src="${esc(imgSrc)}" alt="${esc(a.title)}">` : '')}
         
         <div style="display:flex; justify-content:space-between; align-items:center; margin: 10px 0 6px;">
           <span style="color:var(--brand-red); font-weight:700; font-size:12px; text-transform:uppercase;">
@@ -1006,7 +1052,6 @@
 
     function closeModal(){
       document.getElementById('articleModal').classList.remove('active');
-      // Stop iframe video playback when modal closes
       const modalBox = document.getElementById('modalContent');
       if(modalBox) modalBox.innerHTML = '';
     }
