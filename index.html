@@ -281,18 +281,16 @@
     .side-item h3 { font-size: 13.5px; line-height: 1.4; color: var(--text-main); font-weight: 700; }
     .side-item .time-badge { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
 
-    /* Clean Dynamic Ads Container - Completely hidden when empty or removed */
+    /* Dynamic Ads Container */
     .ad-slot-container {
-      margin: 0 !important;
-      padding: 0 !important;
+      margin: 0;
       width: 100%;
       text-align: center;
-      display: none !important;
-      background: transparent !important;
+      display: none;
     }
     .ad-slot-container.active {
-      margin: 20px 0 !important;
-      display: block !important;
+      margin: 20px 0;
+      display: block;
     }
     .ad-slot-container img {
       max-width: 100%;
@@ -303,14 +301,14 @@
       margin: 0 auto;
     }
     .ad-banner {
-      background: var(--card-bg);
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
       border-radius: var(--radius);
       padding: 18px 20px;
       text-align: center;
-      color: var(--text-main);
+      color: #fff;
       position: relative;
       overflow: hidden;
-      border: 1px dashed var(--border-color);
+      border: 1px dashed #64748b;
       box-shadow: var(--shadow-sm);
       display: flex;
       flex-direction: column;
@@ -322,14 +320,14 @@
       top: 6px;
       right: 12px;
       font-size: 10px;
-      background: rgba(0,0,0,0.06);
+      background: rgba(255,255,255,0.2);
       padding: 2px 8px;
       border-radius: 4px;
       text-transform: uppercase;
-      color: var(--text-muted);
+      color: #e2e8f0;
     }
-    .ad-banner h5 { font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
-    .ad-banner p { font-size: 13px; color: var(--text-muted); }
+    .ad-banner h5 { font-size: 16px; font-weight: 700; color: #f8fafc; margin-bottom: 4px; }
+    .ad-banner p { font-size: 13px; color: #cbd5e1; }
 
     /* Cards Grid */
     .section-title { 
@@ -492,7 +490,7 @@
     /* Responsive Video Player Embed */
     .video-wrapper {
       position: relative;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      padding-bottom: 56.25%;
       height: 0;
       overflow: hidden;
       border-radius: var(--radius-sm);
@@ -732,15 +730,28 @@
     let currentCategoryPage = 1;
     const ITEMS_PER_PAGE = 12;
 
+    // Helper to process & ensure unique ID for all articles
+    function sanitizeArticles(articles) {
+      return (articles || []).map((a, idx) => ({
+        ...a,
+        id: (a.id !== undefined && a.id !== null && String(a.id).trim() !== '') ? String(a.id) : `art_${idx}`
+      }));
+    }
+
     // Google Translate Trigger Function
     function translatePage(langCode) {
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
       const activeBtn = document.getElementById(`btn-lang-${langCode}`);
       if(activeBtn) activeBtn.classList.add('active');
 
-      const cookieVal = `/si/${langCode}`;
-      document.cookie = `googtrans=${cookieVal}; path=/;`;
-      document.cookie = `googtrans=${cookieVal}; domain=${window.location.hostname}; path=/;`;
+      if (langCode === 'si') {
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${window.location.hostname}; path=/;`;
+      } else {
+        const cookieVal = `/si/${langCode}`;
+        document.cookie = `googtrans=${cookieVal}; path=/;`;
+        document.cookie = `googtrans=${cookieVal}; domain=${window.location.hostname}; path=/;`;
+      }
 
       let attempts = 0;
       const interval = setInterval(() => {
@@ -780,7 +791,7 @@
           if(json && (json.articles || json.ticker)){
             siteData = {
               ticker: json.ticker || [],
-              articles: json.articles || [],
+              articles: sanitizeArticles(json.articles),
               ads: json.ads || []
             };
             localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData));
@@ -792,13 +803,18 @@
         }
       }
       const raw = localStorage.getItem(STORAGE_KEY);
-      siteData = raw ? JSON.parse(raw) : { ticker: [], articles: [], ads: [] };
+      const parsed = raw ? JSON.parse(raw) : { ticker: [], articles: [], ads: [] };
+      siteData = {
+        ticker: parsed.ticker || [],
+        articles: sanitizeArticles(parsed.articles),
+        ads: parsed.ads || []
+      };
       renderSite();
     }
 
     function esc(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
     
-    // Extract YouTube ID from any YouTube URL (watch, shorts, youtu.be, embed)
+    // Extract YouTube ID from any YouTube URL
     function getYouTubeId(url) {
       if (!url || typeof url !== 'string') return null;
       const regExp = /^.*(?:youtu\.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -841,31 +857,22 @@
       return ytId ? `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0` : null;
     }
 
-    // Hide Ad Slot Completely
-    function hideAdSlot(elementId) {
-      const slotEl = document.getElementById(elementId);
-      if (slotEl) {
-        slotEl.className = 'ad-slot-container';
-        slotEl.style.display = 'none';
-        slotEl.innerHTML = '';
-      }
-    }
-
-    // Dynamic Ads Rendering
+    // Render Ads Dynamic Logic
     function renderAdSlot(elementId, adIndex) {
       const slotEl = document.getElementById(elementId);
       if (!slotEl) return;
 
       const ad = (siteData.ads && siteData.ads[adIndex]) ? siteData.ads[adIndex] : null;
 
-      const img = (ad && ad.img) ? String(ad.img).trim() : '';
-      const title = (ad && ad.title) ? String(ad.title).trim() : '';
-      const subtitle = (ad && ad.subtitle) ? String(ad.subtitle).trim() : '';
-      const link = (ad && ad.link && String(ad.link).trim() !== '') ? String(ad.link).trim() : '#';
+      const img = ad && ad.img ? ad.img.trim() : '';
+      const title = ad && ad.title ? ad.title.trim() : '';
+      const subtitle = ad && ad.subtitle ? ad.subtitle.trim() : '';
+      const link = ad && ad.link ? ad.link.trim() : '#';
 
-      // Hide slot completely if no ad, image or title exists
       if (!img && !title) {
-        hideAdSlot(elementId);
+        slotEl.className = 'ad-slot-container';
+        slotEl.style.display = 'none';
+        slotEl.innerHTML = '';
         return;
       }
 
@@ -875,7 +882,7 @@
 
       if (img) {
         content = `<a href="${esc(link)}" target="_blank" rel="noopener">
-                     <img src="${esc(img)}" alt="${esc(title || 'Advertisement')}" onerror="hideAdSlot('${elementId}')">
+                     <img src="${esc(img)}" alt="${esc(title || 'Advertisement')}" onerror="this.closest('.ad-slot-container').style.display='none'">
                    </a>`;
       } else if (title) {
         content = `<a href="${esc(link)}" target="_blank" rel="noopener" style="text-decoration:none;">
@@ -967,15 +974,32 @@
     function renderSite(){
       if(!siteData) return;
       const arts = siteData.articles || [];
-      const hero = arts.find(a=>a.position==='hero') || arts[0];
-      const sides = arts.filter(a=>a.position==='side').slice(0,4);
-      const grid = arts.filter(a=>a.position==='grid').slice(0,6);
+
+      // Smart Position Fallback Logic
+      let hero = arts.find(a => a.position === 'hero');
+      let sides = arts.filter(a => a.position === 'side');
+      let grid = arts.filter(a => a.position === 'grid');
+
+      // Auto fallback if explicit positions are not provided
+      if (!hero && arts.length > 0) hero = arts[0];
       
+      const unusedArts = arts.filter(a => a !== hero);
+
+      if (sides.length === 0) {
+        sides = unusedArts.slice(0, 4);
+      }
+      if (grid.length === 0) {
+        grid = unusedArts.slice(sides.length, sides.length + 6);
+      } else {
+        grid = grid.slice(0, 6);
+      }
+      sides = sides.slice(0, 4);
+
       const sports = arts.filter(a=>['ක්‍රීඩා','sports','விளையாட்டு'].includes((a.category||'').trim().toLowerCase())).slice(0,6);
       const biz = arts.filter(a=>['ව්‍යාපාර','business','வணிகம்'].includes((a.category||'').trim().toLowerCase())).slice(0,6);
 
       document.getElementById('heroSection').innerHTML = `
-        <article class="hero-main" onclick="${hero ? `openModal('${hero.id}')` : ''}">
+        <article class="hero-main" onclick="${hero ? `openModal('${esc(hero.id)}')` : ''}">
           ${hero ? imgTag(getArticleImage(hero)) : `<div class="ph"></div>`}
           <div class="kicker-wrap">
             <span class="kicker">${esc(hero ? hero.category : categories[0])}</span>
@@ -986,7 +1010,7 @@
         </article>
         <aside class="hero-side">
           ${sides.map(s=>`
-            <div class="side-item" onclick="openModal('${s.id}')">
+            <div class="side-item" onclick="openModal('${esc(s.id)}')">
               ${imgTag(getArticleImage(s))}
               <div>
                 <div class="kicker">${esc(s.category)}</div>
@@ -997,7 +1021,7 @@
         </aside>`;
 
       document.getElementById('gridSection').innerHTML = grid.map(g=>`
-        <article class="card" onclick="openModal('${g.id}')">
+        <article class="card" onclick="openModal('${esc(g.id)}')">
           ${imgTag(getArticleImage(g))}
           <div class="meta-bar">
             <span class="kicker">${esc(g.category)}</span>
@@ -1008,14 +1032,14 @@
         </article>`).join('') || `<div class="empty-note">මෙම කොටසේ තවම පුවත් නොමැත</div>`;
 
       document.getElementById('sportsList').innerHTML = sports.map((s,i)=>`
-        <div class="strip-row" onclick="openModal('${s.id}')">
+        <div class="strip-row" onclick="openModal('${esc(s.id)}')">
           <span class="num">${i+1}</span>
           <a>${esc(s.title)}</a>
           ${s.time ? `<span class="time-badge">${esc(s.time)}</span>` : ''}
         </div>`).join('') || `<div class="empty-note">පුවත් නොමැත</div>`;
 
       document.getElementById('bizList').innerHTML = biz.map((b,i)=>`
-        <div class="strip-row" onclick="openModal('${b.id}')">
+        <div class="strip-row" onclick="openModal('${esc(b.id)}')">
           <span class="num">${i+1}</span>
           <a>${esc(b.title)}</a>
           ${b.time ? `<span class="time-badge">${esc(b.time)}</span>` : ''}
@@ -1056,10 +1080,12 @@
         <div class="content" style="margin-top:14px; font-size:15px; color:#334155; line-height:1.75; white-space: pre-line;">${esc(a.desc)}</div>
       `;
       document.getElementById('articleModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
     }
 
     function closeModal(){
       document.getElementById('articleModal').classList.remove('active');
+      document.body.style.overflow = '';
       const modalBox = document.getElementById('modalContent');
       if(modalBox) modalBox.innerHTML = '';
     }
@@ -1093,6 +1119,10 @@
       } else {
         btn.classList.remove('show');
       }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
     });
 
     window.onclick = function(event) {
