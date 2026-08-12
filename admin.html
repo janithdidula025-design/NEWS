@@ -12,12 +12,11 @@
 
   <style>
     :root {
-      /* Palette matching Frontend */
+      /* Theme Colors */
       --brand-red: #b8191f;
       --brand-red-dark: #8c0e13;
       --brand-grey: #5b626a;
       --brand-grey-dark: #2d3238;
-      --brand-grey-light: #f1f5f9;
       
       --bg-color: #f8fafc;
       --card-bg: #ffffff;
@@ -175,8 +174,14 @@
       background: #fff;
     }
     .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--brand-red); }
-    .field textarea { resize: vertical; min-height: 80px; }
-    .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+    
+    /* Beautiful Description Styling */
+    .field textarea { 
+      resize: vertical; 
+      min-height: 120px; 
+      line-height: 1.6;
+      background: #fdfdfd;
+    }
 
     .form-row { display: grid; grid-template-columns: 1fr; gap: 14px; }
     @media (min-width: 640px) { .form-row { grid-template-columns: 1fr 1fr; } }
@@ -184,15 +189,21 @@
     .upload-box { display: flex; gap: 10px; align-items: center; }
     .upload-box input[type="file"] { font-size: 12px; }
 
+    .field-hint { font-size: 11.5px; color: var(--text-muted); margin-top: 4px; }
     .save-msg { font-size: 13.5px; font-weight: 700; margin-top: 10px; min-height: 20px; }
 
     /* Article List Rows */
-    .art-row { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
+    .art-row { display: flex; gap: 12px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-color); }
     .art-row:last-child { border-bottom: none; }
-    .art-row .thumb { width: 70px; height: 50px; flex-shrink: 0; border-radius: var(--radius-sm); background: #e2e8f0; object-fit: cover; }
+    .art-row .thumb { width: 75px; height: 55px; flex-shrink: 0; border-radius: var(--radius-sm); background: #e2e8f0; object-fit: cover; }
     .art-row .meta { flex: 1; min-width: 0; }
-    .art-row .meta .tag { display: inline-block; font-size: 10px; font-weight: 800; color: var(--brand-red); background: #fee2e2; padding: 2px 8px; border-radius: 4px; margin-bottom: 4px; text-transform: uppercase; }
-    .art-row .meta h4 { font-size: 14px; margin: 0; font-weight: 700; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    
+    /* Metadata Tags */
+    .tag-container { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 4px; }
+    .art-row .meta .tag { display: inline-block; font-size: 10px; font-weight: 800; color: var(--brand-red); background: #fee2e2; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; }
+    .art-row .meta .time-tag { font-size: 11px; color: var(--text-muted); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+
+    .art-row .meta h4 { font-size: 14.5px; margin: 0; font-weight: 700; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .art-row .acts { display: flex; gap: 6px; flex-shrink: 0; }
     .art-row .acts button { background: #f1f5f9; border: 1px solid var(--border-color); border-radius: 4px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-weight: 600; }
     .art-row .acts button:hover { background: var(--brand-red); color: #fff; border-color: var(--brand-red); }
@@ -274,8 +285,8 @@
           </div>
 
           <div class="field">
-            <label id="lbl-desc">විස්තරය</label>
-            <textarea id="f-desc" placeholder="පුවතේ විස්තරය ලිවිය හැක..."></textarea>
+            <label id="lbl-desc">පුවතේ විස්තරය (Description)</label>
+            <textarea id="f-desc" placeholder="පුවතේ සම්පූර්ණ හෝ කෙටි විස්තරය පැහැදිලිව මෙතැනින් ඇතුළත් කරන්න..."></textarea>
           </div>
 
           <div class="form-row">
@@ -296,6 +307,8 @@
           </div>
 
           <input type="hidden" id="f-id">
+          <input type="hidden" id="f-time">
+
           <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
             <button class="btn" onclick="saveArticle()" id="btn-save-art">සුරකින්න</button>
             <button class="btn secondary" onclick="resetForm()" id="btn-reset-art">නව පුවතක් (Reset)</button>
@@ -390,7 +403,6 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPKA-lhmoD0kxTYOzJz
 const STORAGE_KEY = "site-data";
 const LANG_KEY = "admin-lang";
 
-// Default ads structure matching index.html
 const DEFAULT_ADS = [
   { id: 1, title: "ඔබගේ விளம்பரம் / දැන්වීම් මෙහි පළකරන්න", subtitle: "සම්බන්ධ වන්න: 07X XXX XXXX | Lanka News Now", link: "#", img: "" },
   { id: 2, title: "Special Business Promotion Slot 02", subtitle: "Contact Us for Premium Banner Placements", link: "#", img: "" },
@@ -398,7 +410,7 @@ const DEFAULT_ADS = [
   { id: 4, title: "Brand Sponsorship Slot 04", subtitle: "24/7 High Visibility Banner Placement", link: "#", img: "" }
 ];
 
-// Translations Dictionary
+// Updated Categories (Removed Politics and Lifestyle)
 const i18n = {
   si: {
     appTitle: "ලංකා NEWS NOW · පරිපාලක පැනලය",
@@ -420,7 +432,7 @@ const i18n = {
     posGrid: "සාරාංශ කාණ්ඩ (Grid)",
     posNone: "මුල් පිටුවේ නොපෙන්වන්න",
     lblTitle: "ශීර්ෂ පාඨය",
-    lblDesc: "විස්තරය",
+    lblDesc: "පුවතේ විස්තරය (Description)",
     lblImg: "රූප URL හෝ Upload (Direct Link)",
     lblYoutube: "YouTube Video Link (විකල්ප)",
     btnSave: "සුරකින්න",
@@ -443,7 +455,7 @@ const i18n = {
     lblAdImg: "දැන්වීම් Photo / Image URL",
     lblAdLink: "Click කළ විට යන වෙබ් අඩවියේ Link එක (Target Web Link)",
     existingAds: "සක්‍රිය දැන්වීම් (Active Ads)",
-    categories: ['ප්‍රධාන පුවත්','දේශපාලනය','ක්‍රීඩා','ව්‍යාපාර','ලෝකය','විනෝදාංශය','තාක්ෂණය','ජීවන රටාව']
+    categories: ['ප්‍රධාන පුවත්','ක්‍රීඩා','ව්‍යාපාර','ලෝකය','විනෝදාංශය','තාක්ෂණය']
   },
   en: {
     appTitle: "Lanka NEWS NOW · Admin Panel",
@@ -488,7 +500,7 @@ const i18n = {
     lblAdImg: "Ad Banner Image URL",
     lblAdLink: "Target Website Link (URL)",
     existingAds: "Active Banner Ads",
-    categories: ['Main News','Politics','Sports','Business','World','Entertainment','Technology','Lifestyle']
+    categories: ['Main News','Sports','Business','World','Entertainment','Technology']
   },
   ta: {
     appTitle: "லங்கா NEWS NOW · நிர்வாகக் குழு",
@@ -533,7 +545,7 @@ const i18n = {
     lblAdImg: "விளம்பரப் படம் URL",
     lblAdLink: "இலக்கு இணையதள இணைப்பு",
     existingAds: "செயலில் உள்ள விளம்பரங்கள்",
-    categories: ['முக்கிய செய்திகள்','அரசியல்','விளையாட்டு','வணிகம்','உலகம்','பொழுதுபோக்கு','தொழில்நுட்பம்','வாழ்க்கைமுறை']
+    categories: ['முக்கிய செய்திகள்','விளையாட்டு','வணிகம்','உலகம்','பொழுதுபோக்கு','தொழில்நுட்பம்']
   }
 };
 
@@ -687,6 +699,19 @@ function populateCategorySelect(){
     cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
 }
 
+/* Format Current Date & Time */
+function getCurrentFormattedTime() {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-CA'); // YYYY-MM-DD
+  let hours = now.getHours();
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // 0 should be 12
+  const timeStr = `${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+  return `${dateStr} - ${timeStr}`;
+}
+
 function renderArticleList(){
   const t = i18n[currentLang];
   const posLabel = {hero:'Hero', side:'Side', grid:'Grid', none:'—'};
@@ -694,8 +719,11 @@ function renderArticleList(){
     <div class="art-row">
       ${a.img ? `<img class="thumb" src="${esc(a.img)}" onerror="this.style.display='none'">` : `<div class="thumb"></div>`}
       <div class="meta">
-        <span class="tag">${esc(a.category)}</span>
-        <span class="tag" style="background:#e0f2fe; color:#0369a1;">${posLabel[a.position]||a.position}</span>
+        <div class="tag-container">
+          <span class="tag">${esc(a.category)}</span>
+          <span class="tag" style="background:#e0f2fe; color:#0369a1;">${posLabel[a.position]||a.position}</span>
+          <span class="time-tag">⏱️ ${esc(a.time || 'මෑතදී')}</span>
+        </div>
         <h4>${esc(a.title)}</h4>
       </div>
       <div class="acts">
@@ -715,6 +743,7 @@ function editArticle(id){
   document.getElementById('f-desc').value = a.desc||'';
   document.getElementById('f-img').value = a.img||'';
   document.getElementById('f-youtube').value = a.youtube||'';
+  document.getElementById('f-time').value = a.time||'';
   document.getElementById('artMsg').textContent = '';
   window.scrollTo({top:0, behavior:'smooth'});
 }
@@ -725,6 +754,7 @@ function resetForm(){
   document.getElementById('f-desc').value = '';
   document.getElementById('f-img').value = '';
   document.getElementById('f-youtube').value = '';
+  document.getElementById('f-time').value = '';
   document.getElementById('f-img-file').value = '';
   document.getElementById('artMsg').textContent = '';
 }
@@ -748,13 +778,16 @@ async function saveArticle(){
     return;
   }
   const id = document.getElementById('f-id').value;
+  const currentTime = document.getElementById('f-time').value || getCurrentFormattedTime();
+  
   const data = {
     category: document.getElementById('f-category').value,
     position: document.getElementById('f-position').value,
     title,
     desc: document.getElementById('f-desc').value.trim(),
     img: document.getElementById('f-img').value.trim(),
-    youtube: document.getElementById('f-youtube').value.trim()
+    youtube: document.getElementById('f-youtube').value.trim(),
+    time: currentTime
   };
   
   if(id){
