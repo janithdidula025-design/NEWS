@@ -281,16 +281,18 @@
     .side-item h3 { font-size: 13.5px; line-height: 1.4; color: var(--text-main); font-weight: 700; }
     .side-item .time-badge { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
 
-    /* Dynamic Ads Container - Hidden by default if empty */
+    /* Clean Dynamic Ads Container - Completely hidden when empty or removed */
     .ad-slot-container {
-      margin: 0;
+      margin: 0 !important;
+      padding: 0 !important;
       width: 100%;
       text-align: center;
-      display: none;
+      display: none !important;
+      background: transparent !important;
     }
     .ad-slot-container.active {
-      margin: 20px 0;
-      display: block;
+      margin: 20px 0 !important;
+      display: block !important;
     }
     .ad-slot-container img {
       max-width: 100%;
@@ -301,14 +303,14 @@
       margin: 0 auto;
     }
     .ad-banner {
-      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      background: var(--card-bg);
       border-radius: var(--radius);
       padding: 18px 20px;
       text-align: center;
-      color: #fff;
+      color: var(--text-main);
       position: relative;
       overflow: hidden;
-      border: 1px dashed #64748b;
+      border: 1px dashed var(--border-color);
       box-shadow: var(--shadow-sm);
       display: flex;
       flex-direction: column;
@@ -320,14 +322,14 @@
       top: 6px;
       right: 12px;
       font-size: 10px;
-      background: rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.06);
       padding: 2px 8px;
       border-radius: 4px;
       text-transform: uppercase;
-      color: #e2e8f0;
+      color: var(--text-muted);
     }
-    .ad-banner h5 { font-size: 16px; font-weight: 700; color: #f8fafc; margin-bottom: 4px; }
-    .ad-banner p { font-size: 13px; color: #cbd5e1; }
+    .ad-banner h5 { font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
+    .ad-banner p { font-size: 13px; color: var(--text-muted); }
 
     /* Cards Grid */
     .section-title { 
@@ -808,7 +810,6 @@
     function getArticleImage(a) {
       if (!a) return '';
       
-      // Check direct image URL first
       if (a.img && a.img.trim() !== '') {
         const ytIdFromImg = getYouTubeId(a.img);
         if (!ytIdFromImg) {
@@ -816,7 +817,6 @@
         }
       }
       
-      // Auto generate YouTube Thumbnail if youtube link is present
       const ytLink = a.youtube || a.img;
       if (ytLink) {
         const ytId = getYouTubeId(ytLink);
@@ -841,23 +841,31 @@
       return ytId ? `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0` : null;
     }
 
-    // Render Ads Dynamic Logic - Completely hide slot if empty (No black bar)
+    // Hide Ad Slot Completely
+    function hideAdSlot(elementId) {
+      const slotEl = document.getElementById(elementId);
+      if (slotEl) {
+        slotEl.className = 'ad-slot-container';
+        slotEl.style.display = 'none';
+        slotEl.innerHTML = '';
+      }
+    }
+
+    // Dynamic Ads Rendering
     function renderAdSlot(elementId, adIndex) {
       const slotEl = document.getElementById(elementId);
       if (!slotEl) return;
 
       const ad = (siteData.ads && siteData.ads[adIndex]) ? siteData.ads[adIndex] : null;
 
-      const img = ad && ad.img ? ad.img.trim() : '';
-      const title = ad && ad.title ? ad.title.trim() : '';
-      const subtitle = ad && ad.subtitle ? ad.subtitle.trim() : '';
-      const link = ad && ad.link ? ad.link.trim() : '#';
+      const img = (ad && ad.img) ? String(ad.img).trim() : '';
+      const title = (ad && ad.title) ? String(ad.title).trim() : '';
+      const subtitle = (ad && ad.subtitle) ? String(ad.subtitle).trim() : '';
+      const link = (ad && ad.link && String(ad.link).trim() !== '') ? String(ad.link).trim() : '#';
 
-      // Hide slot completely if no image and no title text
+      // Hide slot completely if no ad, image or title exists
       if (!img && !title) {
-        slotEl.className = 'ad-slot-container';
-        slotEl.style.display = 'none';
-        slotEl.innerHTML = '';
+        hideAdSlot(elementId);
         return;
       }
 
@@ -867,7 +875,7 @@
 
       if (img) {
         content = `<a href="${esc(link)}" target="_blank" rel="noopener">
-                     <img src="${esc(img)}" alt="${esc(title || 'Advertisement')}" onerror="this.closest('.ad-slot-container').style.display='none'">
+                     <img src="${esc(img)}" alt="${esc(title || 'Advertisement')}" onerror="hideAdSlot('${elementId}')">
                    </a>`;
       } else if (title) {
         content = `<a href="${esc(link)}" target="_blank" rel="noopener" style="text-decoration:none;">
