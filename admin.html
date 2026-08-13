@@ -1,394 +1,483 @@
 <!DOCTYPE html>
 <html lang="si">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>පරිපාලක පැනලය — ලංකා NEWS NOW</title>
-  
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>News+LK — පරිපාලක පැනලය (Admin Panel)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700&family=Yaldevi:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <style>
-    :root {
-      /* Theme Colors */
-      --brand-red: #b8191f;
-      --brand-red-dark: #8c0e13;
-      --brand-grey: #5b626a;
-      --brand-grey-dark: #2d3238;
-      
-      --bg-color: #f8fafc;
-      --card-bg: #ffffff;
-      --border-color: #e2e8f0;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08);
-      --radius: 12px;
-      --radius-sm: 6px;
+<style>
+  :root {
+    --brand-navy: #0f172a;
+    --brand-red: #d71920;
+    --brand-red-hover: #b91c1c;
+    --paper: #f8fafc;
+    --paper-card: #ffffff;
+    --ink: #1e293b;
+    --ink-soft: #64748b;
+    --line: #e2e8f0;
+    --green: #15803d;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Sans Sinhala', 'Yaldevi', sans-serif;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Abhaya Libre', serif;
+    color: var(--ink);
+  }
+
+  a {
+    color: inherit;
+  }
+
+  button {
+    font-family: inherit;
+  }
+
+  /* Top Header with Logo */
+  header.top {
+    background: var(--brand-navy);
+    color: #ffffff;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  }
+
+  .brand-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-logo {
+    height: 42px;
+    width: auto;
+    object-fit: contain;
+    background: #ffffff;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .brand-text h1 {
+    color: #ffffff;
+    font-size: 20px;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+
+  .brand-text h1 span.red {
+    color: var(--brand-red);
+  }
+
+  .brand-text span.sub {
+    font-size: 11px;
+    color: #94a3b8;
+    font-family: 'Noto Sans Sinhala', sans-serif;
+  }
+
+  header.top a.site-link {
+    font-size: 13px;
+    color: #f8fafc;
+    text-decoration: none;
+    background: rgba(255,255,255,0.1);
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+
+  header.top a.site-link:hover {
+    background: rgba(255,255,255,0.2);
+  }
+
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+  }
+
+  /* Login Panel */
+  .login-box {
+    max-width: 360px;
+    margin: 60px auto;
+    text-align: center;
+    background: var(--paper-card);
+    padding: 32px 28px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08);
+    border: 1px solid var(--line);
+  }
+
+  .login-box img {
+    height: 50px;
+    margin-bottom: 16px;
+  }
+
+  .login-box p {
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    margin-bottom: 18px;
+  }
+
+  .login-box input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    font-family: 'Noto Sans Sinhala', sans-serif;
+  }
+
+  .login-box button, .btn {
+    width: 100%;
+    padding: 11px;
+    background: var(--brand-red);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+  }
+
+  .login-box button:hover, .btn:hover {
+    background: var(--brand-red-hover);
+  }
+
+  .login-error {
+    color: var(--brand-red);
+    font-size: 12.5px;
+    margin-top: 8px;
+    min-height: 16px;
+  }
+
+  /* Admin Dashboard UI */
+  .admin-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 22px;
+    border-bottom: 2px solid var(--line);
+  }
+
+  .admin-tabs button {
+    background: none;
+    border: none;
+    padding: 12px 18px;
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+  }
+
+  .admin-tabs button.active {
+    color: var(--brand-red);
+    border-bottom-color: var(--brand-red);
+  }
+
+  .panel {
+    background: var(--paper-card);
+    border-radius: 8px;
+    padding: 24px;
+    border: 1px solid var(--line);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+  }
+
+  .field {
+    margin-bottom: 16px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .field input, .field select, .field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'Noto Sans Sinhala', sans-serif;
+    background: #fafafa;
+  }
+
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--brand-red);
+    background: #fff;
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 75px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .save-msg {
+    font-size: 13px;
+    color: var(--green);
+    font-weight: 600;
+    margin-top: 10px;
+    min-height: 18px;
+  }
+
+  .btn.wide {
+    width: auto;
+    padding: 10px 24px;
+  }
+
+  .art-row {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .art-row:last-child {
+    border-bottom: none;
+  }
+
+  .art-row .thumb {
+    width: 65px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: #e2e8f0;
+    object-fit: cover;
+  }
+
+  .art-row .meta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .art-row .meta .pos-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--brand-red);
+    background: #fef2f2;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    margin-right: 4px;
+  }
+
+  .art-row .meta .cat-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--brand-navy);
+    background: #f1f5f9;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+  }
+
+  .art-row .meta h4 {
+    font-size: 14.5px;
+    margin: 0;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .art-row .acts {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .art-row .acts button {
+    background: #f8fafc;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .art-row .acts button:hover {
+    border-color: var(--brand-navy);
+    color: var(--brand-navy);
+  }
+
+  .art-row .acts button.del:hover {
+    border-color: var(--brand-red);
+    color: var(--brand-red);
+    background: #fef2f2;
+  }
+
+  .empty-note {
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    font-style: italic;
+    padding: 10px 0;
+  }
+
+  .ticker-editor .t-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .ticker-editor .t-row input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'Noto Sans Sinhala', sans-serif;
+  }
+
+  .ticker-editor .t-row button {
+    background: #fef2f2;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 0 14px;
+    cursor: pointer;
+    color: var(--brand-red);
+    font-weight: bold;
+  }
+
+  @media (max-width: 600px) {
+    .form-row {
+      grid-template-columns: 1fr;
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    body { 
-      background: var(--bg-color); 
-      color: var(--text-main); 
-      font-family: 'Inter', 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif; 
-      line-height: 1.5;
-    }
-
-    header.top {
-      background: var(--brand-grey-dark);
-      color: #ffffff;
-      padding: 14px 5%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      border-bottom: 4px solid var(--brand-red);
-    }
-    
-    .brand-header-left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .admin-logo {
-      height: 48px;
-      width: auto;
-      border-radius: var(--radius-sm);
-      background: #fff;
-      padding: 2px;
-    }
-
-    header.top h1 {
-      font-size: 18px;
-      font-weight: 800;
-      color: #ffffff;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    header.top a {
-      font-size: 13px;
-      color: #f1f5f9;
-      text-decoration: none;
-      background: rgba(255,255,255,0.1);
-      padding: 6px 12px;
-      border-radius: var(--radius-sm);
-      transition: background 0.2s ease;
-      font-weight: 500;
-    }
-    header.top a:hover { background: var(--brand-red); }
-
-    /* Language Picker */
-    .lang-picker { display: flex; gap: 4px; background: rgba(0,0,0,0.3); padding: 4px; border-radius: var(--radius-sm); }
-    .lang-btn { background: none; border: none; color: #cbd5e1; padding: 4px 10px; font-size: 12px; cursor: pointer; border-radius: 4px; font-weight: 600; }
-    .lang-btn.active { background: var(--brand-red); color: #fff; }
-
-    .wrap { max-width: 960px; margin: 0 auto; padding: 28px 16px 60px; }
-
-    /* Login Box */
-    .login-box {
-      max-width: 380px;
-      margin: 50px auto;
-      text-align: center;
-      background: var(--card-bg);
-      padding: 32px 28px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-md);
-      border: 1px solid var(--border-color);
-    }
-    .login-box img { max-height: 70px; margin-bottom: 16px; }
-    .login-box p { color: var(--text-muted); font-size: 14px; margin-bottom: 18px; }
-    .login-box input {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      font-size: 14px;
-      margin-bottom: 12px;
-      outline: none;
-    }
-    .login-box input:focus { border-color: var(--brand-red); }
-    
-    .btn {
-      padding: 10px 20px;
-      background: var(--brand-red);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-    .btn:hover { background: var(--brand-red-dark); }
-    .btn.secondary { background: var(--brand-grey); }
-    .btn.secondary:hover { background: var(--brand-grey-dark); }
-    .btn.wide { width: 100%; }
-
-    .login-error { color: var(--brand-red); font-size: 13px; margin-top: 8px; min-height: 18px; font-weight: 600; }
-
-    /* Tabs Nav */
-    .admin-tabs { display: flex; gap: 8px; margin-bottom: 22px; border-bottom: 2px solid var(--border-color); overflow-x: auto; }
-    .admin-tabs button {
-      background: none;
-      border: none;
-      padding: 12px 18px;
-      font-weight: 700;
-      font-size: 14px;
-      color: var(--text-muted);
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      white-space: nowrap;
-    }
-    .admin-tabs button.active { color: var(--brand-red); border-bottom-color: var(--brand-red); }
-
-    /* Forms & Panels */
-    .panel { background: var(--card-bg); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); margin-bottom: 24px; }
-    .panel-title { font-size: 16px; font-weight: 800; margin-bottom: 16px; color: var(--brand-grey-dark); border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
-    
-    .field { margin-bottom: 16px; }
-    .field label { display: block; font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 6px; }
-    .field input, .field select, .field textarea {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      font-size: 14px;
-      font-family: inherit;
-      outline: none;
-      background: #fff;
-    }
-    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--brand-red); }
-    
-    /* Beautiful Description Styling */
-    .field textarea { 
-      resize: vertical; 
-      min-height: 120px; 
-      line-height: 1.6;
-      background: #fdfdfd;
-    }
-
-    .form-row { display: grid; grid-template-columns: 1fr; gap: 14px; }
-    @media (min-width: 640px) { .form-row { grid-template-columns: 1fr 1fr; } }
-
-    .upload-box { display: flex; gap: 10px; align-items: center; }
-    .upload-box input[type="file"] { font-size: 12px; }
-
-    .field-hint { font-size: 11.5px; color: var(--text-muted); margin-top: 4px; }
-    .save-msg { font-size: 13.5px; font-weight: 700; margin-top: 10px; min-height: 20px; }
-
-    /* Article List Rows */
-    .art-row { display: flex; gap: 12px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-color); }
-    .art-row:last-child { border-bottom: none; }
-    .art-row .thumb { width: 75px; height: 55px; flex-shrink: 0; border-radius: var(--radius-sm); background: #e2e8f0; object-fit: cover; }
-    .art-row .meta { flex: 1; min-width: 0; }
-    
-    /* Metadata Tags */
-    .tag-container { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 4px; }
-    .art-row .meta .tag { display: inline-block; font-size: 10px; font-weight: 800; color: var(--brand-red); background: #fee2e2; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; }
-    .art-row .meta .time-tag { font-size: 11px; color: var(--text-muted); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
-
-    .art-row .meta h4 { font-size: 14.5px; margin: 0; font-weight: 700; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .art-row .acts { display: flex; gap: 6px; flex-shrink: 0; }
-    .art-row .acts button { background: #f1f5f9; border: 1px solid var(--border-color); border-radius: 4px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-weight: 600; }
-    .art-row .acts button:hover { background: var(--brand-red); color: #fff; border-color: var(--brand-red); }
-    .art-row .acts button.del:hover { background: #dc2626; color: #fff; border-color: #dc2626; }
-
-    /* Ticker Editor */
-    .ticker-editor .t-row { display: flex; gap: 8px; margin-bottom: 10px; }
-    .ticker-editor .t-row input { flex: 1; }
-    .ticker-editor .t-row button { background: #fee2e2; border: 1px solid #fca5a5; color: #dc2626; border-radius: var(--radius-sm); padding: 0 14px; cursor: pointer; font-weight: 700; }
-
-    .empty-note { color: var(--text-muted); font-size: 13.5px; font-style: italic; padding: 12px 0; text-align: center; }
-  </style>
+  }
+</style>
 </head>
 <body>
 
+  <!-- HEADER -->
   <header class="top">
-    <div class="brand-header-left">
-      <img src="https://raw.githubusercontent.com/janithdidula025-design/NEWS/f1a041b272990f893804db4da243cfa7b1ae3550/logo.jpeg" alt="Lanka News Now" class="admin-logo">
-      <h1 id="txt-app-title">ලංකා NEWS NOW · පරිපාලක පැනලය</h1>
-    </div>
-    <div class="header-actions">
-      <div class="lang-picker">
-        <button class="lang-btn active" id="btn-lang-si" onclick="setLanguage('si')">සිංහල</button>
-        <button class="lang-btn" id="btn-lang-en" onclick="setLanguage('en')">English</button>
-        <button class="lang-btn" id="btn-lang-ta" onclick="setLanguage('ta')">தமிழ்</button>
+    <div class="brand-container">
+      <!-- Logo Image -->
+      <img src="logo.jpeg" alt="News+LK Logo" class="brand-logo" onerror="this.style.display='none'">
+      <div class="brand-text">
+        <h1>News<span class="red">+LK</span></h1>
+        <span class="sub">පරිපාලක පැනලය (Admin Panel)</span>
       </div>
-      <a href="index.html" id="txt-back-link">← වෙබ් අඩවියට යන්න</a>
     </div>
+    <a href="index.html" class="site-link">← වෙබ් අඩවියට යන්න</a>
   </header>
 
   <div class="wrap">
 
-    <!-- Login Section -->
+    <!-- LOGIN VIEW -->
     <div id="loginView" class="login-box">
-      <img src="https://raw.githubusercontent.com/janithdidula025-design/NEWS/f1a041b272990f893804db4da243cfa7b1ae3550/logo.jpeg" alt="Logo">
-      <p id="txt-login-desc">ඉදිරියට යාමට පරිපාලක රහස්පදය ඇතුළත් කරන්න.</p>
+      <img src="logo.jpeg" alt="News+LK" onerror="this.style.display='none'">
+      <p>ඉදිරියට යාමට රහස්පදය ඇතුළත් කරන්න.</p>
       <input type="password" id="pwInput" placeholder="රහස්පදය" onkeydown="if(event.key==='Enter')tryLogin()">
-      <button class="btn wide" onclick="tryLogin()" id="btn-login">ඇතුල් වන්න</button>
+      <button onclick="tryLogin()">ඇතුල් වන්න</button>
       <div class="login-error" id="loginErr"></div>
     </div>
 
-    <!-- Dashboard Section -->
+    <!-- DASHBOARD VIEW -->
     <div id="dashView" style="display:none;">
       
-      <div id="sheetWarning" style="display:none; background:#fffbebe6; border:1px solid #fcd34d; color:#b45309; padding:12px 16px; border-radius:var(--radius-sm); font-size:13px; margin-bottom:20px; font-weight:600;">
-        ⚠ <span id="txt-sheet-warn">Google Sheet එකට connect වී නැත — දැනට වෙනස්කම් save වෙන්නේ මේ browser එකේ පමණි.</span>
+      <div id="sheetWarning" style="display:none;background:#fffbeb;border:1px solid #f59e0b;color:#92400e;padding:12px 16px;border-radius:6px;font-size:13px;margin-bottom:20px;">
+        ⚠ Google Sheet එකට connect වී නැත — දැනට දත්ත save වෙන්නේ මෙම browser එකේ පමණි. `SCRIPT_URL` එක admin.html හි නිවැරදිව set කරන්න.
       </div>
 
+      <!-- TABS -->
       <div class="admin-tabs">
-        <button class="active" data-tab="articles" id="tab-btn-articles" onclick="switchTab('articles')">පුවත් කළමනාකරණය</button>
-        <button data-tab="ticker" id="tab-btn-ticker" onclick="switchTab('ticker')">නවතම පට්ටිය (Ticker)</button>
-        <button data-tab="ads" id="tab-btn-ads" onclick="switchTab('ads')">දැන්වීම් කළමනාකරණය (Ads)</button>
+        <button class="active" data-tab="articles" onclick="switchTab('articles')">පුවත් කළමනාකරණය</button>
+        <button data-tab="ticker" onclick="switchTab('ticker')">නවතම පට්ටිය (Ticker)</button>
       </div>
 
-      <!-- ARTICLES TAB -->
+      <!-- TAB 1: ARTICLES MANAGEMENT -->
       <div id="tab-articles">
         <div class="panel">
-          <div class="panel-title" id="txt-form-title">නව පුවතක් එකතු කරන්න / සංස්කරණය කරන්න</div>
+          <h3 style="font-size:17px;margin:0 0 16px;">නව පුවතක් එකතු කරන්න / සංස්කරණය කරන්න</h3>
           
           <div class="form-row">
             <div class="field">
-              <label id="lbl-category">කාණ්ඩය</label>
+              <label>කාණ්ඩය (Category)</label>
               <select id="f-category"></select>
             </div>
             <div class="field">
-              <label id="lbl-position">මුල් පිටුවේ පෙනුම</label>
+              <label>මුල් පිටුවේ පෙනුම (Position)</label>
               <select id="f-position">
-                <option value="hero" id="opt-pos-hero">ප්‍රධාන පුවත (Hero)</option>
-                <option value="side" id="opt-pos-side">පැති පුවත (Side)</option>
-                <option value="grid" selected id="opt-pos-grid">සාරාංශ කාණ්ඩ (Grid)</option>
-                <option value="none" id="opt-pos-none">මුල් පිටුවේ නොපෙන්වන්න</option>
+                <option value="hero">ප්‍රධාන පුවත (Hero)</option>
+                <option value="side">පැති පුවත (Side)</option>
+                <option value="grid" selected>සාරාංශ කාණ්ඩ (Grid)</option>
+                <option value="none">මුල් පිටුවේ නොපෙන්වන්න</option>
               </select>
             </div>
           </div>
 
           <div class="field">
-            <label id="lbl-title">ශීර්ෂ පාඨය</label>
+            <label>ශීර්ෂ පාඨය (Title)</label>
             <input id="f-title" placeholder="පුවත් ශීර්ෂය ඇතුළත් කරන්න">
           </div>
 
           <div class="field">
-            <label id="lbl-desc">පුවතේ විස්තරය (Description)</label>
-            <textarea id="f-desc" placeholder="පුවතේ සම්පූර්ණ හෝ කෙටි විස්තරය පැහැදිලිව මෙතැනින් ඇතුළත් කරන්න..."></textarea>
+            <label>විස්තරය (Description)</label>
+            <textarea id="f-desc" placeholder="පුවතේ කෙටි විස්තරය..."></textarea>
           </div>
 
-          <div class="form-row">
-            <div class="field">
-              <label id="lbl-img">රූප URL හෝ Upload (Direct Link)</label>
-              <div class="upload-box">
-                <input id="f-img" placeholder="https://... photo link">
-                <input type="file" id="f-img-file" accept="image/*" onchange="uploadImageFile(this, 'f-img')">
-              </div>
-              <div class="field-hint">Photo එකක් Device එකෙන් තෝරා කෙළින්ම Link එකක් බවට හැරවිය හැක.</div>
-            </div>
-
-            <div class="field">
-              <label id="lbl-youtube">YouTube Video Link (විකල්ප)</label>
-              <input id="f-youtube" placeholder="https://www.youtube.com/watch?v=...">
-              <div class="field-hint">පුවතට අදාළ Video එකක් ඇත්නම් YouTube Link එක මෙහි යොදන්න.</div>
-            </div>
+          <div class="field">
+            <label>රූප URL (Image Link - විකල්ප)</label>
+            <input id="f-img" placeholder="https://example.com/image.jpg">
           </div>
 
           <input type="hidden" id="f-id">
-          <input type="hidden" id="f-time">
-
-          <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
-            <button class="btn" onclick="saveArticle()" id="btn-save-art">සුරකින්න</button>
-            <button class="btn secondary" onclick="resetForm()" id="btn-reset-art">නව පුවතක් (Reset)</button>
-          </div>
+          
+          <button class="btn wide" onclick="saveArticle()">සුරකින්න (Save)</button>
           <div class="save-msg" id="artMsg"></div>
         </div>
 
-        <div class="panel">
-          <div class="panel-title" id="txt-existing-title">දැනට ඇති පුවත්</div>
+        <h3 style="font-size:17px;margin:28px 0 14px;">දැනට පළකර ඇති පුවත්</h3>
+        <div class="panel" id="articleListPanel">
           <div id="articleList"></div>
         </div>
       </div>
 
-      <!-- TICKER TAB -->
+      <!-- TAB 2: TICKER MANAGEMENT -->
       <div id="tab-ticker" style="display:none;">
         <div class="panel">
-          <div class="panel-title" id="txt-ticker-title">නවතම පට්ටියේ පෙළ (Breaking Ticker Text)</div>
+          <h3 style="font-size:17px;margin:0 0 14px;">නවතම පට්ටියේ පෙළ (Breaking News Ticker)</h3>
           <div class="ticker-editor" id="tickerEditor"></div>
           <br>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button class="btn secondary" onclick="addTickerRow('')" id="btn-add-ticker">+ පේළියක් එකතු කරන්න</button>
-            <button class="btn" onclick="saveTicker()" id="btn-save-ticker">සුරකින්න</button>
-          </div>
+          <button class="btn wide" style="background:#475569;" onclick="addTickerRow('')">+ පේළියක් එකතු කරන්න</button>
+          <br><br>
+          <button class="btn wide" onclick="saveTicker()">සුරකින්න (Save Ticker)</button>
           <div class="save-msg" id="tickerMsg"></div>
-        </div>
-      </div>
-
-      <!-- ADS MANAGEMENT TAB -->
-      <div id="tab-ads" style="display:none;">
-        <div class="panel">
-          <div class="panel-title" id="txt-ad-form-title">දැන්වීමක් එකතු කරන්න / සංස්කරණය කරන්න</div>
-          
-          <div class="form-row">
-            <div class="field">
-              <label id="lbl-ad-slot">දැන්වීම් ස්ථානය (Banner Slot)</label>
-              <select id="f-ad-slot">
-                <option value="0">Slot 01 - Header යට (Top Banner)</option>
-                <option value="1">Slot 02 - Hero Section යට</option>
-                <option value="2">Slot 03 - Summary Grid යට</option>
-                <option value="3">Slot 04 - Bottom Banner</option>
-              </select>
-            </div>
-            <div class="field">
-              <label id="lbl-ad-title">දැන්වීමේ ශීර්ෂය (Ad Title)</label>
-              <input id="f-ad-title" placeholder="උදා: විශේෂ වට්ටම් ලබාගන්න!">
-            </div>
-          </div>
-
-          <div class="field">
-            <label id="lbl-ad-subtitle">උපශීර්ෂය / විස්තරය</label>
-            <input id="f-ad-subtitle" placeholder="උදා: සම්බන්ධ කරගන්න: 07X XXXXXXX | Lanka News Now">
-          </div>
-
-          <div class="form-row">
-            <div class="field">
-              <label id="lbl-ad-img">දැන්වීම් Photo / Image URL</label>
-              <div class="upload-box">
-                <input id="f-ad-img" placeholder="https://... banner image">
-                <input type="file" accept="image/*" onchange="uploadImageFile(this, 'f-ad-img')">
-              </div>
-            </div>
-
-            <div class="field">
-              <label id="lbl-ad-link">Click කළ විට යන වෙබ් අඩවියේ Link එක (Target Web Link)</label>
-              <input id="f-ad-link" placeholder="https://www.yourwebsite.com">
-              <div class="field-hint">පරිශීලකයා Ad එක උඩ Click කළ විට මෙම වෙබ් පිටුව විවෘත වේ.</div>
-            </div>
-          </div>
-
-          <input type="hidden" id="f-ad-id">
-          <div style="display:flex; gap:10px; margin-top:10px;">
-            <button class="btn" onclick="saveAd()" id="btn-save-ad">දැන්වීම සුරකින්න</button>
-            <button class="btn secondary" onclick="resetAdForm()" id="btn-reset-ad">Reset</button>
-          </div>
-          <div class="save-msg" id="adMsg"></div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-title" id="txt-existing-ads">සක්‍රිය දැන්වීම් (Active Ads)</div>
-          <div id="adList"></div>
         </div>
       </div>
 
@@ -397,546 +486,242 @@
   </div>
 
 <script>
-const ADMIN_PASSWORD = "lanka2026";
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPKA-lhmoD0kxTYOzJzZx8Krdxy3XXL1_UG2Ow1NRHmDol26-0vrIvtdbr26n7Q3If/exec";
+const ADMIN_PASSWORD = "lanka2026"; // Admin මුරපදය
+
+// Google Apps Script Web App URL එක:
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzh-zk0QPQTvGaByS5fKcJ7w6mUXpMXMDeynMEJ6MusC5RCNh0BVVQmNd2qRDeoutqaJg/exec";
 
 const STORAGE_KEY = "site-data";
-const LANG_KEY = "admin-lang";
+const CATEGORIES = ['ප්‍රධාන පුවත්','දේශපාලනය','ක්‍රීඩා','ව්‍යාපාර','ලෝකය','විනෝදාංශය','තාක්ෂණය','ජීවන රටාව'];
 
-const DEFAULT_ADS = [
-  { id: 1, title: "ඔබගේ விளம்பரம் / දැන්වීම් මෙහි පළකරන්න", subtitle: "සම්බන්ධ වන්න: 07X XXX XXXX | Lanka News Now", link: "#", img: "" },
-  { id: 2, title: "Special Business Promotion Slot 02", subtitle: "Contact Us for Premium Banner Placements", link: "#", img: "" },
-  { id: 3, title: "Commercial Ad Space 03", subtitle: "Grow your reach island-wide with Lanka News Now", link: "#", img: "" },
-  { id: 4, title: "Brand Sponsorship Slot 04", subtitle: "24/7 High Visibility Banner Placement", link: "#", img: "" }
-];
+const DEFAULT_DATA = { ticker: [], articles: [] };
 
-// Updated Categories (Removed Politics and Lifestyle)
-const i18n = {
-  si: {
-    appTitle: "ලංකා NEWS NOW · පරිපාලක පැනලය",
-    backLink: "← වෙබ් අඩවියට යන්න",
-    loginDesc: "ඉදිරියට යාමට පරිපාලක රහස්පදය ඇතුළත් කරන්න.",
-    pwPlaceholder: "රහස්පදය",
-    loginBtn: "ඇතුල් වන්න",
-    pwError: "රහස්පදය වැරදියි. නැවත උත්සාහ කරන්න.",
-    loading: "පූරණය වෙමින්...",
-    sheetWarn: "Google Sheet එකට connect වී නැත — දැනට වෙනස්කම් save වෙන්නේ මේ browser එකේ පමණි.",
-    tabArticles: "පුවත් කළමනාකරණය",
-    tabTicker: "නවතම පට්ටිය (Ticker)",
-    tabAds: "දැන්වීම් කළමනාකරණය (Ads)",
-    formTitle: "නව පුවතක් එකතු කරන්න / සංස්කරණය කරන්න",
-    lblCategory: "කාණ්ඩය",
-    lblPosition: "මුල් පිටුවේ පෙනුම",
-    posHero: "ප්‍රධාන පුවත (Hero)",
-    posSide: "පැති පුවත (Side)",
-    posGrid: "සාරාංශ කාණ්ඩ (Grid)",
-    posNone: "මුල් පිටුවේ නොපෙන්වන්න",
-    lblTitle: "ශීර්ෂ පාඨය",
-    lblDesc: "පුවතේ විස්තරය (Description)",
-    lblImg: "රූප URL හෝ Upload (Direct Link)",
-    lblYoutube: "YouTube Video Link (විකල්ප)",
-    btnSave: "සුරකින්න",
-    btnReset: "නව පුවතක් (Reset)",
-    existingTitle: "දැනට ඇති පුවත්",
-    noArticles: "පුවත් නොමැත",
-    btnEdit: "සංස්කරණය",
-    btnDelete: "මකන්න",
-    tickerTitle: "නවතම පට්ටියේ පෙළ (Breaking Ticker Text)",
-    btnAddTicker: "+ පේළියක් එකතු කරන්න",
-    errNoTitle: "ශීර්ෂ පාඨයක් ඇතුළත් කරන්න.",
-    savingSheet: "සුරකිමින්... (Sheet එකට)",
-    savedLocal: "සුරැකිණි ✓ (browser එකේ පමණි)",
-    savedSheet: "සුරැකිණි ✓ (Google Sheet එකට)",
-    errSheet: "Sheet එකට save කිරීම අසාර්ථකයි.",
-    adFormTitle: "දැන්වීමක් එකතු කරන්න / සංස්කරණය කරන්න",
-    lblAdSlot: "දැන්වීම් ස්ථානය (Banner Slot)",
-    lblAdTitle: "දැන්වීමේ ශීර්ෂය (Ad Title)",
-    lblAdSubtitle: "උපශීර්ෂය / විස්තරය",
-    lblAdImg: "දැන්වීම් Photo / Image URL",
-    lblAdLink: "Click කළ විට යන වෙබ් අඩවියේ Link එක (Target Web Link)",
-    existingAds: "සක්‍රිය දැන්වීම් (Active Ads)",
-    categories: ['ප්‍රධාන පුවත්','ක්‍රීඩා','ව්‍යාපාර','ලෝකය','විනෝදාංශය','තාක්ෂණය']
-  },
-  en: {
-    appTitle: "Lanka NEWS NOW · Admin Panel",
-    backLink: "← Go to Website",
-    loginDesc: "Enter admin password to continue.",
-    pwPlaceholder: "Password",
-    loginBtn: "Login",
-    pwError: "Incorrect password. Please try again.",
-    loading: "Loading...",
-    sheetWarn: "Not connected to Google Sheet — Saving to browser storage only.",
-    tabArticles: "Articles",
-    tabTicker: "Ticker",
-    tabAds: "Ads Management",
-    formTitle: "Add / Edit Article",
-    lblCategory: "Category",
-    lblPosition: "Homepage Position",
-    posHero: "Main Story (Hero)",
-    posSide: "Side Story",
-    posGrid: "Category Grid",
-    posNone: "Do not display on Homepage",
-    lblTitle: "Headline",
-    lblDesc: "Description",
-    lblImg: "Image URL or Upload",
-    lblYoutube: "YouTube Video Link (Optional)",
-    btnSave: "Save Article",
-    btnReset: "Reset Form",
-    existingTitle: "Existing Articles",
-    noArticles: "No articles found",
-    btnEdit: "Edit",
-    btnDelete: "Delete",
-    tickerTitle: "Breaking Ticker Text",
-    btnAddTicker: "+ Add Line",
-    errNoTitle: "Please enter a headline.",
-    savingSheet: "Saving... (to Sheet)",
-    savedLocal: "Saved ✓ (Browser storage)",
-    savedSheet: "Saved ✓ (to Google Sheet)",
-    errSheet: "Failed to save to Google Sheet.",
-    adFormTitle: "Add / Edit Advertisement",
-    lblAdSlot: "Ad Banner Placement",
-    lblAdTitle: "Ad Title",
-    lblAdSubtitle: "Ad Subtitle / Text",
-    lblAdImg: "Ad Banner Image URL",
-    lblAdLink: "Target Website Link (URL)",
-    existingAds: "Active Banner Ads",
-    categories: ['Main News','Sports','Business','World','Entertainment','Technology']
-  },
-  ta: {
-    appTitle: "லங்கா NEWS NOW · நிர்வாகக் குழு",
-    backLink: "← இணையதளத்திற்குச் செல்லவும்",
-    loginDesc: "தொடர கடவுச்சொல்லை உள்ளிடவும்.",
-    pwPlaceholder: "கடவுச்சொல்",
-    loginBtn: "உள்நுழைக",
-    pwError: "தவறான கடவுச்சொல். மீண்டும் முயற்சிக்கவும்.",
-    loading: "ஏற்றப்படுகிறது...",
-    sheetWarn: "Google Sheet உடன் இணைக்கப்படவில்லை — உலாவியில் மட்டுமே சேமிக்கப்படும்.",
-    tabArticles: "செய்தி மேலாண்மை",
-    tabTicker: "செய்தித் துளிகள்",
-    tabAds: "விளம்பர மேலாண்மை",
-    formTitle: "செய்தியைச் சேர் / திருத்து",
-    lblCategory: "பிரிவு",
-    lblPosition: "முகப்புப் பக்கத் தோற்றம்",
-    posHero: "முக்கிய செய்தி (Hero)",
-    posSide: "பக்கச் செய்தி (Side)",
-    posGrid: "பிரிவுத் தொகுப்பு (Grid)",
-    posNone: "முகப்பில் காட்ட வேண்டாம்",
-    lblTitle: "தலைப்பு",
-    lblDesc: "விளக்கம்",
-    lblImg: "படம் URL அல்லது பதிவேற்றம்",
-    lblYoutube: "YouTube வீடியோ இணைப்பு",
-    btnSave: "சேமிக்கவும்",
-    btnReset: "புதிய செய்தி",
-    existingTitle: "தற்போதைய செய்திகள்",
-    noArticles: "செய்திகள் எதுவும் இல்லை",
-    btnEdit: "திருத்து",
-    btnDelete: "நீக்கு",
-    tickerTitle: "செய்தித் துளிகள் உரை",
-    btnAddTicker: "+ வரியைச் சேர்",
-    errNoTitle: "தயவுசெய்து தலைப்பை உள்ளிடவும்.",
-    savingSheet: "சேமிக்கப்படுகிறது...",
-    savedLocal: "சேமிக்கப்பட்டது ✓ (உலாவியில்)",
-    savedSheet: "சேமிக்கப்பட்டது ✓ (Google Sheet-இல்)",
-    errSheet: "சேமிக்க முடியவில்லை.",
-    adFormTitle: "விளம்பரத்தைச் சேர் / திருத்து",
-    lblAdSlot: "விளம்பர இடம்",
-    lblAdTitle: "விளம்பரத் தலைப்பு",
-    lblAdSubtitle: "விளம்பர உரை",
-    lblAdImg: "விளம்பரப் படம் URL",
-    lblAdLink: "இலக்கு இணையதள இணைப்பு",
-    existingAds: "செயலில் உள்ள விளம்பரங்கள்",
-    categories: ['முக்கிய செய்திகள்','விளையாட்டு','வணிகம்','உலகம்','பொழுதுபோக்கு','தொழில்நுட்பம்']
-  }
-};
-
-let currentLang = localStorage.getItem(LANG_KEY) || 'si';
-let siteData = { ticker: [], articles: [], ads: DEFAULT_ADS };
+let siteData = null;
 let sheetConnected = false;
 
-function setLanguage(lang) {
-  currentLang = lang;
-  localStorage.setItem(LANG_KEY, lang);
-  
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  const activeBtn = document.getElementById(`btn-lang-${lang}`);
-  if(activeBtn) activeBtn.classList.add('active');
-  
-  document.documentElement.lang = lang;
-  
-  const t = i18n[lang];
-  document.getElementById('txt-app-title').textContent = t.appTitle;
-  document.getElementById('txt-back-link').textContent = t.backLink;
-  document.getElementById('txt-login-desc').textContent = t.loginDesc;
-  document.getElementById('pwInput').placeholder = t.pwPlaceholder;
-  document.getElementById('btn-login').textContent = t.loginBtn;
-  document.getElementById('txt-sheet-warn').textContent = t.sheetWarn;
-  
-  document.getElementById('tab-btn-articles').textContent = t.tabArticles;
-  document.getElementById('tab-btn-ticker').textContent = t.tabTicker;
-  document.getElementById('tab-btn-ads').textContent = t.tabAds;
-  
-  document.getElementById('txt-form-title').textContent = t.formTitle;
-  document.getElementById('lbl-category').textContent = t.lblCategory;
-  document.getElementById('lbl-position').textContent = t.lblPosition;
-  document.getElementById('opt-pos-hero').textContent = t.posHero;
-  document.getElementById('opt-pos-side').textContent = t.posSide;
-  document.getElementById('opt-pos-grid').textContent = t.posGrid;
-  document.getElementById('opt-pos-none').textContent = t.posNone;
-  document.getElementById('lbl-title').textContent = t.lblTitle;
-  document.getElementById('lbl-desc').textContent = t.lblDesc;
-  document.getElementById('lbl-img').textContent = t.lblImg;
-  document.getElementById('lbl-youtube').textContent = t.lblYoutube;
-  document.getElementById('btn-save-art').textContent = t.btnSave;
-  document.getElementById('btn-reset-art').textContent = t.btnReset;
-  document.getElementById('txt-existing-title').textContent = t.existingTitle;
-  
-  document.getElementById('txt-ticker-title').textContent = t.tickerTitle;
-  document.getElementById('btn-add-ticker').textContent = t.btnAddTicker;
-  document.getElementById('btn-save-ticker').textContent = t.btnSave;
-
-  document.getElementById('txt-ad-form-title').textContent = t.adFormTitle;
-  document.getElementById('lbl-ad-slot').textContent = t.lblAdSlot;
-  document.getElementById('lbl-ad-title').textContent = t.lblAdTitle;
-  document.getElementById('lbl-ad-subtitle').textContent = t.lblAdSubtitle;
-  document.getElementById('lbl-ad-img').textContent = t.lblAdImg;
-  document.getElementById('lbl-ad-link').textContent = t.lblAdLink;
-  document.getElementById('txt-existing-ads').textContent = t.existingAds;
-
-  populateCategorySelect();
-  if(siteData) {
-    renderArticleList();
-    renderAdList();
-  }
+function sheetReady() { 
+  return SCRIPT_URL && SCRIPT_URL.indexOf('PASTE_YOUR') === -1 && SCRIPT_URL.trim() !== ""; 
 }
 
-async function loadData(){
-  if(SCRIPT_URL && SCRIPT_URL.trim() !== ""){
-    try{
-      const res = await fetch(SCRIPT_URL, {method:'GET'});
+async function loadData() {
+  if (sheetReady()) {
+    try {
+      const res = await fetch(SCRIPT_URL, { method: 'GET', cache: 'no-store' });
       const json = await res.json();
-      if(json && (json.articles || json.ticker || json.ads)){
-        siteData = {
-          articles: json.articles || [],
-          ticker: json.ticker || [],
-          ads: json.ads && json.ads.length ? json.ads : DEFAULT_ADS
-        };
+      if (json && json.articles) {
+        siteData = json;
         sheetConnected = true;
+        if (!siteData.articles) siteData.articles = [];
+        if (!siteData.ticker) siteData.ticker = [];
         return;
       }
-    }catch(e){
-      console.error('Sheet fetch failed:', e);
+    } catch(e) {
+      console.error('Sheet fetch error:', e);
     }
   }
+
   sheetConnected = false;
-  try{
+  try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    siteData = raw ? JSON.parse(raw) : { articles: [], ticker: [], ads: DEFAULT_ADS };
-  }catch(e){
-    siteData = { articles: [], ticker: [], ads: DEFAULT_ADS };
+    siteData = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_DATA));
+  } catch(e) {
+    siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
   }
-  if(!siteData.articles) siteData.articles = [];
-  if(!siteData.ticker) siteData.ticker = [];
-  if(!siteData.ads || !siteData.ads.length) siteData.ads = DEFAULT_ADS;
+
+  if (!siteData.articles) siteData.articles = [];
+  if (!siteData.ticker) siteData.ticker = [];
 }
 
-async function callSheet(payload){
-  return fetch(SCRIPT_URL, {
+async function callSheet(payload) {
+  await fetch(SCRIPT_URL, {
     method: 'POST',
-    mode: 'no-cors',
-    headers: {'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(payload)
   });
 }
 
-function persist(){
-  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData)); }
-  catch(e){ console.error("Storage save failed", e); }
-}
-
-function esc(s){ return (s||"").replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-
-function uploadImageFile(fileInput, targetInputId) {
-  const file = fileInput.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      document.getElementById(targetInputId).value = e.target.result;
-    };
-    reader.readAsDataURL(file);
+function persist() {
+  try { 
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData)); 
+  } catch(e) { 
+    console.error("Storage error", e); 
   }
 }
 
-async function tryLogin(){
+function esc(s) { 
+  return (s || "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])); 
+}
+
+async function tryLogin() {
   const pw = document.getElementById('pwInput').value;
-  const t = i18n[currentLang];
-  if(pw === ADMIN_PASSWORD){
-    document.getElementById('loginErr').textContent = t.loading;
+  if (pw === ADMIN_PASSWORD) {
+    document.getElementById('loginErr').textContent = 'පූරණය වෙමින්...';
     await loadData();
     document.getElementById('loginView').style.display = 'none';
     document.getElementById('dashView').style.display = 'block';
-    
-    document.getElementById('sheetWarning').style.display = sheetConnected ? 'none' : 'block';
-    
+
+    if (!sheetConnected) {
+      document.getElementById('sheetWarning').style.display = 'block';
+    } else {
+      document.getElementById('sheetWarning').style.display = 'none';
+    }
+
     populateCategorySelect();
     renderArticleList();
     renderTickerEditor();
-    renderAdList();
-  }else{
-    document.getElementById('loginErr').textContent = t.pwError;
+  } else {
+    document.getElementById('loginErr').textContent = 'රහස්පදය වැරදියි. නැවත උත්සාහ කරන්න.';
   }
 }
 
-function switchTab(tab){
-  document.querySelectorAll('.admin-tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
-  document.getElementById('tab-articles').style.display = tab==='articles' ? 'block':'none';
-  document.getElementById('tab-ticker').style.display = tab==='ticker' ? 'block':'none';
-  document.getElementById('tab-ads').style.display = tab==='ads' ? 'block':'none';
+function switchTab(tab) {
+  document.querySelectorAll('.admin-tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.getElementById('tab-articles').style.display = tab === 'articles' ? 'block' : 'none';
+  document.getElementById('tab-ticker').style.display = tab === 'ticker' ? 'block' : 'none';
 }
 
-function populateCategorySelect(){
-  const cats = i18n[currentLang].categories;
+function populateCategorySelect() {
   document.getElementById('f-category').innerHTML =
-    cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+    CATEGORIES.filter(c => c !== 'ප්‍රධාන පුවත්').map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
 }
 
-/* Format Current Date & Time */
-function getCurrentFormattedTime() {
-  const now = new Date();
-  const dateStr = now.toLocaleDateString('en-CA'); // YYYY-MM-DD
-  let hours = now.getHours();
-  const minutes = now.getMinutes().toString().padStart(2, '0');
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // 0 should be 12
-  const timeStr = `${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
-  return `${dateStr} - ${timeStr}`;
-}
-
-function renderArticleList(){
-  const t = i18n[currentLang];
-  const posLabel = {hero:'Hero', side:'Side', grid:'Grid', none:'—'};
-  document.getElementById('articleList').innerHTML = siteData.articles.map(a=>`
+function renderArticleList() {
+  const posLabel = { hero: 'Hero', side: 'Side', grid: 'Grid', none: '—' };
+  document.getElementById('articleList').innerHTML = siteData.articles.map(a => `
     <div class="art-row">
       ${a.img ? `<img class="thumb" src="${esc(a.img)}" onerror="this.style.display='none'">` : `<div class="thumb"></div>`}
       <div class="meta">
-        <div class="tag-container">
-          <span class="tag">${esc(a.category)}</span>
-          <span class="tag" style="background:#e0f2fe; color:#0369a1;">${posLabel[a.position]||a.position}</span>
-          <span class="time-tag">⏱️ ${esc(a.time || 'මෑතදී')}</span>
-        </div>
+        <span class="cat-tag">${esc(a.category)}</span><span class="pos-tag">${posLabel[a.position] || a.position}</span>
         <h4>${esc(a.title)}</h4>
       </div>
       <div class="acts">
-        <button onclick="editArticle('${a.id}')">${t.btnEdit}</button>
-        <button class="del" onclick="deleteArticle('${a.id}')">${t.btnDelete}</button>
+        <button onclick="editArticle('${esc(a.id)}')">සංස්කරණය</button>
+        <button class="del" onclick="deleteArticle('${esc(a.id)}')">මකන්න</button>
       </div>
-    </div>`).join('') || `<div class="empty-note">${t.noArticles}</div>`;
+    </div>`).join('') || '<div class="empty-note">දැනට පුවත් නොමැත.</div>';
 }
 
-function editArticle(id){
-  const a = siteData.articles.find(x=>String(x.id)===String(id));
-  if(!a) return;
+function editArticle(id) {
+  const a = siteData.articles.find(x => String(x.id) === String(id));
+  if (!a) return;
   document.getElementById('f-id').value = a.id;
   document.getElementById('f-category').value = a.category;
   document.getElementById('f-position').value = a.position;
-  document.getElementById('f-title').value = a.title||'';
-  document.getElementById('f-desc').value = a.desc||'';
-  document.getElementById('f-img').value = a.img||'';
-  document.getElementById('f-youtube').value = a.youtube||'';
-  document.getElementById('f-time').value = a.time||'';
+  document.getElementById('f-title').value = a.title || '';
+  document.getElementById('f-desc').value = a.desc || '';
+  document.getElementById('f-img').value = a.img || '';
   document.getElementById('artMsg').textContent = '';
-  window.scrollTo({top:0, behavior:'smooth'});
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function resetForm(){
-  document.getElementById('f-id').value = '';
-  document.getElementById('f-title').value = '';
-  document.getElementById('f-desc').value = '';
-  document.getElementById('f-img').value = '';
-  document.getElementById('f-youtube').value = '';
-  document.getElementById('f-time').value = '';
-  document.getElementById('f-img-file').value = '';
-  document.getElementById('artMsg').textContent = '';
-}
+async function deleteArticle(id) {
+  if (!confirm("මෙම පුවත මකා දැමීමට ඔබට විශ්වාසද?")) return;
 
-async function deleteArticle(id){
-  siteData.articles = siteData.articles.filter(a=>String(a.id)!==String(id));
+  siteData.articles = siteData.articles.filter(a => String(a.id) !== String(id));
   persist();
   renderArticleList();
-  if(sheetConnected){
-    try{ await callSheet({action:'deleteArticle', id}); }
-    catch(e){ console.error(e); }
+
+  if (sheetConnected) {
+    try { 
+      await callSheet({ action: 'deleteArticle', id }); 
+    } catch(e) { 
+      console.error(e); 
+    }
   }
 }
 
-async function saveArticle(){
-  const t = i18n[currentLang];
+async function saveArticle() {
   const title = document.getElementById('f-title').value.trim();
-  if(!title){
-    document.getElementById('artMsg').style.color = '#dc2626';
-    document.getElementById('artMsg').textContent = t.errNoTitle;
+  if (!title) {
+    document.getElementById('artMsg').style.color = 'var(--brand-red)';
+    document.getElementById('artMsg').textContent = 'ශීර්ෂ පාඨයක් ඇතුළත් කරන්න.';
     return;
   }
+
   const id = document.getElementById('f-id').value;
-  const currentTime = document.getElementById('f-time').value || getCurrentFormattedTime();
-  
   const data = {
     category: document.getElementById('f-category').value,
     position: document.getElementById('f-position').value,
     title,
     desc: document.getElementById('f-desc').value.trim(),
-    img: document.getElementById('f-img').value.trim(),
-    youtube: document.getElementById('f-youtube').value.trim(),
-    time: currentTime
+    img: document.getElementById('f-img').value.trim()
   };
-  
-  if(id){
+
+  if (id) {
     data.id = id;
-    const idx = siteData.articles.findIndex(a=>String(a.id)===String(id));
-    if(idx>-1) siteData.articles[idx] = {...siteData.articles[idx], ...data};
-  }else{
+    const idx = siteData.articles.findIndex(a => String(a.id) === String(id));
+    if (idx > -1) siteData.articles[idx] = { ...siteData.articles[idx], ...data };
+  } else {
     data.id = 'a' + Date.now();
-    siteData.articles.push(data);
+    siteData.articles.unshift(data);
   }
-  
+
   persist();
   renderArticleList();
-  
-  document.getElementById('artMsg').style.color = 'var(--brand-red)';
-  document.getElementById('artMsg').textContent = sheetConnected ? t.savingSheet : t.savedLocal;
 
-  if(sheetConnected){
-    try{
-      await callSheet({action:'saveArticle', article:data});
-      document.getElementById('artMsg').textContent = t.savedSheet;
-    }catch(e){
+  document.getElementById('artMsg').style.color = 'var(--green)';
+  document.getElementById('artMsg').textContent = sheetConnected ? 'සුරකිමින්... (Google Sheet එකට)' : 'සුරැකිණි ✓ (Browser එකේ පමණි)';
+
+  if (sheetConnected) {
+    try {
+      await callSheet({ action: 'saveArticle', article: data });
+      document.getElementById('artMsg').textContent = 'සුරැකිණි ✓ (Google Sheet එකට)';
+    } catch(e) {
       console.error(e);
-      document.getElementById('artMsg').style.color = '#dc2626';
-      document.getElementById('artMsg').textContent = t.errSheet;
+      document.getElementById('artMsg').style.color = 'var(--brand-red)';
+      document.getElementById('artMsg').textContent = 'Sheet එකට save කිරීම අසාර්ථකයි.';
     }
   }
 
-  resetForm();
-  setTimeout(()=>{ document.getElementById('artMsg').textContent=''; }, 3500);
+  document.getElementById('f-id').value = '';
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-desc').value = '';
+  document.getElementById('f-img').value = '';
+
+  setTimeout(() => { 
+    document.getElementById('artMsg').textContent = ''; 
+  }, 3500);
 }
 
-/* Ticker Functions */
-function renderTickerEditor(){
+function renderTickerEditor() {
   const wrap = document.getElementById('tickerEditor');
   wrap.innerHTML = '';
-  siteData.ticker.forEach(text=> addTickerRow(text));
-  if(siteData.ticker.length === 0) addTickerRow('');
+  siteData.ticker.forEach(text => addTickerRow(text));
+  if (siteData.ticker.length === 0) addTickerRow('');
 }
 
-function addTickerRow(value){
+function addTickerRow(value) {
   const wrap = document.getElementById('tickerEditor');
   const row = document.createElement('div');
   row.className = 't-row';
-  row.innerHTML = `<input value="${esc(value)}" placeholder="පුවත් පේළිය ඇතුළත් කරන්න..."><button onclick="this.parentElement.remove()">✕</button>`;
+  row.innerHTML = `<input value="${esc(value)}" placeholder="පුවත් පේළිය..."><button onclick="this.parentElement.remove()">✕</button>`;
   wrap.appendChild(row);
 }
 
-async function saveTicker(){
-  const t = i18n[currentLang];
+async function saveTicker() {
   const rows = Array.from(document.querySelectorAll('#tickerEditor .t-row input'));
-  siteData.ticker = rows.map(r=>r.value.trim()).filter(Boolean);
+  siteData.ticker = rows.map(r => r.value.trim()).filter(Boolean);
   persist();
+
   const msg = document.getElementById('tickerMsg');
-  msg.style.color = 'var(--brand-red)';
-  msg.textContent = sheetConnected ? t.savingSheet : t.savedLocal;
-  
-  if(sheetConnected){
-    try{
-      await callSheet({action:'saveTicker', ticker: siteData.ticker});
-      msg.textContent = t.savedSheet;
-    }catch(e){
+  msg.style.color = 'var(--green)';
+  msg.textContent = sheetConnected ? 'සුරකිමින්...' : 'සුරැකිණි ✓ (Browser එකේ පමණි)';
+
+  if (sheetConnected) {
+    try {
+      await callSheet({ action: 'saveTicker', ticker: siteData.ticker });
+      msg.textContent = 'සුරැකිණි ✓ (Google Sheet එකට)';
+    } catch(e) {
       console.error(e);
-      msg.style.color = '#dc2626';
-      msg.textContent = t.errSheet;
-    }
-  }
-  setTimeout(()=>{ msg.textContent=''; }, 3500);
-}
-
-/* Ads Management Functions */
-function renderAdList(){
-  const t = i18n[currentLang];
-  document.getElementById('adList').innerHTML = siteData.ads.map((ad, idx)=>`
-    <div class="art-row">
-      ${ad.img ? `<img class="thumb" src="${esc(ad.img)}" onerror="this.style.display='none'">` : `<div class="thumb"></div>`}
-      <div class="meta">
-        <span class="tag" style="background:#fef3c7; color:#d97706;">Slot ${idx + 1}</span>
-        <h4>${esc(ad.title)}</h4>
-        <div style="font-size:12px; color:var(--text-muted);">${esc(ad.subtitle)}</div>
-      </div>
-      <div class="acts">
-        <button onclick="editAd(${idx})">${t.btnEdit}</button>
-      </div>
-    </div>`).join('') || `<div class="empty-note">දැන්වීම් නොමැත</div>`;
-}
-
-function editAd(index){
-  const ad = siteData.ads[index];
-  if(!ad) return;
-  document.getElementById('f-ad-slot').value = index;
-  document.getElementById('f-ad-title').value = ad.title || '';
-  document.getElementById('f-ad-subtitle').value = ad.subtitle || '';
-  document.getElementById('f-ad-img').value = ad.img || '';
-  document.getElementById('f-ad-link').value = ad.link || '';
-  document.getElementById('f-ad-id').value = ad.id || (index + 1);
-  document.getElementById('adMsg').textContent = '';
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-function resetAdForm(){
-  document.getElementById('f-ad-id').value = '';
-  document.getElementById('f-ad-title').value = '';
-  document.getElementById('f-ad-subtitle').value = '';
-  document.getElementById('f-ad-img').value = '';
-  document.getElementById('f-ad-link').value = '';
-  document.getElementById('adMsg').textContent = '';
-}
-
-async function saveAd(){
-  const t = i18n[currentLang];
-  const slotIndex = parseInt(document.getElementById('f-ad-slot').value);
-  const title = document.getElementById('f-ad-title').value.trim() || "දැන්වීම්";
-  const subtitle = document.getElementById('f-ad-subtitle').value.trim();
-  const img = document.getElementById('f-ad-img').value.trim();
-  const link = document.getElementById('f-ad-link').value.trim() || "#";
-
-  siteData.ads[slotIndex] = {
-    id: slotIndex + 1,
-    title,
-    subtitle,
-    img,
-    link
-  };
-
-  persist();
-  renderAdList();
-
-  const msg = document.getElementById('adMsg');
-  msg.style.color = 'var(--brand-red)';
-  msg.textContent = sheetConnected ? t.savingSheet : t.savedLocal;
-
-  if(sheetConnected){
-    try{
-      await callSheet({action:'saveAds', ads: siteData.ads});
-      msg.textContent = t.savedSheet;
-    }catch(e){
-      console.error(e);
-      msg.style.color = '#dc2626';
-      msg.textContent = t.errSheet;
+      msg.style.color = 'var(--brand-red)';
+      msg.textContent = 'Sheet එකට save කිරීම අසාර්ථකයි.';
     }
   }
 
-  resetAdForm();
-  setTimeout(()=>{ msg.textContent=''; }, 3500);
+  setTimeout(() => { 
+    msg.textContent = ''; 
+  }, 3500);
 }
-
-// Initial Language Setup
-setLanguage(currentLang);
 </script>
 </body>
 </html>
