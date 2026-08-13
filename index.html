@@ -788,6 +788,13 @@
       }));
     }
 
+    /* NEW: Ensures the most-recently-added row (last row in the sheet)
+       is always treated as the newest article, so it appears first
+       (top of hero/grid/category/search) everywhere in the site. */
+    function orderNewestFirst(articles) {
+      return (articles || []).slice().reverse();
+    }
+
     function translatePage(langCode) {
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
       const activeBtn = document.getElementById(`btn-lang-${langCode}`);
@@ -840,7 +847,7 @@
           if(json && (json.articles || json.ticker)){
             siteData = {
               ticker: json.ticker || [],
-              articles: sanitizeArticles(json.articles),
+              articles: orderNewestFirst(sanitizeArticles(json.articles)),
               ads: json.ads || []
             };
             localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData));
@@ -855,7 +862,7 @@
       const parsed = raw ? JSON.parse(raw) : { ticker: [], articles: [], ads: [] };
       siteData = {
         ticker: parsed.ticker || [],
-        articles: sanitizeArticles(parsed.articles),
+        articles: orderNewestFirst(sanitizeArticles(parsed.articles)),
         ads: parsed.ads || []
       };
       renderSite();
