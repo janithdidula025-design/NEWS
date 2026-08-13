@@ -88,7 +88,7 @@
       flex-wrap: wrap;
     }
 
-    /* Live Weather Badge Styling */
+    /* Dynamic Live Weather Badge Styling */
     .weather-badge {
       background: rgba(255, 255, 255, 0.1);
       padding: 2px 10px;
@@ -301,7 +301,7 @@
     .side-item h3 { font-size: 13.5px; line-height: 1.4; color: var(--text-main); font-weight: 700; }
     .side-item .time-badge { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
 
-    /* Video Play Icon Overlay for Thumbnails */
+    /* Video Play Icon Overlay */
     .img-wrapper {
       position: relative;
       width: 100%;
@@ -442,20 +442,21 @@
       background: var(--brand-red); 
       color: #fff; 
       border: none; 
-      padding: 10px 22px; 
+      padding: 12px 26px; 
       border-radius: var(--radius-sm); 
       cursor: pointer; 
       display: inline-flex; 
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       font-size: 14px; 
-      font-weight: 600;
-      transition: background 0.2s ease;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
     }
     .back-btn { margin-bottom: 20px; }
-    .back-btn:hover, .load-more-btn:hover { background: var(--brand-red-dark); }
+    .back-btn:hover, .load-more-btn:hover { background: var(--brand-red-dark); transform: translateY(-2px); box-shadow: var(--shadow-md); }
     
-    .load-more-container { text-align: center; margin: 20px 0 40px; }
+    .load-more-container { text-align: center; margin: 24px 0 40px; }
 
     /* Split Section */
     .split-section { 
@@ -650,9 +651,9 @@
   <div class="utility-bar">
     <div class="utility-left">
       <div id="today-date">--</div>
-      <!-- Live Weather Widget Badge -->
+      <!-- Dynamic Live Weather Widget Badge -->
       <div class="weather-badge" id="weather-badge">
-        📍 <span>කොළඹ</span>: <span id="weather-temp">--°C</span> <span id="weather-icon">🌤️</span>
+        📍 <span id="weather-location">සොයමින්...</span>: <span id="weather-temp">--°C</span> <span id="weather-icon">🌤️</span>
       </div>
     </div>
     <div>
@@ -664,7 +665,7 @@
 
   <!-- Header with Centered Logo -->
   <header>
-    <div class="eyebrow" id="txt-eyebrow">දිනපතා ප්‍රකාශනය · කොළඹ</div>
+    <div class="eyebrow" id="txt-eyebrow">දිනපතා ප්‍රකාශනය · ශ්‍රී ලංකාව</div>
     
     <a href="#" class="brand-logo-wrap" onclick="navigateTo('home'); return false;">
       <img src="https://raw.githubusercontent.com/janithdidula025-design/NEWS/f1a041b272990f893804db4da243cfa7b1ae3550/logo.jpeg" alt="ලංකා NEWS NOW" class="brand-logo">
@@ -728,13 +729,16 @@
     <div id="categoryView" style="display:none;">
       <button class="back-btn" onclick="navigateTo('home')" id="txt-back-home">← ප්‍රධාන පිටුවට</button>
       <div class="section-title" id="catTitle">Category</div>
+      
+      <!-- Grid for Articles -->
       <div class="card-grid" id="catGrid"></div>
       
       <!-- Category Ad Placement -->
       <div id="ad-slot-cat" class="ad-slot-container"></div>
 
+      <!-- Button to Reveal Older News -->
       <div class="load-more-container" id="loadMoreBox" style="display:none;">
-        <button class="load-more-btn" onclick="loadMoreCategoryItems()" id="txt-load-more">තවත් පුවත් බලන්න</button>
+        <button class="load-more-btn" onclick="loadMoreCategoryItems()" id="txt-load-more">පරණ පුවත් බලන්න 📜</button>
       </div>
     </div>
 
@@ -804,13 +808,51 @@
     let siteData = { ticker: [], articles: [], ads: [] };
     let currentCat = 'home';
     let categoryFilteredArticles = [];
-    let currentCategoryPage = 1;
-    const ITEMS_PER_PAGE = 12;
+    let showOlderArticlesState = false; // Flag to toggle older news
 
-    /* Live Weather Fetching Function (Colombo, Sri Lanka) */
-    async function fetchWeather() {
+    /* Helper Function: Check if Article is Published/Updated Today */
+    function isTodayArticle(a) {
+      if (!a) return false;
+      const val = (a.date || a.time || '').trim();
+      if (!val) return false;
+
+      const today = new Date();
+      
+      // Parse ISO or standard date formats
+      const parsedDate = new Date(val);
+      if (!isNaN(parsedDate.getTime())) {
+        return parsedDate.toDateString() === today.toDateString();
+      }
+
+      // String matching for YYYY-MM-DD or DD/MM/YYYY formats
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      
+      if (val.includes(`${yyyy}-${mm}-${dd}`) || val.includes(`${dd}/${mm}/${yyyy}`)) {
+        return true;
+      }
+
+      // Relative Sinhala/English time indicators (e.g., "පැය 2 කට පෙර", "මිනිත්තු 10 කට පෙර", "දැන්", "today")
+      const todayKeywords = ['පැය', 'මිනිත්තු', 'තත්පර', 'දැන්', 'today', 'Today', 'අද'];
+      return todayKeywords.some(kw => val.includes(kw));
+    }
+
+    /* Reverse Geocoding API to Get City Name from Coords */
+    async function getCityName(lat, lon) {
       try {
-        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=6.9271&longitude=79.8612&current_weather=true');
+        const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
+        const data = await res.json();
+        return data.city || data.locality || data.principalSubdivision || "ඔබ සිටින ස්ථානය";
+      } catch (e) {
+        return "ඔබ සිටින ස්ථානය";
+      }
+    }
+
+    /* Weather API Call for Dynamic Coordinates */
+    async function fetchWeatherForCoords(lat, lon, locationName = "කොළඹ") {
+      try {
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
         const data = await res.json();
         if (data && data.current_weather) {
           const temp = Math.round(data.current_weather.temperature);
@@ -822,11 +864,33 @@
           else if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) icon = '🌧️';
           else if ([95, 96, 99].includes(code)) icon = '⛈️';
 
+          document.getElementById('weather-location').textContent = locationName;
           document.getElementById('weather-temp').textContent = `${temp}°C`;
           document.getElementById('weather-icon').textContent = icon;
         }
       } catch (e) {
         console.error('Weather fetch failed:', e);
+        document.getElementById('weather-location').textContent = "කොළඹ";
+      }
+    }
+
+    /* Initialize Live Location Weather */
+    function initUserWeather() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const cityName = await getCityName(lat, lon);
+            fetchWeatherForCoords(lat, lon, cityName);
+          },
+          (error) => {
+            fetchWeatherForCoords(6.9271, 79.8612, "කොළඹ");
+          },
+          { timeout: 8000 }
+        );
+      } else {
+        fetchWeatherForCoords(6.9271, 79.8612, "කොළඹ");
       }
     }
 
@@ -1078,12 +1142,27 @@
           matchCategory(a.category, catKey)
         );
 
-        currentCategoryPage = 1;
+        showOlderArticlesState = false; // Reset to hide older news initially
         renderCategoryGrid();
       }
       scrollToTop();
     }
 
+    /* Helper Function to Render Single Card HTML */
+    function renderCardHtml(a) {
+      return `
+        <article class="card" onclick="openModal('${esc(a.id)}')">
+          ${renderImageHtml(a)}
+          <div class="meta-bar">
+            <span class="kicker">${esc(a.category)}</span>
+            ${a.time ? `<span class="time-badge">🕒 ${esc(a.time)}</span>` : ''}
+          </div>
+          <h3>${esc(a.title)}</h3>
+          <p>${esc(a.desc)}</p>
+        </article>`;
+    }
+
+    /* Updated Grid Rendering Logic: Show Today's News First, Older News on Click */
     function renderCategoryGrid() {
       const catGrid = document.getElementById('catGrid');
       const loadMoreBox = document.getElementById('loadMoreBox');
@@ -1094,28 +1173,32 @@
         return;
       }
 
-      const visibleItems = categoryFilteredArticles.slice(0, currentCategoryPage * ITEMS_PER_PAGE);
+      const todayArticles = categoryFilteredArticles.filter(isTodayArticle);
+      const olderArticles = categoryFilteredArticles.filter(a => !isTodayArticle(a));
 
-      catGrid.innerHTML = visibleItems.map(a => `
-        <article class="card" onclick="openModal('${esc(a.id)}')">
-          ${renderImageHtml(a)}
-          <div class="meta-bar">
-            <span class="kicker">${esc(a.category)}</span>
-            ${a.time ? `<span class="time-badge">🕒 ${esc(a.time)}</span>` : ''}
-          </div>
-          <h3>${esc(a.title)}</h3>
-          <p>${esc(a.desc)}</p>
-        </article>`).join('');
+      if (!showOlderArticlesState) {
+        // Mode 1: Display ONLY Today's Articles
+        if (todayArticles.length > 0) {
+          catGrid.innerHTML = todayArticles.map(renderCardHtml).join('');
+        } else {
+          catGrid.innerHTML = `<div class="empty-note">අද දින නිකුත් වූ නවතම පුවත් නොමැත. පරණ පුවත් බැලීමට පහත බොත්තම ඔබන්න.</div>`;
+        }
 
-      if (visibleItems.length < categoryFilteredArticles.length) {
-        loadMoreBox.style.display = 'block';
+        // Show "See More Older News" button if older articles exist
+        if (olderArticles.length > 0) {
+          loadMoreBox.style.display = 'block';
+        } else {
+          loadMoreBox.style.display = 'none';
+        }
       } else {
-        loadMoreBox.style.display = 'none';
+        // Mode 2: Display ALL Articles (Today + Older)
+        catGrid.innerHTML = categoryFilteredArticles.map(renderCardHtml).join('');
+        loadMoreBox.style.display = 'none'; // Hide button after clicking
       }
     }
 
     function loadMoreCategoryItems() {
-      currentCategoryPage++;
+      showOlderArticlesState = true;
       renderCategoryGrid();
     }
 
@@ -1249,7 +1332,7 @@
         (a.category && a.category.toLowerCase().includes(q))
       );
       
-      currentCategoryPage = 1;
+      showOlderArticlesState = false;
       renderCategoryGrid();
       scrollToTop();
     }
@@ -1280,7 +1363,7 @@
 
     // Initialization
     updateDate();
-    fetchWeather(); // Fetch live weather on load
+    initUserWeather();
     initActiveLanguage();
     buildNav();
     loadData();
