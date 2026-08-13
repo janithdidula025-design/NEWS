@@ -80,6 +80,26 @@
       flex-wrap: wrap;
       gap: 10px;
     }
+
+    .utility-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Live Weather Badge Styling */
+    .weather-badge {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #f8fafc;
+    }
     
     .lang-btn { 
       background: #334155; 
@@ -628,7 +648,13 @@
 
   <!-- Top Utility Bar -->
   <div class="utility-bar">
-    <div id="today-date">--</div>
+    <div class="utility-left">
+      <div id="today-date">--</div>
+      <!-- Live Weather Widget Badge -->
+      <div class="weather-badge" id="weather-badge">
+        📍 <span>කොළඹ</span>: <span id="weather-temp">--°C</span> <span id="weather-icon">🌤️</span>
+      </div>
+    </div>
     <div>
       <button class="lang-btn active" id="btn-lang-si" onclick="translatePage('si')">සිංහල</button>
       <button class="lang-btn" id="btn-lang-en" onclick="translatePage('en')">English</button>
@@ -781,6 +807,29 @@
     let currentCategoryPage = 1;
     const ITEMS_PER_PAGE = 12;
 
+    /* Live Weather Fetching Function (Colombo, Sri Lanka) */
+    async function fetchWeather() {
+      try {
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=6.9271&longitude=79.8612&current_weather=true');
+        const data = await res.json();
+        if (data && data.current_weather) {
+          const temp = Math.round(data.current_weather.temperature);
+          const code = data.current_weather.weathercode;
+          
+          let icon = '☀️';
+          if ([1, 2, 3].includes(code)) icon = '🌤️';
+          else if ([45, 48].includes(code)) icon = '🌫️';
+          else if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) icon = '🌧️';
+          else if ([95, 96, 99].includes(code)) icon = '⛈️';
+
+          document.getElementById('weather-temp').textContent = `${temp}°C`;
+          document.getElementById('weather-icon').textContent = icon;
+        }
+      } catch (e) {
+        console.error('Weather fetch failed:', e);
+      }
+    }
+
     function sanitizeArticles(articles) {
       return (articles || []).map((a, idx) => ({
         ...a,
@@ -788,9 +837,6 @@
       }));
     }
 
-    /* NEW: Ensures the most-recently-added row (last row in the sheet)
-       is always treated as the newest article, so it appears first
-       (top of hero/grid/category/search) everywhere in the site. */
     function orderNewestFirst(articles) {
       return (articles || []).slice().reverse();
     }
@@ -870,7 +916,6 @@
 
     function esc(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
     
-    // Robust YouTube Video ID Extraction
     function getYouTubeId(url) {
       if (!url || typeof url !== 'string') return null;
       const cleanUrl = url.trim();
@@ -879,7 +924,6 @@
       return (match && match[1]) ? match[1] : null;
     }
 
-    // Extract YouTube Link from flexible properties
     function getArticleYouTubeLink(a) {
       if (!a) return null;
       const candidates = [a.youtube, a.youtubelink, a.youtube_link, a.video, a.videourl, a.img];
@@ -894,7 +938,6 @@
     function getArticleImage(a) {
       if (!a) return '';
       
-      // If a direct image URL is provided (and it is NOT a YouTube URL)
       if (a.img && a.img.trim() !== '') {
         const ytIdFromImg = getYouTubeId(a.img);
         if (!ytIdFromImg) {
@@ -902,7 +945,6 @@
         }
       }
       
-      // Fallback: If YouTube link exists, get official YouTube high-quality thumbnail
       const ytLink = getArticleYouTubeLink(a);
       if (ytLink) {
         const ytId = getYouTubeId(ytLink);
@@ -914,7 +956,6 @@
       return '';
     }
 
-    // Render Image or Video Thumbnail with Play Overlay
     function renderImageHtml(a, cls) {
       const src = getArticleImage(a);
       const ytLink = getArticleYouTubeLink(a);
@@ -941,7 +982,6 @@
       return ytId ? `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0` : null;
     }
 
-    /* Category Mapper for Flexible Tab Matching */
     function matchCategory(artCat, targetCat) {
       if (!artCat || !targetCat) return false;
       const c1 = artCat.trim().toLowerCase();
@@ -966,7 +1006,6 @@
       return false;
     }
 
-    /* Ad Hide Logic */
     function renderAdSlot(elementId, adIndex) {
       const slotEl = document.getElementById(elementId);
       if (!slotEl) return;
@@ -1241,6 +1280,7 @@
 
     // Initialization
     updateDate();
+    fetchWeather(); // Fetch live weather on load
     initActiveLanguage();
     buildNav();
     loadData();
