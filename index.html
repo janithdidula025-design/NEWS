@@ -633,6 +633,7 @@
     let categoryFilteredArticles = [];
     let showOlderArticlesState = false;
     let homeGridLimit = 6;
+    let currentActiveArticle = null;
 
     /* Generic Case-Insensitive Field Fetcher */
     function getFieldValue(a, fieldKeys) {
@@ -663,7 +664,7 @@
     /* Get YouTube Link From Any Possible Column */
     function getArticleYouTubeLink(a) {
       if (!a) return null;
-      const possibleKeys = ['youtube', 'youtubelink', 'youtube_link', 'video', 'videourl', 'video_url', 'videolink', 'link', 'url', 'img', 'image'];
+      const possibleKeys = ['youtube', 'youtubelink', 'youtube_link', 'video', 'videourl', 'video_url', 'videolink'];
       for (let key of possibleKeys) {
         const val = getFieldValue(a, [key]);
         if (val && getYouTubeId(val)) {
@@ -793,7 +794,8 @@
       const interval = setInterval(() => {
         const select = document.querySelector('.goog-te-combo');
         if (select) {
-          select.value = langCode;
+          const hasOption = Array.from(select.options).some(opt => opt.value === langCode);
+          select.value = hasOption ? langCode : (langCode === 'si' ? '' : langCode);
           select.dispatchEvent(new Event('change'));
           clearInterval(interval);
         }
@@ -1130,7 +1132,11 @@
 
       renderAllAds();
 
-      if(currentCat !== 'home' && currentCat !== 'search') navigateTo(currentCat);
+      if(currentCat === 'search') {
+        doSearch();
+      } else if(currentCat !== 'home') {
+        navigateTo(currentCat);
+      }
     }
 
     function showGenericModal(htmlContent) {
@@ -1140,10 +1146,31 @@
       document.body.style.overflow = 'hidden';
     }
 
-    /* Fixed & Enhanced Article Modal with YouTube Support */
+    /* Social Share Helpers to avoid quote escaping syntax errors */
+    function shareWhatsApp() {
+      if (!currentActiveArticle) return;
+      const title = getFieldValue(currentActiveArticle, ['title', 'heading']);
+      window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(title + ' - ' + window.location.href), '_blank');
+    }
+
+    function shareFacebook() {
+      window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href), '_blank');
+    }
+
+    function copyArticleLink() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('ලින්ක් එක කොපි කරගන්නා ලදී!');
+      }).catch(() => {
+        alert('ලින්ක් එක කොපි කිරීමට අපොහොසත් විය.');
+      });
+    }
+
+    /* Article Modal Handler */
     function openModal(id){
       const a = siteData.articles.find(x => String(x.id) === String(id));
       if(!a) return;
+
+      currentActiveArticle = a;
 
       const ytLink = getArticleYouTubeLink(a);
       const ytId = ytLink ? getYouTubeId(ytLink) : null;
@@ -1181,9 +1208,9 @@
         <!-- Social Share Buttons -->
         <div style="margin-top:20px; padding-top:14px; border-top:1px solid var(--border-color); display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
           <span style="font-size:13px; font-weight:700; color:var(--text-muted);">බෙදාගන්න:</span>
-          <button class="lang-btn" style="background:#25D366; border:none;" onclick="window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent('${esc(title)} - ' + window.location.href), '_blank')">WhatsApp</button>
-          <button class="lang-btn" style="background:#1877F2; border:none;" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href), '_blank')">Facebook</button>
-          <button class="lang-btn" style="background:#64748b; border:none;" onclick="navigator.clipboard.writeText(window.location.href); alert('ලින්ක් එක කොපි කරගන්නා ලදී!');">🔗 Link Copy</button>
+          <button class="lang-btn" style="background:#25D366; border:none;" onclick="shareWhatsApp()">WhatsApp</button>
+          <button class="lang-btn" style="background:#1877F2; border:none;" onclick="shareFacebook()">Facebook</button>
+          <button class="lang-btn" style="background:#64748b; border:none;" onclick="copyArticleLink()">🔗 Link Copy</button>
         </div>
       `;
       showGenericModal(content);
@@ -1257,13 +1284,12 @@
       const modal = document.getElementById('articleModal');
       modal.classList.remove('active');
       document.body.style.overflow = '';
-      setTimeout(() => {
-        const modalBox = document.getElementById('modalContent');
-        if(modalBox) modalBox.innerHTML = '';
-      }, 200);
+      const modalBox = document.getElementById('modalContent');
+      if(modalBox) modalBox.innerHTML = '';
+      currentActiveArticle = null;
     }
 
-    /* Fixed & Improved Search Functionality */
+    /* Fixed Search Functionality */
     function doSearch(){
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
       if(!q) return;
