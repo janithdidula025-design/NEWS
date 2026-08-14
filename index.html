@@ -50,6 +50,83 @@
       overflow-x: hidden;
     }
 
+    /* Page Intro Preloader Animation Styles */
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #0f172a;
+      z-index: 999999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #preloader.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader-wrapper {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loader-ring {
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      border-top-color: var(--brand-red);
+      border-right-color: var(--brand-red);
+      border-radius: 50%;
+      animation: spinRing 1.1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+    }
+
+    .loader-logo {
+      width: 95px;
+      height: 95px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 25px rgba(184, 25, 31, 0.6);
+      animation: pulseLogo 1.6s ease-in-out infinite alternate;
+    }
+
+    .loader-brand-text {
+      margin-top: 22px;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-family: 'Inter', 'Noto Sans Sinhala', sans-serif;
+      animation: glowText 1.6s ease-in-out infinite alternate;
+    }
+
+    @keyframes spinRing {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes pulseLogo {
+      0% { transform: scale(0.92); filter: drop-shadow(0 0 6px rgba(184, 25, 31, 0.4)); }
+      100% { transform: scale(1.06); filter: drop-shadow(0 0 20px rgba(184, 25, 31, 0.9)); }
+    }
+
+    @keyframes glowText {
+      0% { opacity: 0.5; transform: translateY(0); }
+      100% { opacity: 1; transform: translateY(-2px); }
+    }
+
     /* Page load fade-in animation */
     @keyframes fadeInPage {
       from { opacity: 0; transform: translateY(8px); }
@@ -160,7 +237,7 @@
       margin: 6px 0;
     }
     
-    /* Logo විශාල කිරීම සදහා max-height වෙනස් කරන ලදී */
+    /* Logo max-height */
     .brand-logo {
       max-height: 140px; 
       width: auto;
@@ -744,6 +821,15 @@
 </head>
 <body>
 
+  <!-- Fullscreen Intro Animation Preloader Overlay -->
+  <div id="preloader">
+    <div class="loader-wrapper">
+      <div class="loader-ring"></div>
+      <img src="https://raw.githubusercontent.com/janithdidula025-design/NEWS/f1a041b272990f893804db4da243cfa7b1ae3550/logo.jpeg" alt="Lanka News Now Logo" class="loader-logo">
+    </div>
+    <div class="loader-brand-text">ලංකා NEWS NOW</div>
+  </div>
+
   <!-- Google Translate Off-screen Container -->
   <div id="google_translate_element"></div>
 
@@ -910,6 +996,16 @@
     let categoryFilteredArticles = [];
     let showOlderArticlesState = false;
 
+    /* Hide Animation Preloader Smoothly */
+    function hidePreloader() {
+      const preloader = document.getElementById('preloader');
+      if (preloader && !preloader.classList.contains('fade-out')) {
+        setTimeout(() => {
+          preloader.classList.add('fade-out');
+        }, 500); // smooth animation timing
+      }
+    }
+
     /* Helper Function: Check if Article is Published/Updated Today */
     function isTodayArticle(a) {
       if (!a) return false;
@@ -1059,6 +1155,7 @@
             };
             localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData));
             renderSite();
+            hidePreloader();
             return;
           }
         }catch(e){
@@ -1073,6 +1170,7 @@
         ads: parsed.ads || []
       };
       renderSite();
+      hidePreloader();
     }
 
     function esc(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -1531,6 +1629,11 @@
         closeModal();
       }
     };
+
+    /* Backup Safety Hide Preloader on Window Load */
+    window.addEventListener('load', () => {
+      hidePreloader();
+    });
 
     // Initialization
     updateDate();
