@@ -211,21 +211,67 @@
       transform: translateY(-1px);
     }
 
-    /* Header */
+    /* Header with Dynamic Slideshow Background */
     header { 
-      background-color: var(--card-bg); 
+      position: relative;
+      background-color: #0f172a; 
       border-bottom: 1px solid var(--border-color); 
-      padding: 20px 16px; 
+      padding: 28px 16px; 
       text-align: center; 
       display: flex;
       flex-direction: column;
       align-items: center;
+      overflow: hidden;
+      color: #ffffff;
+    }
+
+    /* Background Slideshow Containers */
+    .header-bg-slideshow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .bg-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out, transform 6s ease-out;
+      transform: scale(1);
+    }
+
+    .bg-slide.active {
+      opacity: 0.22; /* Lawata pennanna opacity eka adu kara */
+      transform: scale(1.05);
+    }
+
+    .header-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.75) 0%, rgba(15, 23, 42, 0.88) 100%);
+      z-index: 2;
+    }
+
+    header > * {
+      position: relative;
+      z-index: 3;
     }
     
     .eyebrow { 
       font-size: 11px; 
       letter-spacing: 1.5px; 
-      color: var(--brand-grey); 
+      color: #94a3b8; 
       text-transform: uppercase; 
       font-weight: 700;
       margin-bottom: 6px;
@@ -243,25 +289,27 @@
       width: auto;
       max-width: 100%;
       object-fit: contain;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .brand-logo:hover { transform: scale(1.03); }
 
-    .tagline { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+    .tagline { font-size: 13.5px; color: #cbd5e1; font-weight: 500; margin-top: 2px; }
 
     /* Search Bar */
     .search-box { margin-top: 16px; display: flex; justify-content: center; width: 100%; max-width: 450px; }
     .search-box input { 
       padding: 10px 16px; 
       width: 100%;
-      border: 1px solid var(--border-color); 
+      border: 1px solid rgba(255,255,255,0.2); 
       border-radius: var(--radius) 0 0 var(--radius); 
       outline: none; 
       font-size: 14px;
-      background: var(--bg-color);
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--text-main);
       transition: all 0.3s ease;
     }
-    .search-box input:focus { border-color: var(--brand-red); background: #fff; box-shadow: 0 0 0 3px rgba(184, 25, 31, 0.1); }
+    .search-box input:focus { border-color: var(--brand-red); background: #fff; box-shadow: 0 0 0 3px rgba(184, 25, 31, 0.3); }
     .search-box button { 
       padding: 10px 20px; 
       background: var(--brand-red); 
@@ -849,8 +897,19 @@
     </div>
   </div>
 
-  <!-- Header with Centered Logo -->
+  <!-- Header with Centered Logo & Lawata Pennana News Slideshow Background -->
   <header>
+    <!-- Dynamic Slideshow Container -->
+    <div class="header-bg-slideshow" id="headerSlideshow">
+      <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1600&auto=format&fit=crop');"></div>
+      <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1495020689067-958852a7765e?q=80&w=1600&auto=format&fit=crop');"></div>
+      <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=1600&auto=format&fit=crop');"></div>
+      <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1526470608268-f674ce90ebd4?q=80&w=1600&auto=format&fit=crop');"></div>
+    </div>
+    
+    <!-- Dark Gradient Overlay for Readability -->
+    <div class="header-overlay"></div>
+
     <div class="eyebrow" id="txt-eyebrow">දිනපතා ප්‍රකාශනය · ශ්‍රී ලංකාව</div>
     
     <a href="#" class="brand-logo-wrap" onclick="navigateTo('home'); return false;">
@@ -996,14 +1055,27 @@
     let categoryFilteredArticles = [];
     let showOlderArticlesState = false;
 
-    /* Hide Animation Preloader Smoothly */
+    /* Hide Animation Preloader (Exactly 1 Second Load Time) */
     function hidePreloader() {
       const preloader = document.getElementById('preloader');
       if (preloader && !preloader.classList.contains('fade-out')) {
         setTimeout(() => {
           preloader.classList.add('fade-out');
-        }, 500); // smooth animation timing
+        }, 1000); // Thaparayak (1 second) web load eka thiyama
       }
+    }
+
+    /* Auto Background Image Changer Header Logic */
+    function initHeaderSlideshow() {
+      const slides = document.querySelectorAll('#headerSlideshow .bg-slide');
+      if (!slides.length) return;
+      let currentSlideIndex = 0;
+
+      setInterval(() => {
+        slides[currentSlideIndex].classList.remove('active');
+        currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+        slides[currentSlideIndex].classList.add('active');
+      }, 4000); // Thapara 4kata warak maru wei
     }
 
     /* Helper Function: Check if Article is Published/Updated Today */
@@ -1639,6 +1711,7 @@
     updateDate();
     initUserWeather();
     initActiveLanguage();
+    initHeaderSlideshow();
     buildNav();
     loadData();
   </script>
