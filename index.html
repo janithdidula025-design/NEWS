@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lanka News Now</title>
   
-  <!-- Browser Tab Favicon Logo - Updated to new logo -->
+  <!-- Browser Tab Favicon Logo -->
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png">
   <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png">
 
@@ -16,21 +16,21 @@
 
   <style>
     :root {
-      /* NEW Palette based strictly on Image Logo */
-      --brand-green-dark: #124c3e;  /* "ලංකා" text and frame color */
-      --brand-red-maroon: #851e3e;   /* "NEWS NOW" text color */
-      --brand-gold: #f5b11c;         /* Circle color around 'O' */
-      --brand-gold-dark: #d69815;    /* For hover states on gold */
+      /* Palette based strictly on Image Logo */
+      --brand-green-dark: #124c3e;  
+      --brand-red-maroon: #851e3e;   
+      --brand-gold: #f5b11c;         
+      --brand-gold-dark: #d69815;    
       
       /* UI Neutral Colors */
-      --bg-color: #f1f5f1;           /* Very light green-greyish background */
+      --bg-color: #f1f5f1;           
       --card-bg: #ffffff;
-      --border-color: #d1dbd1;       /* Light green-tinted border */
-      --text-main: #0f1712;          /* Near black with green tint */
+      --border-color: #d1dbd1;       
+      --text-main: #0f1712;          
       --text-muted: #5c6b61;
       
       /* Accents */
-      --top-bar-bg: #121a15;         /* Dark green-black for utility bar */
+      --top-bar-bg: #121a15;         
       
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
       --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -1px rgba(0,0,0,0.04);
@@ -53,14 +53,14 @@
       overflow-x: hidden;
     }
 
-    /* Page Intro Preloader Animation Styles - Background updated to match theme */
+    /* Page Intro Preloader Animation Styles */
     #preloader {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: var(--top-bar-bg); /* Dark theme background */
+      background: var(--top-bar-bg);
       z-index: 999999;
       display: flex;
       flex-direction: column;
@@ -89,7 +89,7 @@
       width: 130px;
       height: 130px;
       border: 4px solid rgba(255, 255, 255, 0.1);
-      border-top-color: var(--brand-gold); /* Using Gold accent */
+      border-top-color: var(--brand-gold);
       border-right-color: var(--brand-gold);
       border-radius: 50%;
       animation: spinRing 1.1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
@@ -99,10 +99,10 @@
       width: 95px;
       height: 95px;
       border-radius: 50%;
-      object-fit: contain; /* containment needed for square logos */
-      background: #fff; /* White background for the square logo in a circle loader */
+      object-fit: contain;
+      background: #fff;
       padding: 5px;
-      box-shadow: 0 0 25px rgba(245, 177, 28, 0.6); /* Gold glow */
+      box-shadow: 0 0 25px rgba(245, 177, 28, 0.6);
       animation: pulseLogo 1.6s ease-in-out infinite alternate;
     }
 
@@ -142,7 +142,7 @@
       animation: fadeInPage 0.5s ease-out;
     }
 
-    /* Hide Google Translate top frame, banners & toolbars */
+    /* Hide Google Translate top frame & toolbars */
     .goog-te-banner-frame, 
     .goog-te-balloon-frame,
     .skiptranslate,
@@ -158,10 +158,10 @@
       pointer-events: none !important;
     }
 
-    /* Top Utility Bar - Dark Green/Black theme */
+    /* Top Utility Bar */
     .utility-bar { 
       background-color: var(--top-bar-bg); 
-      color: #e2e8e2; /* Light green tint text */
+      color: #e2e8e2; 
       padding: 8px 5%; 
       display: flex; 
       justify-content: space-between; 
@@ -180,7 +180,6 @@
       flex-wrap: wrap;
     }
 
-    /* Dynamic Live Weather Badge Styling - Accent color is Gold */
     .weather-badge {
       background: rgba(255, 255, 255, 0.08);
       padding: 2px 10px;
@@ -197,11 +196,11 @@
       background: rgba(255, 255, 255, 0.15);
     }
     .weather-badge #weather-icon {
-      color: var(--brand-gold); /* Weather icons in Gold */
+      color: var(--brand-gold); 
     }
     
     .lang-btn { 
-      background: #233028; /* Slightly lighter than top bar */
+      background: #233028; 
       border: 1px solid #364a3e; 
       color: #e2e8e2; 
       padding: 4px 12px; 
@@ -213,8 +212,8 @@
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
     }
     .lang-btn:hover, .lang-btn.active { 
-      background-color: var(--brand-gold); /* Gold active/hover state */
-      color: #121a15; /* Dark text on gold */
+      background-color: var(--brand-gold); 
+      color: #121a15; 
       border-color: var(--brand-gold); 
       transform: translateY(-1px);
     }
@@ -222,7 +221,7 @@
     /* Header with Dynamic Slideshow Background */
     header { 
       position: relative;
-      background-color: #0b110e; /* Even darker green-black */
+      background-color: #0b110e; 
       border-bottom: 1px solid var(--border-color); 
       padding: 28px 16px; 
       text-align: center; 
@@ -233,7 +232,6 @@
       color: #ffffff;
     }
 
-    /* Background Slideshow Containers */
     .header-bg-slideshow {
       position: absolute;
       top: 0;
@@ -257,7 +255,7 @@
     }
 
     .bg-slide.active {
-      opacity: 0.18; /* Lawata pennanna opacity eka adu kara */
+      opacity: 0.18; 
       transform: scale(1.05);
     }
 
@@ -289,15 +287,14 @@
       display: inline-block;
       text-decoration: none;
       margin: 6px 0;
-      background: #fff; /* Square logo needs a background container usually */
+      background: #fff; 
       padding: 10px;
       border-radius: var(--radius-sm);
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     
-    /* Logo max-height updated based on the new square logo format */
     .brand-logo {
-      max-height: 160px; /* New logo is taller than the old one */
+      max-height: 140px; 
       width: auto;
       max-width: 100%;
       object-fit: contain;
@@ -307,7 +304,7 @@
 
     .tagline { font-size: 13.5px; color: #cbd5e1; font-weight: 500; margin-top: 2px; }
 
-    /* Search Bar - Maroon border focus */
+    /* Search Bar */
     .search-box { margin-top: 16px; display: flex; justify-content: center; width: 100%; max-width: 450px; }
     .search-box input { 
       padding: 10px 16px; 
@@ -323,7 +320,7 @@
     .search-box input:focus { border-color: var(--brand-red-maroon); background: #fff; box-shadow: 0 0 0 3px rgba(133, 30, 62, 0.2); }
     .search-box button { 
       padding: 10px 20px; 
-      background: var(--brand-red-maroon); /* Red search button */
+      background: var(--brand-red-maroon); 
       color: #fff; 
       border: none; 
       border-radius: 0 var(--radius) var(--radius) 0; 
@@ -332,10 +329,10 @@
       font-weight: 600;
       transition: background 0.2s ease, transform 0.1s ease;
     }
-    .search-box button:hover { background: #6b1832; /* Darker Maroon */ }
+    .search-box button:hover { background: #6b1832; }
     .search-box button:active { transform: scale(0.95); }
 
-    /* Navigation Bar - Dark Green theme */
+    /* Navigation Bar */
     nav { 
       background-color: var(--brand-green-dark); 
       position: sticky; 
@@ -369,7 +366,7 @@
     nav li a:hover, nav li.active a { 
       background-color: rgba(0,0,0,0.2); 
       color: #ffffff; 
-      border-bottom-color: var(--brand-gold); /* Gold bottom border on active nav */
+      border-bottom-color: var(--brand-gold); 
       transform: translateY(-1px);
     }
 
@@ -384,7 +381,7 @@
       box-shadow: var(--shadow-sm);
     }
     .ticker-label { 
-      background: var(--top-bar-bg); /* Dark label */
+      background: var(--top-bar-bg); 
       color: #fff; 
       padding: 0 16px; 
       height: 100%; 
@@ -420,7 +417,7 @@
       border: 1px solid var(--border-color); 
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
     }
-    .hero-main:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: rgba(18, 76, 62, 0.3); /* Green border on hover */ }
+    .hero-main:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: rgba(18, 76, 62, 0.3); }
     .hero-main img, .hero-main .ph { 
       width: 100%; 
       height: 250px; 
@@ -436,7 +433,7 @@
       align-items: center;
       padding: 14px 16px 0;
     }
-    .hero-main .kicker { color: var(--brand-green-dark); /* Green kicker */ font-weight: 700; font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; }
+    .hero-main .kicker { color: var(--brand-green-dark); font-weight: 700; font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; }
     .hero-main .time-badge { font-size: 11px; color: var(--text-muted); font-weight: 500; }
     .hero-main h2 { padding: 6px 16px 10px; font-size: clamp(20px, 4vw, 26px); color: var(--text-main); line-height: 1.3; font-weight: 800; transition: color 0.2s ease; }
     .hero-main:hover h2 { color: var(--brand-green-dark); }
@@ -462,7 +459,7 @@
     .side-item:hover h3 { color: var(--brand-green-dark); }
     .side-item .time-badge { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
 
-    /* Video Play Icon Overlay - Updated to Red maroon background */
+    /* Video Play Overlay */
     .img-wrapper {
       position: relative;
       width: 100%;
@@ -480,7 +477,7 @@
       transform: translate(-50%, -50%);
       width: 38px;
       height: 38px;
-      background: rgba(133, 30, 62, 0.9); /* Red Maroon background */
+      background: rgba(133, 30, 62, 0.9); 
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -537,7 +534,6 @@
     .ad-slot-container img:hover {
       transform: scale(1.01);
     }
-    /* Text Ad Banner - Updated to Dark Green theme */
     .ad-banner {
       background: linear-gradient(135deg, #0f1712 0%, #233028 100%);
       border-radius: var(--radius);
@@ -576,7 +572,7 @@
       font-size: 18px; 
       font-weight: 800; 
       margin-bottom: 16px; 
-      border-bottom: 3px solid var(--brand-green-dark); /* Green border under section titles */
+      border-bottom: 3px solid var(--brand-green-dark); 
       padding-bottom: 6px; 
       color: var(--brand-green-dark); 
       display: flex;
@@ -610,7 +606,7 @@
     .card:hover h3 { color: var(--brand-green-dark); }
     .card p { font-size: 13px; color: var(--text-muted); padding: 0 14px 14px; margin-top: auto; }
 
-    /* Load More & Back Buttons - Using Maroon with Gold accent on hover */
+    /* Load More & Back Buttons */
     .back-btn, .load-more-btn { 
       background: var(--brand-red-maroon); 
       color: #fff; 
@@ -650,7 +646,6 @@
     .strip-card:hover {
       box-shadow: var(--shadow-md);
     }
-    /* Updated headers inside split sections to Green based on logo */
     .strip-card h4.section-sub-hdr {
       color: var(--brand-green-dark) !important;
       border-bottom: 2px solid var(--brand-green-dark) !important;
@@ -672,9 +667,9 @@
       padding-right: 4px;
     }
     .strip-row:last-child { border-bottom: none; }
-    .strip-row:hover { transform: translateX(6px); background-color: rgba(18, 76, 62, 0.04); /* Light green tint on hover */ }
+    .strip-row:hover { transform: translateX(6px); background-color: rgba(18, 76, 62, 0.04); }
     .strip-row:hover a { color: var(--brand-green-dark); }
-    .strip-row .num { font-weight: 800; color: var(--brand-gold); /* Gold numbers for lists */ width: 26px; font-size: 15px; flex-shrink: 0; }
+    .strip-row .num { font-weight: 800; color: var(--brand-gold); width: 26px; font-size: 15px; flex-shrink: 0; }
     .strip-row a { color: var(--text-main); font-weight: 600; text-decoration: none; flex-grow: 1; transition: color 0.2s ease; }
     .strip-row .time-badge { font-size: 11px; color: var(--text-muted); margin-left: 8px; flex-shrink: 0; }
 
@@ -698,7 +693,7 @@
     .gallery-item:hover {
       transform: scale(1.06) rotate(1deg);
       box-shadow: var(--shadow-md);
-      border-color: var(--brand-gold); /* Gold border on hover */
+      border-color: var(--brand-gold);
     }
     .gallery-item img {
       width: 100%;
@@ -714,7 +709,7 @@
     .gallery-item .gallery-title {
       position: absolute;
       bottom: 0; left: 0; right: 0;
-      background: rgba(11, 17, 14, 0.85); /* Dark green-black overlay */
+      background: rgba(11, 17, 14, 0.85);
       backdrop-filter: blur(2px);
       color: #ffffff;
       font-size: 11px;
@@ -725,7 +720,7 @@
       font-weight: 500;
     }
 
-    /* Floating Back to Top Button - Red Maroon background */
+    /* Floating Back to Top Button */
     .back-to-top {
       position: fixed;
       bottom: 25px;
@@ -748,14 +743,14 @@
       border: none;
     }
     .back-to-top.show { opacity: 1; visibility: visible; }
-    .back-to-top:hover { background-color: #6b1832; /* Darker Maroon */ transform: translateY(-5px) scale(1.05); }
+    .back-to-top:hover { background-color: #6b1832; transform: translateY(-5px) scale(1.05); }
 
     /* Modal (Popup) */
     .modal { 
       display: none; 
       position: fixed; 
       top:0; left:0; width:100%; height:100%; 
-      background: rgba(11, 17, 14, 0.75); /* Dark green-black tint overlay */
+      background: rgba(11, 17, 14, 0.75);
       backdrop-filter: blur(6px);
       z-index: 1000; 
       justify-content: center; 
@@ -816,20 +811,20 @@
 
     .empty-note { padding: 24px; text-align: center; color: var(--text-muted); font-style: italic; width: 100%; background: var(--card-bg); border-radius: var(--radius); border: 1px dashed var(--border-color); }
 
-    /* Footer & Social Icons - Dark Green background with Gold top border */
+    /* Footer & Social Icons */
     footer { 
       background: var(--top-bar-bg); 
-      color: #a3b0a8; /* Muted light green-grey text */
+      color: #a3b0a8; 
       padding: 40px 16px 28px; 
       font-size: 13.5px; 
-      border-top: 4px solid var(--brand-gold); /* Gold top border on footer */
+      border-top: 4px solid var(--brand-gold); 
       text-align: center;
     }
     .footer-logo {
-      max-height: 100px;
+      max-height: 90px;
       width: auto;
       margin-bottom: 14px;
-      background: #fff; /* Square logo needs white background usually in dark footer */
+      background: #fff; 
       padding: 8px;
       border-radius: var(--radius-sm);
       transition: transform 0.3s ease;
@@ -838,7 +833,7 @@
       transform: scale(1.04);
     }
     
-    /* Social Media Links Bar - Using Maroon background for buttons */
+    /* Social Media Links Bar */
     .social-links {
       display: flex;
       justify-content: center;
@@ -853,13 +848,12 @@
       width: 38px;
       height: 38px;
       border-radius: 50%;
-      background: var(--brand-red-maroon); /* Social buttons Maroon */
+      background: var(--brand-red-maroon); 
       color: #ffffff;
       text-decoration: none;
       transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .social-btn:hover { transform: translateY(-4px) scale(1.1); }
-    /* Hover special cases can remain standard or be themed to gold */
     .social-btn.facebook:hover { background-color: #1877f2; box-shadow: 0 4px 10px rgba(24, 119, 242, 0.4); }
     .social-btn.instagram:hover { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); box-shadow: 0 4px 10px rgba(220, 39, 67, 0.4); }
     .social-btn.x-twitter:hover { background-color: #000000; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); }
@@ -868,12 +862,14 @@
 
     .footer-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 18px; flex-wrap: wrap; }
     .footer-links a { color: #e2e8e2; text-decoration: none; font-weight: 500; transition: color 0.2s ease, transform 0.2s ease; cursor: pointer; display: inline-block; }
-    .footer-links a:hover { color: var(--brand-gold); /* Links turn Gold on hover */ text-decoration: underline; transform: translateY(-1px); }
+    .footer-links a:hover { color: var(--brand-gold); text-decoration: underline; transform: translateY(-1px); }
     #txt-footer-copy { color: #f8fafc; font-weight: 600; }
 
     /* Responsive Breakpoints */
     @media (max-width: 640px) {
-      .brand-logo { max-height: 120px; } /* Adjusted max height for new square logo on mobile */
+      .brand-logo { max-height: 110px; }
+      .utility-bar { justify-content: center; text-align: center; }
+      .utility-left { justify-content: center; }
     }
 
     @media (min-width: 640px) {
@@ -894,24 +890,22 @@
 </head>
 <body>
 
-  <!-- Fullscreen Intro Animation Preloader Overlay -->
+  <!-- Preloader Overlay -->
   <div id="preloader">
     <div class="loader-wrapper">
       <div class="loader-ring"></div>
-      <!-- Preloader Logo Updated -->
       <img src="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png" alt="Lanka News Now Logo" class="loader-logo">
     </div>
     <div class="loader-brand-text">ලංකා NEWS NOW</div>
   </div>
 
-  <!-- Google Translate Off-screen Container -->
+  <!-- Google Translate Element -->
   <div id="google_translate_element"></div>
 
   <!-- Top Utility Bar -->
   <div class="utility-bar">
     <div class="utility-left">
       <div id="today-date">--</div>
-      <!-- Dynamic Live Weather Widget Badge -->
       <div class="weather-badge" id="weather-badge">
         <span id="weather-icon">📍</span> <span id="weather-location">සොයමින්...</span>: <span id="weather-temp">--°C</span> <span id="weather-condition">🌤️</span>
       </div>
@@ -923,9 +917,8 @@
     </div>
   </div>
 
-  <!-- Header with Centered Logo & Lawata Pennana News Slideshow Background -->
+  <!-- Header -->
   <header>
-    <!-- Dynamic Slideshow Container -->
     <div class="header-bg-slideshow" id="headerSlideshow">
       <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1600&auto=format&fit=crop');"></div>
       <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1495020689067-958852a7765e?q=80&w=1600&auto=format&fit=crop');"></div>
@@ -933,13 +926,11 @@
       <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1526470608268-f674ce90ebd4?q=80&w=1600&auto=format&fit=crop');"></div>
     </div>
     
-    <!-- Dark Gradient Overlay for Readability -->
     <div class="header-overlay"></div>
 
     <div class="eyebrow" id="txt-eyebrow">දිනපතා ප්‍රකාශනය · ශ්‍රී ලංකාව</div>
     
     <a href="#" class="brand-logo-wrap" onclick="navigateTo('home'); return false;">
-      <!-- Main Logo Updated -->
       <img src="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png" alt="ලංකා NEWS NOW" class="brand-logo">
     </a>
     
@@ -970,10 +961,7 @@
     <div id="homeView">
       <div class="hero-grid" id="heroSection"></div>
       
-      <!-- Ad Placement 2 -->
       <div id="ad-slot-2" class="ad-slot-container"></div>
-
-      <!-- Ad Placement 3 -->
       <div id="ad-slot-3" class="ad-slot-container"></div>
 
       <div class="section-title" id="txt-sports-biz-title">ක්‍රීඩා සහ ව්‍යාපාර</div>
@@ -988,7 +976,6 @@
         </div>
       </div>
 
-      <!-- Ad Placement 4 -->
       <div id="ad-slot-4" class="ad-slot-container"></div>
     </div>
 
@@ -997,13 +984,10 @@
       <button class="back-btn" onclick="navigateTo('home')" id="txt-back-home">← ප්‍රධාන පිටුවට</button>
       <div class="section-title" id="catTitle">Category</div>
       
-      <!-- Grid for Articles -->
       <div class="card-grid" id="catGrid"></div>
       
-      <!-- Category Ad Placement -->
       <div id="ad-slot-cat" class="ad-slot-container"></div>
 
-      <!-- Button to Reveal Older News -->
       <div class="load-more-container" id="loadMoreBox" style="display:none;">
         <button class="load-more-btn" onclick="loadMoreCategoryItems()" id="txt-load-more">පරණ පුවත් බලන්න 📜</button>
       </div>
@@ -1011,7 +995,7 @@
 
   </div>
 
-  <!-- Article / General Info Popup Modal -->
+  <!-- Popup Modal -->
   <div class="modal" id="articleModal">
     <div class="modal-box">
       <button class="modal-close" onclick="closeModal()">&times;</button>
@@ -1019,17 +1003,15 @@
     </div>
   </div>
 
-  <!-- Back to Top Arrow Button -->
+  <!-- Back to Top Button -->
   <button class="back-to-top" id="backToTopBtn" onclick="scrollToTop()">▲</button>
 
   <!-- Footer -->
   <footer>
     <div>
-      <!-- Footer Logo Updated -->
       <img src="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png" alt="ලංකා NEWS NOW" class="footer-logo">
     </div>
 
-    <!-- Social Media Links -->
     <div class="social-links">
       <a href="https://www.facebook.com/share/1DL1r2zzA6/" target="_blank" rel="noopener noreferrer" class="social-btn facebook" title="Facebook">
         <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -1045,7 +1027,6 @@
       </a>
     </div>
 
-    <!-- Interactive Footer Links Popup Buttons -->
     <div class="footer-links">
       <a onclick="openAboutModal()" id="txt-about">අප ගැන</a>
       <a onclick="openContactModal()" id="txt-contact">සම්බන්ධ වන්න</a>
@@ -1081,17 +1062,15 @@
     let categoryFilteredArticles = [];
     let showOlderArticlesState = false;
 
-    /* Hide Animation Preloader (Exactly 1 Second Load Time) */
     function hidePreloader() {
       const preloader = document.getElementById('preloader');
       if (preloader && !preloader.classList.contains('fade-out')) {
         setTimeout(() => {
           preloader.classList.add('fade-out');
-        }, 1000); // Thaparayak (1 second) web load eka thiyama
+        }, 800); 
       }
     }
 
-    /* Auto Background Image Changer Header Logic */
     function initHeaderSlideshow() {
       const slides = document.querySelectorAll('#headerSlideshow .bg-slide');
       if (!slides.length) return;
@@ -1101,17 +1080,15 @@
         slides[currentSlideIndex].classList.remove('active');
         currentSlideIndex = (currentSlideIndex + 1) % slides.length;
         slides[currentSlideIndex].classList.add('active');
-      }, 4000); // Thapara 4kata warak maru wei
+      }, 4000); 
     }
 
-    /* Helper Function: Check if Article is Published/Updated Today */
     function isTodayArticle(a) {
       if (!a) return false;
       const val = (a.date || a.time || '').trim();
       if (!val) return false;
 
       const today = new Date();
-      
       const parsedDate = new Date(val);
       if (!isNaN(parsedDate.getTime())) {
         return parsedDate.toDateString() === today.toDateString();
@@ -1129,7 +1106,6 @@
       return todayKeywords.some(kw => val.includes(kw));
     }
 
-    /* Reverse Geocoding API to Get City Name from Coords */
     async function getCityName(lat, lon) {
       try {
         const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
@@ -1140,7 +1116,6 @@
       }
     }
 
-    /* Weather API Call for Dynamic Coordinates */
     async function fetchWeatherForCoords(lat, lon, locationName = "කොළඹ") {
       try {
         const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
@@ -1160,12 +1135,10 @@
           document.getElementById('weather-condition').textContent = icon;
         }
       } catch (e) {
-        console.error('Weather fetch failed:', e);
         document.getElementById('weather-location').textContent = "කොළඹ";
       }
     }
 
-    /* Initialize Live Location Weather */
     function initUserWeather() {
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
@@ -1175,9 +1148,7 @@
             const cityName = await getCityName(lat, lon);
             fetchWeatherForCoords(lat, lon, cityName);
           },
-          (error) => {
-            fetchWeatherForCoords(6.9271, 79.8612, "කොළඹ");
-          },
+          () => fetchWeatherForCoords(6.9271, 79.8612, "කොළඹ"),
           { timeout: 8000 }
         );
       } else {
@@ -1235,8 +1206,12 @@
 
     function updateDate() {
       const d = new Date();
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      document.getElementById('today-date').textContent = d.toLocaleDateString('si-LK', options);
+      try {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('today-date').textContent = d.toLocaleDateString('si-LK', options);
+      } catch(e) {
+        document.getElementById('today-date').textContent = d.toDateString();
+      }
       document.getElementById('year').textContent = d.getFullYear();
     }
 
@@ -1257,7 +1232,7 @@
             return;
           }
         }catch(e){
-          console.error('Sheet fetch failed:', e);
+          console.error('Fetch error:', e);
         }
       }
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -1285,53 +1260,34 @@
       if (!a) return null;
       const candidates = [a.youtube, a.youtubelink, a.youtube_link, a.video, a.videourl, a.img];
       for (const link of candidates) {
-        if (link && getYouTubeId(link)) {
-          return link;
-        }
+        if (link && getYouTubeId(link)) return link;
       }
       return null;
     }
 
     function getArticleImage(a) {
       if (!a) return '';
-      
       if (a.img && a.img.trim() !== '') {
         const ytIdFromImg = getYouTubeId(a.img);
-        if (!ytIdFromImg) {
-          return a.img.trim();
-        }
+        if (!ytIdFromImg) return a.img.trim();
       }
-      
       const ytLink = getArticleYouTubeLink(a);
       if (ytLink) {
         const ytId = getYouTubeId(ytLink);
-        if (ytId) {
-          return `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg`;
-        }
+        if (ytId) return `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg`;
       }
-      
       return '';
     }
 
     function renderImageHtml(a, cls) {
       const src = getArticleImage(a);
-      const ytLink = getArticleYouTubeLink(a);
-      const isVideo = !!ytLink;
+      const isVideo = !!getArticleYouTubeLink(a);
       
-      let imgContent = '';
-      if (src && src.trim() !== '') {
-        imgContent = `<img class="ph ${cls||''}" src="${esc(src)}" alt="" onerror="this.style.display='none'">`;
-      } else {
-        imgContent = `<div class="ph ${cls||''}"></div>`;
-      }
+      let imgContent = (src && src.trim() !== '') ? 
+        `<img class="ph ${cls||''}" src="${esc(src)}" alt="" onerror="this.style.display='none'">` : 
+        `<div class="ph ${cls||''}"></div>`;
 
-      if (isVideo) {
-        return `<div class="img-wrapper">
-                  ${imgContent}
-                  <div class="play-overlay"></div>
-                </div>`;
-      }
-      return imgContent;
+      return isVideo ? `<div class="img-wrapper">${imgContent}<div class="play-overlay"></div></div>` : imgContent;
     }
 
     function getYouTubeEmbedUrl(url) {
@@ -1355,9 +1311,7 @@
 
       for (const [key, list] of Object.entries(aliases)) {
         if (key.toLowerCase() === c2 || list.includes(c2)) {
-          if (c1 === key.toLowerCase() || list.includes(c1)) {
-            return true;
-          }
+          if (c1 === key.toLowerCase() || list.includes(c1)) return true;
         }
       }
       return false;
@@ -1381,20 +1335,9 @@
         return;
       }
 
-      let content = '';
-      if (img) {
-        content = `<a href="${esc(link)}" target="_blank" rel="noopener">
-                     <img src="${esc(img)}" alt="${esc(title || 'Advertisement')}" onerror="this.closest('.ad-slot-container').classList.remove('active'); this.closest('.ad-slot-container').style.setProperty('display', 'none', 'important');">
-                   </a>`;
-      } else if (title) {
-        content = `<a href="${esc(link)}" target="_blank" rel="noopener" style="text-decoration:none;">
-                     <div class="ad-banner">
-                       <span class="ad-tag">ADVERTISEMENT</span>
-                       <h5>${esc(title)}</h5>
-                       ${subtitle ? `<p>${esc(subtitle)}</p>` : ''}
-                     </div>
-                   </a>`;
-      }
+      let content = img ? 
+        `<a href="${esc(link)}" target="_blank" rel="noopener"><img src="${esc(img)}" alt="${esc(title || 'Advertisement')}" onerror="this.closest('.ad-slot-container').classList.remove('active');"></a>` :
+        `<a href="${esc(link)}" target="_blank" rel="noopener" style="text-decoration:none;"><div class="ad-banner"><span class="ad-tag">ADVERTISEMENT</span><h5>${esc(title)}</h5>${subtitle ? `<p>${esc(subtitle)}</p>` : ''}</div></a>`;
 
       slotEl.innerHTML = content;
       slotEl.classList.add('active');
@@ -1413,7 +1356,7 @@
       const nav = document.getElementById('navList');
       nav.innerHTML = categories.map((c, i)=>{
         const key = i === 0 ? 'home' : c;
-        return `<li data-navkey="${esc(key)}"><a onclick="navigateTo('${esc(key)}')">${esc(c)}</a></li>`;
+        return `<li data-navkey="${esc(key)}" class="${key === currentCat ? 'active' : ''}"><a onclick="navigateTo('${esc(key)}')">${esc(c)}</a></li>`;
       }).join('');
     }
 
@@ -1431,10 +1374,7 @@
         document.getElementById('categoryView').style.display = 'block';
         document.getElementById('catTitle').textContent = catKey;
         
-        categoryFilteredArticles = (siteData.articles || []).filter(a => 
-          matchCategory(a.category, catKey)
-        );
-
+        categoryFilteredArticles = (siteData.articles || []).filter(a => matchCategory(a.category, catKey));
         showOlderArticlesState = false; 
         renderCategoryGrid();
       }
@@ -1468,17 +1408,11 @@
       const olderArticles = categoryFilteredArticles.filter(a => !isTodayArticle(a));
 
       if (!showOlderArticlesState) {
-        if (todayArticles.length > 0) {
-          catGrid.innerHTML = todayArticles.map(renderCardHtml).join('');
-        } else {
-          catGrid.innerHTML = `<div class="empty-note">අද දින නිකුත් වූ නවතම පුවත් නොමැත. පරණ පුවත් බැලීමට පහත බොත්තම ඔබන්න.</div>`;
-        }
+        catGrid.innerHTML = todayArticles.length > 0 ? 
+          todayArticles.map(renderCardHtml).join('') : 
+          `<div class="empty-note">අද දින නිකුත් වූ නවතම පුවත් නොමැත. පරණ පුවත් බැලීමට පහත බොත්තම ඔබන්න.</div>`;
 
-        if (olderArticles.length > 0) {
-          loadMoreBox.style.display = 'block';
-        } else {
-          loadMoreBox.style.display = 'none';
-        }
+        loadMoreBox.style.display = olderArticles.length > 0 ? 'block' : 'none';
       } else {
         catGrid.innerHTML = categoryFilteredArticles.map(renderCardHtml).join('');
         loadMoreBox.style.display = 'none';
@@ -1490,30 +1424,19 @@
       renderCategoryGrid();
     }
 
-    /* ප්‍රධාන පිටුවේ පුවත් පෙන්වන ආකාරය සකස් කිරීම */
     function renderSite(){
       if(!siteData) return;
       const arts = siteData.articles || [];
 
-      // 1. ප්‍රධාන පිටුවේ උඩම කොටසට (Hero & Side) 'ප්‍රධාන පුවත්' පමණක් තෝරා ගැනීම
       const mainNewsArticles = arts.filter(a => matchCategory(a.category, 'ප්‍රධාන පුවත්'));
-
-      let hero = mainNewsArticles.find(a => a.position === 'hero');
+      let hero = mainNewsArticles.find(a => a.position === 'hero') || (mainNewsArticles.length > 0 ? mainNewsArticles[0] : arts[0]);
       let sides = mainNewsArticles.filter(a => a.position === 'side');
 
-      // 'ප්‍රධාන පුවත්' Category එකෙන් සොයා ගැනීමට නොහැකි වුවහොත් සාමාන්‍ය ක්‍රමයට ලබා ගැනීම
-      if (!hero) {
-        hero = mainNewsArticles.length > 0 ? mainNewsArticles[0] : arts[0];
-      }
-      
-      const unusedMainArts = mainNewsArticles.filter(a => a !== hero);
-
       if (sides.length === 0) {
-        sides = unusedMainArts.slice(0, 4);
+        sides = mainNewsArticles.filter(a => a !== hero).slice(0, 4);
       }
       sides = sides.slice(0, 4);
 
-      // 2. අනික් Category සදහා වෙන වෙනම තෝරා ගැනීම
       const sports = arts.filter(a => matchCategory(a.category, 'ක්‍රීඩා')).slice(0, 6);
       const biz = arts.filter(a => matchCategory(a.category, 'ව්‍යාපාර')).slice(0, 6);
 
@@ -1558,128 +1481,83 @@
       document.getElementById('tickerText').innerHTML = doubled.map(x=>`<span>${esc(x)}</span>`).join('');
 
       renderAllAds();
-
       if(currentCat !== 'home') navigateTo(currentCat);
     }
 
-    /* Modal Display Helper Function */
     function showGenericModal(htmlContent) {
       document.getElementById('modalContent').innerHTML = htmlContent;
       document.getElementById('articleModal').classList.add('active');
       document.body.style.overflow = 'hidden';
     }
 
-    /* Open Article News Modal */
     function openModal(id){
       const a = siteData.articles.find(x => String(x.id) === String(id));
       if(!a) return;
 
-      const ytLink = getArticleYouTubeLink(a);
-      const ytEmbed = getYouTubeEmbedUrl(ytLink);
+      const ytEmbed = getYouTubeEmbedUrl(getArticleYouTubeLink(a));
       const imgSrc = getArticleImage(a);
 
       const content = `
-        ${ytEmbed ? `
-          <div class="video-wrapper">
-            <iframe src="${ytEmbed}" title="${esc(a.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-          </div>
-        ` : (imgSrc ? `<img src="${esc(imgSrc)}" alt="${esc(a.title)}">` : '')}
-        
+        ${ytEmbed ? `<div class="video-wrapper"><iframe src="${ytEmbed}" title="${esc(a.title)}" frameborder="0" allowfullscreen></iframe></div>` : (imgSrc ? `<img src="${esc(imgSrc)}" alt="${esc(a.title)}">` : '')}
         <div style="display:flex; justify-content:space-between; align-items:center; margin: 10px 0 6px;">
-          <!-- Content kicker updated to Maroon -->
-          <span style="color:var(--brand-red-maroon); font-weight:700; font-size:12px; text-transform:uppercase;">
-            📌 ${esc(a.category || 'General')}
-          </span>
+          <span style="color:var(--brand-red-maroon); font-weight:700; font-size:12px; text-transform:uppercase;">📌 ${esc(a.category || 'General')}</span>
           ${a.time ? `<span style="font-size:12px; color:var(--text-muted); font-weight:500;">🕒 ${esc(a.time)}</span>` : ''}
         </div>
-
         <h2 style="margin-top:0; font-size:clamp(18px, 4vw, 22px); color:var(--text-main); font-weight:800; line-height:1.35;">${esc(a.title)}</h2>
         <div class="content" style="margin-top:14px; font-size:15px; color:#334155; line-height:1.75; white-space: pre-line;">${esc(a.desc)}</div>
       `;
       showGenericModal(content);
     }
 
-    /* Footer Popups: About Us */
     function openAboutModal() {
-      const content = `
+      showGenericModal(`
         <div style="text-align:center; padding-top:10px;">
-          <!-- Logo updated -->
-          <img src="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png" style="max-height:100px; width:auto; margin-bottom:14px; background:#fff; padding:5px; border-radius:8px;">
-          <!-- Title updated to Green -->
+          <img src="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png" style="max-height:90px; width:auto; margin-bottom:14px; background:#fff; padding:5px; border-radius:8px;">
           <h2 style="font-size:22px; color:var(--brand-green-dark); font-weight:800; margin-bottom:12px;">අප ගැන (About Us)</h2>
         </div>
         <p style="font-size:14.5px; line-height:1.8; color:#334155; text-align:justify;">
-          <b>ලංකා NEWS NOW</b> යනු ශ්‍රී ලංකාවේ සහ විදේශයන්හි සිදු වන නවතම, විශ්වාසනීය සහ තහවුරු කරන ලද පුවත් එසැනින් ඔබ වෙත ගෙන එන ප්‍රමුඛතම ඩිජිටල් පුවත් මාධ්‍ය වේදිකාවයි. 
-          අපගේ අරමුණ වන්නේ කිසිදු පාර්ශවයකට බර නොවී, අපක්ෂපාතීව සහ නිවැරදිව දිවයින පුරා සිදුවන වැදගත්ම පුවත් පරිශීලකයින් වෙත සරලව හා කාර්යක්ෂමව ඉදිරිපත් කිරීමයි.
+          <b>ලංකා NEWS NOW</b> යනු ශ්‍රී ලංකාවේ සහ විදේශයන්හි සිදු වන නවතම, විශ්වාසනීය සහ තහවුරු කරන ලද පුවත් එසැනින් ඔබ වෙත ගෙන එන ප්‍රමුඛතම ඩිජිටල් පුවත් මාධ්‍ය වේදිකාවයි.
         </p>
-      `;
-      showGenericModal(content);
+      `);
     }
 
-    /* Footer Popups: Contact Us */
     function openContactModal() {
-      const content = `
-        <!-- Title updated to Green -->
+      showGenericModal(`
         <h2 style="font-size:22px; color:var(--brand-green-dark); font-weight:800; margin-bottom:16px; text-align:center;">සම්බන්ධ වන්න (Contact Us)</h2>
         <div style="font-size:14.5px; line-height:1.9; color:#334155;">
           <p>📍 <b>ලිපිනය:</b> ලංකා News Now ප්‍රධාන කාර්යාලය, කොළඹ, ශ්‍රී ලංකාව.</p>
           <p>📞 <b>දුරකථන අංක:</b> +94 11 234 5678 / +94 77 123 4567</p>
           <p>✉️ <b>විද්‍යුත් තැපෑල:</b> info@lankanewsnow.lk</p>
           <p>🌐 <b>වෙබ් අඩවිය:</b> www.lankanewsnow.lk</p>
-          <hr style="margin: 16px 0; border: 0; border-top: 1px solid var(--border-color);">
-          <p style="text-align:center; font-weight:600; color:var(--text-muted); font-size:13px;">ඔබගේ පුවත් සහ දැන්වීම් පළකිරීම් සඳහා ඉහත මාධ්‍යයන් මගින් අප හා සම්බන්ධ විය හැක.</p>
         </div>
-      `;
-      showGenericModal(content);
+      `);
     }
 
-    /* Footer Popups: Privacy Policy */
     function openPrivacyModal() {
-      const content = `
-        <!-- Title updated to Green -->
+      showGenericModal(`
         <h2 style="font-size:22px; color:var(--brand-green-dark); font-weight:800; margin-bottom:14px; text-align:center;">පෞද්ගලිකත්ව ප්‍රතිපත්තිය (Privacy Policy)</h2>
         <div style="font-size:14px; line-height:1.75; color:#334155;">
           <p style="margin-bottom:12px;">අපගේ පරිශීලකයින්ගේ පෞද්ගලිකත්වය සුරැකීම අපගේ ප්‍රමුඛතාවයයි. ලංකා NEWS NOW භාවිතයේදී ඔබගේ දත්ත සුරක්ෂිතව තබාගැනීමට අප බැඳී සිටිමු.</p>
-          <ul style="padding-left:20px; margin-bottom:12px;">
-            <li style="margin-bottom:6px;">අපගේ වෙබ් අඩවිය මගින් පරිශීලකයින්ගේ කිසිදු පෞද්ගලික දත්තයක් අවසරයකින් තොරව රැස් කරනු නොලැබේ.</li>
-            <li style="margin-bottom:6px;">කුකීස් (Cookies) භාවිතා කරනු ලබන්නේ වෙබ් අඩවියේ භාෂාව සහ භාවිත පහසුව වර්ධනය කිරීම සඳහා පමණි.</li>
-            <li>තෙවන පාර්ශවීය ප්‍රචාරණ ආයතන වෙත ඔබගේ තොරතුරු ලබාදීමෙන් වැළකී සිටිමු.</li>
-          </ul>
         </div>
-      `;
-      showGenericModal(content);
+      `);
     }
 
-    /* Footer Popups: Media Gallery Modal (Show All News Photos in One Grid) */
     function openMediaGalleryModal() {
       const arts = siteData.articles || [];
-      let galleryHtml = '';
-
-      arts.forEach(a => {
+      let galleryHtml = arts.map(a => {
         const img = getArticleImage(a);
-        if(img && img.trim() !== '') {
-          galleryHtml += `
-            <div class="gallery-item" onclick="openModal('${esc(a.id)}')">
-              <img src="${esc(img)}" alt="${esc(a.title)}" onerror="this.parentElement.style.display='none'">
-              <div class="gallery-title">${esc(a.title)}</div>
-            </div>
-          `;
-        }
-      });
+        return (img && img.trim() !== '') ? `
+          <div class="gallery-item" onclick="openModal('${esc(a.id)}')">
+            <img src="${esc(img)}" alt="${esc(a.title)}" onerror="this.parentElement.style.display='none'">
+            <div class="gallery-title">${esc(a.title)}</div>
+          </div>` : '';
+      }).join('');
 
-      if(!galleryHtml) {
-        galleryHtml = `<div class="empty-note" style="grid-column: 1/-1;">ඡායාරූප නොමැත</div>`;
-      }
-
-      const content = `
-        <!-- Title updated to Green -->
+      showGenericModal(`
         <h2 style="font-size:20px; color:var(--brand-green-dark); font-weight:800; margin-bottom:4px; text-align:center;">📸 මාධ්‍ය එකතුව (Media Gallery)</h2>
-        <p style="text-align:center; font-size:12.5px; color:var(--text-muted); margin-bottom:16px;">සියලුම පුවත්වල ඡායාරූප (ඡායාරූපයක් මත ක්ලික් කර අදාළ පුවත බලන්න)</p>
-        <div class="gallery-grid">
-          ${galleryHtml}
-        </div>
-      `;
-      showGenericModal(content);
+        <p style="text-align:center; font-size:12.5px; color:var(--text-muted); margin-bottom:16px;">සියලුම පුවත්වල ඡායාරූප</p>
+        <div class="gallery-grid">${galleryHtml || `<div class="empty-note" style="grid-column: 1/-1;">ඡායාරූප නොමැත</div>`}</div>
+      `);
     }
 
     function closeModal(){
@@ -1710,34 +1588,16 @@
       scrollToTop();
     }
 
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
     window.addEventListener('scroll', () => {
       const btn = document.getElementById('backToTopBtn');
-      if (window.scrollY > 300) {
-        btn.classList.add('show');
-      } else {
-        btn.classList.remove('show');
-      }
+      btn.classList.toggle('show', window.scrollY > 300);
     });
 
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
-    });
-
-    window.onclick = function(event) {
-      const modal = document.getElementById('articleModal');
-      if (event.target === modal) {
-        closeModal();
-      }
-    };
-
-    /* Backup Safety Hide Preloader on Window Load */
-    window.addEventListener('load', () => {
-      hidePreloader();
-    });
+    window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+    window.onclick = function(e) { if (e.target === document.getElementById('articleModal')) closeModal(); };
+    window.addEventListener('load', hidePreloader);
 
     // Initialization
     updateDate();
