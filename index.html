@@ -459,6 +459,26 @@
     .side-item:hover h3 { color: var(--brand-green-dark); }
     .side-item .time-badge { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
 
+    .see-more-side-btn {
+      background: var(--brand-green-dark);
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      transition: all 0.25s ease;
+      text-align: center;
+      margin-top: 4px;
+      width: 100%;
+    }
+    .see-more-side-btn:hover {
+      background: var(--brand-gold);
+      color: #121a15;
+      transform: translateY(-2px);
+    }
+
     /* Video Play Overlay */
     .img-wrapper {
       position: relative;
@@ -1061,6 +1081,7 @@
     let currentCat = 'home';
     let categoryFilteredArticles = [];
     let showOlderArticlesState = false;
+    let showOlderHomeMainState = false;
 
     function hidePreloader() {
       const preloader = document.getElementById('preloader');
@@ -1394,6 +1415,11 @@
         </article>`;
     }
 
+    function toggleHomeSideNews() {
+      showOlderHomeMainState = !showOlderHomeMainState;
+      renderSite();
+    }
+
     function renderCategoryGrid() {
       const catGrid = document.getElementById('catGrid');
       const loadMoreBox = document.getElementById('loadMoreBox');
@@ -1430,15 +1456,41 @@
 
       const mainNewsArticles = arts.filter(a => matchCategory(a.category, 'ප්‍රධාන පුවත්'));
       let hero = mainNewsArticles.find(a => a.position === 'hero') || (mainNewsArticles.length > 0 ? mainNewsArticles[0] : arts[0]);
-      let sides = mainNewsArticles.filter(a => a.position === 'side');
-
-      if (sides.length === 0) {
-        sides = mainNewsArticles.filter(a => a !== hero).slice(0, 4);
+      
+      let sideCandidates = mainNewsArticles.filter(a => a !== hero);
+      if (sideCandidates.length === 0) {
+        sideCandidates = arts.filter(a => a !== hero);
       }
-      sides = sides.slice(0, 4);
+
+      const todaySideArticles = sideCandidates.filter(isTodayArticle);
+      const hasOlderSideArticles = sideCandidates.some(a => !isTodayArticle(a));
+
+      let sideDisplayArticles = [];
+      if (!showOlderHomeMainState) {
+        sideDisplayArticles = todaySideArticles.slice(0, 4);
+      } else {
+        sideDisplayArticles = sideCandidates;
+      }
 
       const sports = arts.filter(a => matchCategory(a.category, 'ක්‍රීඩා')).slice(0, 6);
       const biz = arts.filter(a => matchCategory(a.category, 'ව්‍යාපාර')).slice(0, 6);
+
+      const sideItemsHtml = sideDisplayArticles.length > 0 ? 
+        sideDisplayArticles.map(s => `
+          <div class="side-item" onclick="openModal('${esc(s.id)}')">
+            ${renderImageHtml(s)}
+            <div>
+              <div class="kicker">${esc(s.category)}</div>
+              <h3>${esc(s.title)}</h3>
+              ${s.time ? `<div class="time-badge">🕒 ${esc(s.time)}</div>` : ''}
+            </div>
+          </div>`).join('') : 
+        `<div class="empty-note">අද දින නිකුත් වූ වෙනත් ප්‍රධාන පුවත් නොමැත</div>`;
+
+      const seeMoreBtnHtml = hasOlderSideArticles ? `
+        <button class="see-more-side-btn" onclick="toggleHomeSideNews()">
+          ${showOlderHomeMainState ? 'අඩු කරන්න 🔼' : 'පරණ පුවත් බලන්න 📜'}
+        </button>` : '';
 
       document.getElementById('heroSection').innerHTML = `
         <article class="hero-main" onclick="${hero ? `openModal('${esc(hero.id)}')` : ''}">
@@ -1451,15 +1503,8 @@
           <p class="dek">${esc(hero ? hero.desc : '')}</p>
         </article>
         <aside class="hero-side">
-          ${sides.map(s=>`
-            <div class="side-item" onclick="openModal('${esc(s.id)}')">
-              ${renderImageHtml(s)}
-              <div>
-                <div class="kicker">${esc(s.category)}</div>
-                <h3>${esc(s.title)}</h3>
-                ${s.time ? `<div class="time-badge">🕒 ${esc(s.time)}</div>` : ''}
-              </div>
-            </div>`).join('') || `<div class="empty-note">මෙම කොටසේ තවම ප්‍රධාන පුවත් නොමැත</div>`}
+          ${sideItemsHtml}
+          ${seeMoreBtnHtml}
         </aside>`;
 
       document.getElementById('sportsList').innerHTML = sports.map((s,i)=>`
