@@ -4,24 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lanka News Now</title>
-
-  <!-- Security Hardening -->
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    base-uri 'self';
-    object-src 'none';
-    frame-src https://www.youtube-nocookie.com https://translate.google.com https://translate.googleapis.com;
-    script-src 'self' 'unsafe-inline' https://translate.google.com https://translate.googleapis.com https://www.gstatic.com https://www.google.com;
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.gstatic.com;
-    font-src 'self' https://fonts.gstatic.com;
-    img-src 'self' https: data:;
-    connect-src 'self' https://script.google.com https://api.bigdatacloud.net https://api.open-meteo.com https://translate.googleapis.com https://translate.google.com;
-    form-action 'self';
-    frame-ancestors 'self';
-  ">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-
+  
   <!-- Browser Tab Favicon Logo -->
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png">
   <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png">
@@ -240,7 +223,7 @@
       position: relative;
       background-color: #0b110e; 
       border-bottom: 1px solid var(--border-color); 
-      padding: 14px 16px; 
+      padding: 28px 16px; 
       text-align: center; 
       display: flex;
       flex-direction: column;
@@ -292,26 +275,26 @@
     }
     
     .eyebrow { 
-      font-size: 10px; 
+      font-size: 11px; 
       letter-spacing: 1.5px; 
       color: #a3b0a8; 
       text-transform: uppercase; 
       font-weight: 700;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
     
     .brand-logo-wrap {
       display: inline-block;
       text-decoration: none;
-      margin: 4px 0;
+      margin: 6px 0;
       background: #fff; 
-      padding: 6px;
+      padding: 10px;
       border-radius: var(--radius-sm);
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     
     .brand-logo {
-      max-height: 70px; 
+      max-height: 140px; 
       width: auto;
       max-width: 100%;
       object-fit: contain;
@@ -322,9 +305,9 @@
     .tagline { font-size: 13.5px; color: #cbd5e1; font-weight: 500; margin-top: 2px; }
 
     /* Search Bar */
-    .search-box { margin-top: 10px; display: flex; justify-content: center; width: 100%; max-width: 450px; }
+    .search-box { margin-top: 16px; display: flex; justify-content: center; width: 100%; max-width: 450px; }
     .search-box input { 
-      padding: 8px 14px; 
+      padding: 10px 16px; 
       width: 100%;
       border: 1px solid rgba(255,255,255,0.2); 
       border-radius: var(--radius) 0 0 var(--radius); 
@@ -336,7 +319,7 @@
     }
     .search-box input:focus { border-color: var(--brand-red-maroon); background: #fff; box-shadow: 0 0 0 3px rgba(133, 30, 62, 0.2); }
     .search-box button { 
-      padding: 8px 18px; 
+      padding: 10px 20px; 
       background: var(--brand-red-maroon); 
       color: #fff; 
       border: none; 
@@ -433,7 +416,6 @@
       cursor: pointer; 
       border: 1px solid var(--border-color); 
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-      position: relative;
     }
     .hero-main:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: rgba(18, 76, 62, 0.3); }
     .hero-main img, .hero-main .ph { 
@@ -468,7 +450,6 @@
       cursor: pointer; 
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       box-shadow: var(--shadow-sm);
-      position: relative;
     }
     .side-item:hover { transform: translateX(6px); border-color: var(--brand-green-dark); box-shadow: var(--shadow-md); }
     .side-item img, .side-item .ph { width: 85px; height: 85px; object-fit: cover; border-radius: var(--radius-sm); background: #e2e8e2; flex-shrink: 0; transition: transform 0.3s ease; }
@@ -548,70 +529,6 @@
       background: rgba(133, 30, 62, 1);
       box-shadow: 0 6px 15px rgba(133, 30, 62, 0.4);
     }
-
-    /* Share Button */
-    .share-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: rgba(11, 17, 14, 0.55);
-      backdrop-filter: blur(3px);
-      color: #ffffff;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 6;
-      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .share-btn:hover {
-      background: var(--brand-gold);
-      color: #121a15;
-      transform: scale(1.1);
-    }
-    .share-btn svg { width: 16px; height: 16px; fill: currentColor; }
-    .card .share-btn { top: 8px; right: 8px; width: 30px; height: 30px; }
-    .card .share-btn svg { width: 14px; height: 14px; }
-    .side-item .share-btn { top: 6px; right: 6px; width: 26px; height: 26px; }
-    .side-item .share-btn svg { width: 12px; height: 12px; }
-    .modal-share-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--brand-red-maroon);
-      color: #fff;
-      border: none;
-      padding: 9px 16px;
-      border-radius: var(--radius-sm);
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.25s ease;
-    }
-    .modal-share-btn:hover { background: var(--brand-gold); color: #121a15; transform: translateY(-2px); }
-    .modal-share-btn svg { width: 14px; height: 14px; fill: currentColor; }
-    .share-toast {
-      position: fixed;
-      bottom: 90px;
-      left: 50%;
-      transform: translateX(-50%) translateY(10px);
-      background: var(--top-bar-bg);
-      color: #fff;
-      padding: 10px 18px;
-      border-radius: var(--radius-sm);
-      font-size: 13px;
-      font-weight: 600;
-      box-shadow: var(--shadow-lg);
-      z-index: 2000;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s ease;
-    }
-    .share-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     /* Dynamic Ads Container */
     .ad-slot-container {
@@ -698,7 +615,6 @@
       box-shadow: var(--shadow-sm);
       display: flex;
       flex-direction: column;
-      position: relative;
     }
     .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--brand-green-dark); }
     .card img, .card .ph { width: 100%; height: 180px; object-fit: cover; background: #e2e8e2; transition: transform 0.5s ease; }
@@ -971,7 +887,7 @@
 
     /* Responsive Breakpoints */
     @media (max-width: 640px) {
-      .brand-logo { max-height: 56px; }
+      .brand-logo { max-height: 110px; }
       .utility-bar { justify-content: center; text-align: center; }
       .utility-left { justify-content: center; }
     }
@@ -1107,9 +1023,6 @@
     </div>
   </div>
 
-  <!-- Share Toast -->
-  <div class="share-toast" id="shareToast">සබැඳිය පිටපත් කරන ලදී! 🔗</div>
-
   <!-- Back to Top Button -->
   <button class="back-to-top" id="backToTopBtn" onclick="scrollToTop()">▲</button>
 
@@ -1164,8 +1077,6 @@
 
     const categories = ['ප්‍රධාන පුවත්','ක්‍රීඩා','ව්‍යාපාර','ලෝකය','තාක්ෂණය'];
 
-    const SHARE_ICON_SVG = '<svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L7.04 9.81C6.5 9.31 5.79 9 5 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>';
-
     let siteData = { ticker: [], articles: [], ads: [] };
     let currentCat = 'home';
     let categoryFilteredArticles = [];
@@ -1175,7 +1086,9 @@
     function hidePreloader() {
       const preloader = document.getElementById('preloader');
       if (preloader && !preloader.classList.contains('fade-out')) {
-        preloader.classList.add('fade-out');
+        setTimeout(() => {
+          preloader.classList.add('fade-out');
+        }, 800); 
       }
     }
 
@@ -1341,7 +1254,6 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData));
             renderSite();
             hidePreloader();
-            handleDeepLinkArticle();
             return;
           }
         }catch(e){
@@ -1357,31 +1269,9 @@
       };
       renderSite();
       hidePreloader();
-      handleDeepLinkArticle();
-    }
-
-    function handleDeepLinkArticle() {
-      try {
-        const params = new URLSearchParams(window.location.search);
-        const articleId = params.get('article');
-        if (articleId) openModal(articleId);
-      } catch (e) {}
     }
 
     function esc(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-    // Only allow http/https links anywhere a URL is written into the DOM.
-    // Blocks javascript:, data:, vbscript: and other script-executing schemes
-    // that could otherwise be smuggled in via article/ad data from the sheet.
-    function safeUrl(u){
-      if (!u || typeof u !== 'string') return '#';
-      const trimmed = u.trim();
-      try {
-        const parsed = new URL(trimmed, window.location.href);
-        if (parsed.protocol === 'http:' || parsed.protocol === 'https:') return trimmed;
-      } catch(e) {}
-      return '#';
-    }
     
     function getYouTubeId(url) {
       if (!url || typeof url !== 'string') return null;
@@ -1419,7 +1309,7 @@
       const isVideo = !!getArticleYouTubeLink(a);
       
       let imgContent = (src && src.trim() !== '') ? 
-        `<img class="ph ${cls||''}" src="${esc(safeUrl(src))}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">` : 
+        `<img class="ph ${cls||''}" src="${esc(src)}" alt="" onerror="this.style.display='none'">` : 
         `<div class="ph ${cls||''}"></div>`;
 
       return isVideo ? `<div class="img-wrapper">${imgContent}<div class="play-overlay"></div></div>` : imgContent;
@@ -1470,11 +1360,9 @@
         return;
       }
 
-      const safeLink = safeUrl(link);
-      const safeImg = safeUrl(img);
       let content = img ? 
-        `<a href="${esc(safeLink)}" target="_blank" rel="noopener noreferrer nofollow"><img src="${esc(safeImg)}" alt="${esc(title || 'Advertisement')}" loading="lazy" onerror="this.closest('.ad-slot-container').classList.remove('active');"></a>` :
-        `<a href="${esc(safeLink)}" target="_blank" rel="noopener noreferrer nofollow" style="text-decoration:none;"><div class="ad-banner"><span class="ad-tag">ADVERTISEMENT</span><h5>${esc(title)}</h5>${subtitle ? `<p>${esc(subtitle)}</p>` : ''}</div></a>`;
+        `<a href="${esc(link)}" target="_blank" rel="noopener"><img src="${esc(img)}" alt="${esc(title || 'Advertisement')}" onerror="this.closest('.ad-slot-container').classList.remove('active');"></a>` :
+        `<a href="${esc(link)}" target="_blank" rel="noopener" style="text-decoration:none;"><div class="ad-banner"><span class="ad-tag">ADVERTISEMENT</span><h5>${esc(title)}</h5>${subtitle ? `<p>${esc(subtitle)}</p>` : ''}</div></a>`;
 
       slotEl.innerHTML = content;
       slotEl.classList.add('active');
@@ -1518,59 +1406,10 @@
       scrollToTop();
     }
 
-    function buildArticleShareUrl(id) {
-      const url = new URL(window.location.href);
-      url.searchParams.set('article', id);
-      return url.toString();
-    }
-
-    async function shareArticle(id, title) {
-      const shareUrl = buildArticleShareUrl(id);
-      const shareData = { title: title || 'Lanka News Now', text: title || '', url: shareUrl };
-
-      if (navigator.share) {
-        try {
-          await navigator.share(shareData);
-          return;
-        } catch (e) {
-          // user cancelled or share failed - fall through to copy
-        }
-      }
-
-      try {
-        await navigator.clipboard.writeText(shareUrl);
-        showShareToast();
-      } catch (e) {
-        const tempInput = document.createElement('input');
-        tempInput.value = shareUrl;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        try { document.execCommand('copy'); } catch(err) {}
-        document.body.removeChild(tempInput);
-        showShareToast();
-      }
-    }
-
-    let shareToastTimer = null;
-    function showShareToast() {
-      const toast = document.getElementById('shareToast');
-      if (!toast) return;
-      toast.classList.add('show');
-      clearTimeout(shareToastTimer);
-      shareToastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
-    }
-
-    function shareButtonHtml(a) {
-      // Data attributes only - never interpolate untrusted text into inline JS/onclick.
-      // A click-delegation listener (see bottom of script) reads these safely.
-      return `<button class="share-btn" title="බෙදාගන්න" data-action="share" data-id="${esc(a.id)}" data-title="${esc(a.title)}">${SHARE_ICON_SVG}</button>`;
-    }
-
     function renderCardHtml(a) {
       return `
-        <article class="card" data-action="open" data-id="${esc(a.id)}">
+        <article class="card" onclick="openModal('${esc(a.id)}')">
           ${renderImageHtml(a)}
-          ${shareButtonHtml(a)}
           <div class="meta-bar">
             <span class="kicker">${esc(a.category)}</span>
             ${a.time ? `<span class="time-badge">🕒 ${esc(a.time)}</span>` : ''}
@@ -1620,12 +1459,7 @@
       const arts = siteData.articles || [];
 
       const mainNewsArticles = arts.filter(a => matchCategory(a.category, 'ප්‍රධාන පුවත්'));
-
-      // Hero is always the newest article (arts is already newest-first).
-      // Previously this preferred an article manually tagged position:'hero',
-      // which meant a newly added article would NOT show on top if an older
-      // article still had that tag. Now the latest one always wins.
-      let hero = mainNewsArticles.length > 0 ? mainNewsArticles[0] : arts[0];
+      let hero = mainNewsArticles.find(a => a.position === 'hero') || (mainNewsArticles.length > 0 ? mainNewsArticles[0] : arts[0]);
       
       let sideCandidates = mainNewsArticles.filter(a => a !== hero);
       if (sideCandidates.length === 0) {
@@ -1647,9 +1481,8 @@
 
       const sideItemsHtml = sideDisplayArticles.length > 0 ? 
         sideDisplayArticles.map(s => `
-          <div class="side-item" data-action="open" data-id="${esc(s.id)}">
+          <div class="side-item" onclick="openModal('${esc(s.id)}')">
             ${renderImageHtml(s)}
-            ${shareButtonHtml(s)}
             <div>
               <div class="kicker">${esc(s.category)}</div>
               <h3>${esc(s.title)}</h3>
@@ -1664,9 +1497,8 @@
         </button>` : '';
 
       document.getElementById('heroSection').innerHTML = `
-        <article class="hero-main" ${hero ? `data-action="open" data-id="${esc(hero.id)}"` : ''}>
+        <article class="hero-main" onclick="${hero ? `openModal('${esc(hero.id)}')` : ''}">
           ${hero ? renderImageHtml(hero) : `<div class="ph"></div>`}
-          ${hero ? shareButtonHtml(hero) : ''}
           <div class="kicker-wrap">
             <span class="kicker">${esc(hero ? hero.category : 'ප්‍රධාන පුවත්')}</span>
             ${hero && hero.time ? `<span class="time-badge">🕒 ${esc(hero.time)}</span>` : ''}
@@ -1680,14 +1512,14 @@
         </aside>`;
 
       document.getElementById('sportsList').innerHTML = sports.map((s,i)=>`
-        <div class="strip-row" data-action="open" data-id="${esc(s.id)}">
+        <div class="strip-row" onclick="openModal('${esc(s.id)}')">
           <span class="num">${i+1}</span>
           <a>${esc(s.title)}</a>
           ${s.time ? `<span class="time-badge">${esc(s.time)}</span>` : ''}
         </div>`).join('') || `<div class="empty-note">ක්‍රීඩා පුවත් නොමැත</div>`;
 
       document.getElementById('bizList').innerHTML = biz.map((b,i)=>`
-        <div class="strip-row" data-action="open" data-id="${esc(b.id)}">
+        <div class="strip-row" onclick="openModal('${esc(b.id)}')">
           <span class="num">${i+1}</span>
           <a>${esc(b.title)}</a>
           ${b.time ? `<span class="time-badge">${esc(b.time)}</span>` : ''}
@@ -1703,8 +1535,7 @@
 
     function showGenericModal(htmlContent) {
       document.getElementById('modalContent').innerHTML = htmlContent;
-      const modal = document.getElementById('articleModal');
-      modal.classList.add('active');
+      document.getElementById('articleModal').classList.add('active');
       document.body.style.overflow = 'hidden';
     }
 
@@ -1712,21 +1543,17 @@
       const a = siteData.articles.find(x => String(x.id) === String(id));
       if(!a) return;
 
-      const ytEmbedRaw = getYouTubeEmbedUrl(getArticleYouTubeLink(a));
-      const ytEmbed = ytEmbedRaw ? safeUrl(ytEmbedRaw) : null;
+      const ytEmbed = getYouTubeEmbedUrl(getArticleYouTubeLink(a));
       const imgSrc = getArticleImage(a);
 
       const content = `
-        ${ytEmbed ? `<div class="video-wrapper"><iframe src="${esc(ytEmbed)}" title="${esc(a.title)}" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-presentation" allowfullscreen></iframe></div>` : (imgSrc ? `<img src="${esc(safeUrl(imgSrc))}" alt="${esc(a.title)}">` : '')}
+        ${ytEmbed ? `<div class="video-wrapper"><iframe src="${ytEmbed}" title="${esc(a.title)}" frameborder="0" allowfullscreen></iframe></div>` : (imgSrc ? `<img src="${esc(imgSrc)}" alt="${esc(a.title)}">` : '')}
         <div style="display:flex; justify-content:space-between; align-items:center; margin: 10px 0 6px;">
           <span style="color:var(--brand-red-maroon); font-weight:700; font-size:12px; text-transform:uppercase;">📌 ${esc(a.category || 'General')}</span>
           ${a.time ? `<span style="font-size:12px; color:var(--text-muted); font-weight:500;">🕒 ${esc(a.time)}</span>` : ''}
         </div>
         <h2 style="margin-top:0; font-size:clamp(18px, 4vw, 22px); color:var(--text-main); font-weight:800; line-height:1.35;">${esc(a.title)}</h2>
         <div class="content" style="margin-top:14px; font-size:15px; color:#334155; line-height:1.75; white-space: pre-line;">${esc(a.desc)}</div>
-        <div style="margin-top:18px; text-align:center;">
-          <button class="modal-share-btn" data-action="share" data-id="${esc(a.id)}" data-title="${esc(a.title)}">${SHARE_ICON_SVG} බෙදාගන්න</button>
-        </div>
       `;
       showGenericModal(content);
     }
@@ -1769,8 +1596,8 @@
       let galleryHtml = arts.map(a => {
         const img = getArticleImage(a);
         return (img && img.trim() !== '') ? `
-          <div class="gallery-item" data-action="open" data-id="${esc(a.id)}">
-            <img src="${esc(safeUrl(img))}" alt="${esc(a.title)}" loading="lazy" onerror="this.parentElement.style.display='none'">
+          <div class="gallery-item" onclick="openModal('${esc(a.id)}')">
+            <img src="${esc(img)}" alt="${esc(a.title)}" onerror="this.parentElement.style.display='none'">
             <div class="gallery-title">${esc(a.title)}</div>
           </div>` : '';
       }).join('');
@@ -1819,24 +1646,7 @@
 
     window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
     window.onclick = function(e) { if (e.target === document.getElementById('articleModal')) closeModal(); };
-
-    // Single delegated listener for every article open / share action.
-    // Reads id/title from data-* attributes instead of building inline JS
-    // strings out of article data, so nothing from the news feed can ever
-    // execute as script - the class of bug that inline onclick="...${title}..."
-    // would otherwise be exposed to.
-    document.addEventListener('click', (e) => {
-      const shareBtn = e.target.closest('[data-action="share"]');
-      if (shareBtn) {
-        e.stopPropagation();
-        shareArticle(shareBtn.dataset.id, shareBtn.dataset.title);
-        return;
-      }
-      const openEl = e.target.closest('[data-action="open"]');
-      if (openEl) {
-        openModal(openEl.dataset.id);
-      }
-    });
+    window.addEventListener('load', hidePreloader);
 
     // Initialization
     updateDate();
