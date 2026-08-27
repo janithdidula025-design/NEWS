@@ -1620,7 +1620,12 @@
       const arts = siteData.articles || [];
 
       const mainNewsArticles = arts.filter(a => matchCategory(a.category, 'ප්‍රධාන පුවත්'));
-      let hero = mainNewsArticles.find(a => a.position === 'hero') || (mainNewsArticles.length > 0 ? mainNewsArticles[0] : arts[0]);
+
+      // Hero is always the newest article (arts is already newest-first).
+      // Previously this preferred an article manually tagged position:'hero',
+      // which meant a newly added article would NOT show on top if an older
+      // article still had that tag. Now the latest one always wins.
+      let hero = mainNewsArticles.length > 0 ? mainNewsArticles[0] : arts[0];
       
       let sideCandidates = mainNewsArticles.filter(a => a !== hero);
       if (sideCandidates.length === 0) {
