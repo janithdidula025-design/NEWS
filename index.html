@@ -218,12 +218,12 @@
       transform: translateY(-1px);
     }
 
-    /* Header with Dynamic Slideshow Background */
+    /* Header with Compact Height & Larger Logo */
     header { 
       position: relative;
       background-color: #0b110e; 
       border-bottom: 1px solid var(--border-color); 
-      padding: 28px 16px; 
+      padding: 12px 16px; 
       text-align: center; 
       display: flex;
       flex-direction: column;
@@ -275,26 +275,26 @@
     }
     
     .eyebrow { 
-      font-size: 11px; 
+      font-size: 10px; 
       letter-spacing: 1.5px; 
       color: #a3b0a8; 
       text-transform: uppercase; 
       font-weight: 700;
-      margin-bottom: 6px;
+      margin-bottom: 2px;
     }
     
     .brand-logo-wrap {
       display: inline-block;
       text-decoration: none;
-      margin: 6px 0;
+      margin: 2px 0;
       background: #fff; 
-      padding: 10px;
+      padding: 6px 14px;
       border-radius: var(--radius-sm);
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     
     .brand-logo {
-      max-height: 140px; 
+      max-height: 220px; 
       width: auto;
       max-width: 100%;
       object-fit: contain;
@@ -302,35 +302,60 @@
     }
     .brand-logo:hover { transform: scale(1.03); }
 
-    .tagline { font-size: 13.5px; color: #cbd5e1; font-weight: 500; margin-top: 2px; }
-
     /* Search Bar */
-    .search-box { margin-top: 16px; display: flex; justify-content: center; width: 100%; max-width: 450px; }
+    .search-box { margin-top: 10px; display: flex; justify-content: center; width: 100%; max-width: 450px; }
     .search-box input { 
-      padding: 10px 16px; 
+      padding: 8px 14px; 
       width: 100%;
       border: 1px solid rgba(255,255,255,0.2); 
       border-radius: var(--radius) 0 0 var(--radius); 
       outline: none; 
-      font-size: 14px;
+      font-size: 13.5px;
       background: rgba(255, 255, 255, 0.95);
       color: var(--text-main);
       transition: all 0.3s ease;
     }
     .search-box input:focus { border-color: var(--brand-red-maroon); background: #fff; box-shadow: 0 0 0 3px rgba(133, 30, 62, 0.2); }
     .search-box button { 
-      padding: 10px 20px; 
+      padding: 8px 18px; 
       background: var(--brand-red-maroon); 
       color: #fff; 
       border: none; 
       border-radius: 0 var(--radius) var(--radius) 0; 
       cursor: pointer; 
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       transition: background 0.2s ease, transform 0.1s ease;
     }
     .search-box button:hover { background: #6b1832; }
     .search-box button:active { transform: scale(0.95); }
+
+    /* Share Button Universal Style */
+    .share-btn {
+      background: rgba(18, 76, 62, 0.08);
+      border: 1px solid rgba(18, 76, 62, 0.2);
+      color: var(--brand-green-dark);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .share-btn:hover {
+      background: var(--brand-gold);
+      color: #121a15;
+      border-color: var(--brand-gold);
+      transform: scale(1.1);
+    }
+    .share-btn svg {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+    }
 
     /* Navigation Bar */
     nav { 
@@ -450,6 +475,7 @@
       cursor: pointer; 
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       box-shadow: var(--shadow-sm);
+      align-items: center;
     }
     .side-item:hover { transform: translateX(6px); border-color: var(--brand-green-dark); box-shadow: var(--shadow-md); }
     .side-item img, .side-item .ph { width: 85px; height: 85px; object-fit: cover; border-radius: var(--radius-sm); background: #e2e8e2; flex-shrink: 0; transition: transform 0.3s ease; }
@@ -458,6 +484,7 @@
     .side-item h3 { font-size: 13.5px; line-height: 1.4; color: var(--text-main); font-weight: 700; transition: color 0.2s ease; }
     .side-item:hover h3 { color: var(--brand-green-dark); }
     .side-item .time-badge { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+    .side-item-content { flex-grow: 1; }
 
     .see-more-side-btn {
       background: var(--brand-green-dark);
@@ -624,7 +651,14 @@
     .card .time-badge { font-size: 11px; color: var(--text-muted); }
     .card h3 { font-size: 15px; padding: 6px 14px; line-height: 1.4; color: var(--text-main); font-weight: 700; transition: color 0.2s ease; }
     .card:hover h3 { color: var(--brand-green-dark); }
-    .card p { font-size: 13px; color: var(--text-muted); padding: 0 14px 14px; margin-top: auto; }
+    .card p { font-size: 13px; color: var(--text-muted); padding: 0 14px; margin-top: auto; }
+    
+    .card-footer-action {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 10px 14px 14px;
+    }
 
     /* Load More & Back Buttons */
     .back-btn, .load-more-btn { 
@@ -685,13 +719,14 @@
       border-radius: 4px;
       padding-left: 4px;
       padding-right: 4px;
+      gap: 8px;
     }
     .strip-row:last-child { border-bottom: none; }
     .strip-row:hover { transform: translateX(6px); background-color: rgba(18, 76, 62, 0.04); }
     .strip-row:hover a { color: var(--brand-green-dark); }
     .strip-row .num { font-weight: 800; color: var(--brand-gold); width: 26px; font-size: 15px; flex-shrink: 0; }
     .strip-row a { color: var(--text-main); font-weight: 600; text-decoration: none; flex-grow: 1; transition: color 0.2s ease; }
-    .strip-row .time-badge { font-size: 11px; color: var(--text-muted); margin-left: 8px; flex-shrink: 0; }
+    .strip-row .time-badge { font-size: 11px; color: var(--text-muted); margin-left: 4px; flex-shrink: 0; }
 
     /* Media Gallery Grid in Modal */
     .gallery-grid {
@@ -813,6 +848,34 @@
     .modal-close:hover { background: #e2e8e2; color: var(--text-main); transform: rotate(90deg); }
     .modal-box img { width: 100%; max-height: 380px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 14px; }
     
+    /* Share modal actions */
+    .modal-share-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-color);
+    }
+    .modal-share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      color: #fff;
+    }
+    .modal-share-btn.wa { background: #25D366; }
+    .modal-share-btn.fb { background: #1877F2; }
+    .modal-share-btn.tw { background: #000; }
+    .modal-share-btn.copy { background: var(--brand-green-dark); }
+    .modal-share-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
     /* Responsive Video Player Embed */
     .video-wrapper {
       position: relative;
@@ -887,7 +950,7 @@
 
     /* Responsive Breakpoints */
     @media (max-width: 640px) {
-      .brand-logo { max-height: 110px; }
+      .brand-logo { max-height: 150px; }
       .utility-bar { justify-content: center; text-align: center; }
       .utility-left { justify-content: center; }
     }
@@ -937,7 +1000,7 @@
     </div>
   </div>
 
-  <!-- Header -->
+  <!-- Compact Header with Larger Logo -->
   <header>
     <div class="header-bg-slideshow" id="headerSlideshow">
       <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1600&auto=format&fit=crop');"></div>
@@ -1083,6 +1146,53 @@
     let showOlderArticlesState = false;
     let showOlderHomeMainState = false;
 
+    /* Share functionality helper */
+    function shareArticle(event, title, desc, id) {
+      if (event) event.stopPropagation();
+      const shareUrl = window.location.origin + window.location.pathname + '#art_' + id;
+      const shareData = {
+        title: title || 'ලංකා News Now',
+        text: desc || title,
+        url: shareUrl
+      };
+
+      if (navigator.share) {
+        navigator.share(shareData).catch(() => {});
+      } else {
+        copyToClipboard(shareUrl);
+      }
+    }
+
+    function shareViaPlatform(platform, title, id) {
+      const shareUrl = encodeURIComponent(window.location.origin + window.location.pathname + '#art_' + id);
+      const shareText = encodeURIComponent(title);
+      let target = '';
+
+      if (platform === 'wa') target = `https://api.whatsapp.com/send?text=${shareText}%20${shareUrl}`;
+      else if (platform === 'fb') target = `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`;
+      else if (platform === 'tw') target = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
+
+      if (target) window.open(target, '_blank');
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert('ලින්ක් එක පිටපත් කරගන්නා ලදී! (Link copied to clipboard)');
+      }).catch(() => {
+        alert('ලින්ක් එක: ' + text);
+      });
+    }
+
+    function getShareIconHtml(id, title, desc) {
+      const safeTitle = (title || '').replace(/'/g, "\\'");
+      const safeDesc = (desc || '').replace(/'/g, "\\'");
+      return `
+        <button class="share-btn" onclick="shareArticle(event, '${safeTitle}', '${safeDesc}', '${id}')" title="බෙදාහරින්න (Share)">
+          <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
+        </button>
+      `;
+    }
+
     function hidePreloader() {
       const preloader = document.getElementById('preloader');
       if (preloader && !preloader.classList.contains('fade-out')) {
@@ -1188,37 +1298,34 @@
       return (articles || []).slice().reverse();
     }
 
-   function translatePage(langCode) {
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  const activeBtn = document.getElementById(`btn-lang-${langCode}`);
-  if(activeBtn) activeBtn.classList.add('active');
+    function translatePage(langCode) {
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById(`btn-lang-${langCode}`);
+      if(activeBtn) activeBtn.classList.add('active');
 
-  if (langCode === 'si') {
-    // Clear translate cookies so no stale translation state remains
-    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${window.location.hostname}; path=/;`;
-  } else {
-    const cookieVal = `/si/${langCode}`;
-    document.cookie = `googtrans=${cookieVal}; path=/;`;
-    document.cookie = `googtrans=${cookieVal}; domain=${window.location.hostname}; path=/;`;
-  }
+      if (langCode === 'si') {
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${window.location.hostname}; path=/;`;
+      } else {
+        const cookieVal = `/si/${langCode}`;
+        document.cookie = `googtrans=${cookieVal}; path=/;`;
+        document.cookie = `googtrans=${cookieVal}; domain=${window.location.hostname}; path=/;`;
+      }
 
-  let attempts = 0;
-  const interval = setInterval(() => {
-    const select = document.querySelector('.goog-te-combo');
-    if (select) {
-      // KEY FIX: Google's combo uses an EMPTY value for "original language",
-      // not the source language code itself. Using 'si' here silently fails.
-      const targetValue = (langCode === 'si') ? '' : langCode;
-
-      select.value = targetValue;
-      select.dispatchEvent(new Event('change', { bubbles: true }));
-      clearInterval(interval);
+      let attempts = 0;
+      const interval = setInterval(() => {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+          const targetValue = (langCode === 'si') ? '' : langCode;
+          select.value = targetValue;
+          select.dispatchEvent(new Event('change', { bubbles: true }));
+          clearInterval(interval);
+        }
+        attempts++;
+        if (attempts > 25) clearInterval(interval);
+      }, 200);
     }
-    attempts++;
-    if (attempts > 25) clearInterval(interval); // slightly more time for slow connections
-  }, 200);
-}
+
     function initActiveLanguage() {
       const match = document.cookie.match(/googtrans=\/si\/([a-z]{2})/);
       if (match && match[1]) {
@@ -1254,6 +1361,7 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData));
             renderSite();
             hidePreloader();
+            checkUrlHashModal();
             return;
           }
         }catch(e){
@@ -1269,6 +1377,14 @@
       };
       renderSite();
       hidePreloader();
+      checkUrlHashModal();
+    }
+
+    function checkUrlHashModal() {
+      if (window.location.hash && window.location.hash.startsWith('#art_')) {
+        const artId = window.location.hash.replace('#art_', '');
+        if (artId) openModal(artId);
+      }
     }
 
     function esc(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -1416,6 +1532,9 @@
           </div>
           <h3>${esc(a.title)}</h3>
           <p>${esc(a.desc)}</p>
+          <div class="card-footer-action">
+            ${getShareIconHtml(a.id, a.title, a.desc)}
+          </div>
         </article>`;
     }
 
@@ -1483,11 +1602,12 @@
         sideDisplayArticles.map(s => `
           <div class="side-item" onclick="openModal('${esc(s.id)}')">
             ${renderImageHtml(s)}
-            <div>
+            <div class="side-item-content">
               <div class="kicker">${esc(s.category)}</div>
               <h3>${esc(s.title)}</h3>
               ${s.time ? `<div class="time-badge">🕒 ${esc(s.time)}</div>` : ''}
             </div>
+            ${getShareIconHtml(s.id, s.title, s.desc)}
           </div>`).join('') : 
         `<div class="empty-note">අද දින නිකුත් වූ වෙනත් ප්‍රධාන පුවත් නොමැත</div>`;
 
@@ -1501,7 +1621,10 @@
           ${hero ? renderImageHtml(hero) : `<div class="ph"></div>`}
           <div class="kicker-wrap">
             <span class="kicker">${esc(hero ? hero.category : 'ප්‍රධාන පුවත්')}</span>
-            ${hero && hero.time ? `<span class="time-badge">🕒 ${esc(hero.time)}</span>` : ''}
+            <div style="display:flex; align-items:center; gap:8px;">
+              ${hero && hero.time ? `<span class="time-badge">🕒 ${esc(hero.time)}</span>` : ''}
+              ${hero ? getShareIconHtml(hero.id, hero.title, hero.desc) : ''}
+            </div>
           </div>
           <h2>${esc(hero ? hero.title : 'මෙම කොටසේ තවම පුවත් නොමැත')}</h2>
           <p class="dek">${esc(hero ? hero.desc : '')}</p>
@@ -1516,6 +1639,7 @@
           <span class="num">${i+1}</span>
           <a>${esc(s.title)}</a>
           ${s.time ? `<span class="time-badge">${esc(s.time)}</span>` : ''}
+          ${getShareIconHtml(s.id, s.title, s.desc)}
         </div>`).join('') || `<div class="empty-note">ක්‍රීඩා පුවත් නොමැත</div>`;
 
       document.getElementById('bizList').innerHTML = biz.map((b,i)=>`
@@ -1523,6 +1647,7 @@
           <span class="num">${i+1}</span>
           <a>${esc(b.title)}</a>
           ${b.time ? `<span class="time-badge">${esc(b.time)}</span>` : ''}
+          ${getShareIconHtml(b.id, b.title, b.desc)}
         </div>`).join('') || `<div class="empty-note">ව්‍යාපාරික පුවත් නොමැත</div>`;
 
       const tick = siteData.ticker && siteData.ticker.length ? siteData.ticker : ['ලංකා NEWS NOW වෙත සාදරයෙන් පිළිගනිමු'];
@@ -1545,6 +1670,7 @@
 
       const ytEmbed = getYouTubeEmbedUrl(getArticleYouTubeLink(a));
       const imgSrc = getArticleImage(a);
+      const safeTitle = (a.title || '').replace(/'/g, "\\'");
 
       const content = `
         ${ytEmbed ? `<div class="video-wrapper"><iframe src="${ytEmbed}" title="${esc(a.title)}" frameborder="0" allowfullscreen></iframe></div>` : (imgSrc ? `<img src="${esc(imgSrc)}" alt="${esc(a.title)}">` : '')}
@@ -1554,6 +1680,13 @@
         </div>
         <h2 style="margin-top:0; font-size:clamp(18px, 4vw, 22px); color:var(--text-main); font-weight:800; line-height:1.35;">${esc(a.title)}</h2>
         <div class="content" style="margin-top:14px; font-size:15px; color:#334155; line-height:1.75; white-space: pre-line;">${esc(a.desc)}</div>
+        <div class="modal-share-bar">
+          <span style="font-size:13px; font-weight:700; color:var(--text-main);">බෙදාහරින්න:</span>
+          <button class="modal-share-btn wa" onclick="shareViaPlatform('wa', '${safeTitle}', '${a.id}')">WhatsApp</button>
+          <button class="modal-share-btn fb" onclick="shareViaPlatform('fb', '${safeTitle}', '${a.id}')">Facebook</button>
+          <button class="modal-share-btn tw" onclick="shareViaPlatform('tw', '${safeTitle}', '${a.id}')">X</button>
+          <button class="modal-share-btn copy" onclick="copyToClipboard(window.location.origin + window.location.pathname + '#art_${a.id}')">Copy Link</button>
+        </div>
       `;
       showGenericModal(content);
     }
