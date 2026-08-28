@@ -219,70 +219,71 @@
     }
 
     /* Header with Compact Height & Larger Logo */
-    header { 
-      position: relative;
-      background-color: #0b110e; 
-      border-bottom: 1px solid var(--border-color); 
-      padding: 12px 16px; 
-      text-align: center; 
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      overflow: hidden;
-      color: #ffffff;
-    }
+header { 
+  position: relative;
+  /* Kalu gathiya adu kalā: lighter dark background / transparent */
+  background-color: #1b2420; /* Venath lighter shade ekak: #242f2a ho rgba(11, 17, 14, 0.4) */
+  border-bottom: 1px solid var(--border-color); 
+  padding: 12px 16px; 
+  text-align: center; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  color: #ffffff;
+}
 
-    .header-bg-slideshow {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
+.header-bg-slideshow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
 
-    .bg-slide {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-      opacity: 0;
-      transition: opacity 1.5s ease-in-out, transform 6s ease-out;
-      transform: scale(1);
-    }
+.bg-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out, transform 6s ease-out;
+  transform: scale(1);
+}
 
-    .bg-slide.active {
-      opacity: 0.18; 
-      transform: scale(1.05);
-    }
+.bg-slide.active {
+  opacity: 0.3; /* Slideshow image eka thawa tikak eliyata penna 0.18 idhan 0.3 ka visual opacity ekak dhunnā */
+  transform: scale(1.05);
+}
 
-    .header-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(180deg, rgba(11, 17, 14, 0.7) 0%, rgba(11, 17, 14, 0.85) 100%);
-      z-index: 2;
-    }
+.header-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Overlay eke thadha kalu opacity adu kalā (0.7 / 0.85 tibba eka 0.3 / 0.5 kara) */
+  background: linear-gradient(180deg, rgba(11, 17, 14, 0.3) 0%, rgba(11, 17, 14, 0.5) 100%);
+  z-index: 2;
+}
 
-    header > * {
-      position: relative;
-      z-index: 3;
-    }
-    
-    .eyebrow { 
-      font-size: 10px; 
-      letter-spacing: 1.5px; 
-      color: #a3b0a8; 
-      text-transform: uppercase; 
-      font-weight: 700;
-      margin-bottom: 2px;
-    }
-    
+header > * {
+  position: relative;
+  z-index: 3;
+}
+
+.eyebrow { 
+  font-size: 10px; 
+  letter-spacing: 1.5px; 
+  color: #a3b0a8; 
+  text-transform: uppercase; 
+  font-weight: 700;
+  margin-bottom: 2px;
+}
     .brand-logo-wrap {
       display: inline-block;
       text-decoration: none;
