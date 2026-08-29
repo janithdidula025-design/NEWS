@@ -455,6 +455,8 @@ const i18n = {
     lblAdImg: "දැන්වීම් Photo / Image URL",
     lblAdLink: "Click කළ විට යන වෙබ් අඩවියේ Link එක (Target Web Link)",
     existingAds: "සක්‍රිය දැන්වීම් (Active Ads)",
+    noAds: "දැන්වීම් නොමැත",
+    confirmDeleteAd: "මෙම දැන්වීම මකා, එම Slot එක හිස් කරන්නද?",
     categories: ['ප්‍රධාන පුවත්','ක්‍රීඩා','ව්‍යාපාර','ලෝකය','විනෝදාංශය','තාක්ෂණය']
   },
   en: {
@@ -500,6 +502,8 @@ const i18n = {
     lblAdImg: "Ad Banner Image URL",
     lblAdLink: "Target Website Link (URL)",
     existingAds: "Active Banner Ads",
+    noAds: "No ads found",
+    confirmDeleteAd: "Delete this ad and clear the slot?",
     categories: ['Main News','Sports','Business','World','Entertainment','Technology']
   },
   ta: {
@@ -545,6 +549,8 @@ const i18n = {
     lblAdImg: "விளம்பரப் படம் URL",
     lblAdLink: "இலக்கு இணையதள இணைப்பு",
     existingAds: "செயலில் உள்ள விளம்பரங்கள்",
+    noAds: "விளம்பரங்கள் எதுவும் இல்லை",
+    confirmDeleteAd: "இந்த விளம்பரத்தை நீக்கி, இடத்தை காலியாக்கவா?",
     categories: ['முக்கிய செய்திகள்','விளையாட்டு','வணிகம்','உலகம்','பொழுதுபோக்கு','தொழில்நுட்பம்']
   }
 };
@@ -871,8 +877,9 @@ function renderAdList(){
       </div>
       <div class="acts">
         <button onclick="editAd(${idx})">${t.btnEdit}</button>
+        <button class="del" onclick="deleteAd(${idx})">${t.btnDelete}</button>
       </div>
-    </div>`).join('') || `<div class="empty-note">දැන්වීම් නොමැත</div>`;
+    </div>`).join('') || `<div class="empty-note">${t.noAds}</div>`;
 }
 
 function editAd(index){
@@ -895,6 +902,35 @@ function resetAdForm(){
   document.getElementById('f-ad-img').value = '';
   document.getElementById('f-ad-link').value = '';
   document.getElementById('adMsg').textContent = '';
+}
+
+async function deleteAd(index){
+  const t = i18n[currentLang];
+  if(!confirm(t.confirmDeleteAd)) return;
+
+  // Ad slots are fixed (Slot 01-04), so "delete" clears that slot back to empty
+  // instead of removing it from the array, which would shift the other slots.
+  siteData.ads[index] = { id: index + 1, title: "", subtitle: "", img: "", link: "#" };
+
+  persist();
+  renderAdList();
+  resetAdForm();
+
+  const msg = document.getElementById('adMsg');
+  msg.style.color = 'var(--brand-red)';
+  msg.textContent = sheetConnected ? t.savingSheet : t.savedLocal;
+
+  if(sheetConnected){
+    try{
+      await callSheet({action:'saveAds', ads: siteData.ads});
+      msg.textContent = t.savedSheet;
+    }catch(e){
+      console.error(e);
+      msg.style.color = '#dc2626';
+      msg.textContent = t.errSheet;
+    }
+  }
+  setTimeout(()=>{ msg.textContent=''; }, 3500);
 }
 
 async function saveAd(){
