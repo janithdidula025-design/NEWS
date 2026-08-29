@@ -232,19 +232,18 @@
 
     /* Header with Compact Height & Larger Logo */
 header { 
- position: relative;
-/* Highly transparent background with modern backdrop blur */
-background-color: rgba(255, 255, 255, 0.05);
-backdrop-filter: blur(10px);
--webkit-backdrop-filter: blur(10px);
-border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-padding: 12px 16px; 
-text-align: center; 
-display: flex;
-flex-direction: column;
-align-items: center;
-overflow: hidden;
-color: #ffffff;
+  position: relative;
+  /* Kalu gathiya adu kalā: lighter dark background / transparent */
+  background-color: #1b2420; /* Venath lighter shade ekak: #242f2a ho rgba(11, 17, 14, 0.4) */
+  border-bottom: 1px solid var(--border-color); 
+  padding: 12px 16px; 
+  text-align: center; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  color: #ffffff;
+}
 
 .header-bg-slideshow {
   position: absolute;
