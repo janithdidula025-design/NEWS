@@ -1464,16 +1464,12 @@ header > * {
       setMeta('meta-tw-image', img);
     }
 
-    /* Builds the URL that should actually be shared. If the Apps Script backend
-       has a doGet(?id=...) share-card route added (see chat), this points there
-       so WhatsApp/Facebook fetch real per-article OG tags before redirecting the
-       visitor into the site. Falls back to a plain hash link otherwise. */
+    /* Builds the URL that should actually be shared. Always points directly at
+       this site (with the article's #art_ID hash), so opening the link always
+       loads the site itself and checkUrlHashModal() opens the right article
+       automatically. */
     function buildShareUrl(id) {
-      const siteUrl = window.location.origin + window.location.pathname + '#art_' + id;
-      if (SCRIPT_URL && SCRIPT_URL.trim() !== '') {
-        return SCRIPT_URL + '?id=' + encodeURIComponent(id) + '&redirect=' + encodeURIComponent(siteUrl);
-      }
-      return siteUrl;
+      return window.location.origin + window.location.pathname + '#art_' + id;
     }
     
     function getYouTubeId(url) {
@@ -1486,9 +1482,17 @@ header > * {
 
     function getArticleYouTubeLink(a) {
       if (!a) return null;
-      const candidates = [a.youtube, a.youtubelink, a.youtube_link, a.video, a.videourl, a.img];
+      // Check the common/expected field names first (fastest path)
+      const candidates = [a.youtube, a.youtubelink, a.youtube_link, a.youtubeLink, a.video, a.videourl, a.videoUrl, a.video_url, a.img];
       for (const link of candidates) {
-        if (link && getYouTubeId(link)) return link;
+        if (link && typeof link === 'string' && getYouTubeId(link)) return link;
+      }
+      // Fallback: scan every field on the article in case the Google Sheet
+      // column has a different/unexpected name (e.g. a Sinhala header) - any
+      // text value that happens to be a YouTube URL will still be detected.
+      for (const key in a) {
+        const val = a[key];
+        if (val && typeof val === 'string' && getYouTubeId(val)) return val;
       }
       return null;
     }
@@ -1763,7 +1767,7 @@ header > * {
       const shareUrlSafe = buildShareUrl(a.id).replace(/'/g, "\\'");
 
       const content = `
-        ${ytEmbed ? `<div class="video-wrapper"><iframe src="${ytEmbed}" title="${esc(a.title)}" frameborder="0" allowfullscreen></iframe></div>` : (imgSrc ? `<img src="${esc(imgSrc)}" alt="${esc(a.title)}" loading="eager">` : '')}
+        ${ytEmbed ? `<div class="video-wrapper"><iframe src="${ytEmbed}" title="${esc(a.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>` : (imgSrc ? `<img src="${esc(imgSrc)}" alt="${esc(a.title)}" loading="eager">` : '')}
         <div style="display:flex; justify-content:space-between; align-items:center; margin: 10px 0 6px;">
           <span style="color:var(--brand-red-maroon); font-weight:700; font-size:12px; text-transform:uppercase;">📌 ${esc(a.category || 'General')}</span>
           ${a.time ? `<span style="font-size:12px; color:var(--text-muted); font-weight:500;">🕒 ${esc(a.time)}</span>` : ''}
@@ -1779,6 +1783,8 @@ header > * {
         </div>
       `;
       showGenericModal(content);
+
+      try { history.pushState(null, '', '#art_' + a.id); } catch(e) {}
     }
 
     function openAboutModal() {
@@ -1840,6 +1846,7 @@ header > * {
         const modalBox = document.getElementById('modalContent');
         if(modalBox) modalBox.innerHTML = '';
       }, 300);
+      try { history.pushState(null, '', window.location.pathname); } catch(e) {}
     }
 
     function doSearch(){
