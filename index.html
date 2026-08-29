@@ -9,6 +9,18 @@
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png">
   <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png">
 
+  <!-- Share Preview Meta Tags (updated by JS per-article; see note in chat about WhatsApp/Facebook needing server-side rendering too) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Lanka News Now">
+  <meta id="meta-og-title" property="og:title" content="ලංකා NEWS NOW - නවතම පුවත්">
+  <meta id="meta-og-desc" property="og:description" content="ශ්‍රී ලංකාවේ නවතම, විශ්වාසනීය පුවත් එසැනින්">
+  <meta id="meta-og-image" property="og:image" content="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png">
+  <meta id="meta-og-url" property="og:url" content="">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta id="meta-tw-title" name="twitter:title" content="ලංකා NEWS NOW">
+  <meta id="meta-tw-desc" name="twitter:description" content="ශ්‍රී ලංකාවේ නවතම පුවත්">
+  <meta id="meta-tw-image" name="twitter:image" content="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png">
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1004,10 +1016,10 @@ header > * {
   <!-- Compact Header with Larger Logo -->
   <header>
     <div class="header-bg-slideshow" id="headerSlideshow">
-      <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1600&auto=format&fit=crop');"></div>
-      <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1495020689067-958852a7765e?q=80&w=1600&auto=format&fit=crop');"></div>
-      <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=1600&auto=format&fit=crop');"></div>
-      <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1526470608268-f674ce90ebd4?q=80&w=1600&auto=format&fit=crop');"></div>
+      <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=70&w=900&auto=format&fit=crop');"></div>
+      <div class="bg-slide" data-bg="https://images.unsplash.com/photo-1495020689067-958852a7765e?q=70&w=900&auto=format&fit=crop"></div>
+      <div class="bg-slide" data-bg="https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=70&w=900&auto=format&fit=crop"></div>
+      <div class="bg-slide" data-bg="https://images.unsplash.com/photo-1526470608268-f674ce90ebd4?q=70&w=900&auto=format&fit=crop"></div>
     </div>
     
     <div class="header-overlay"></div>
@@ -1150,7 +1162,7 @@ header > * {
     /* Share functionality helper */
     function shareArticle(event, title, desc, id) {
       if (event) event.stopPropagation();
-      const shareUrl = window.location.origin + window.location.pathname + '#art_' + id;
+      const shareUrl = buildShareUrl(id);
       const shareData = {
         title: title || 'ලංකා News Now',
         text: desc || title,
@@ -1165,7 +1177,7 @@ header > * {
     }
 
     function shareViaPlatform(platform, title, id) {
-      const shareUrl = encodeURIComponent(window.location.origin + window.location.pathname + '#art_' + id);
+      const shareUrl = encodeURIComponent(buildShareUrl(id));
       const shareText = encodeURIComponent(title);
       let target = '';
 
@@ -1197,17 +1209,24 @@ header > * {
     function hidePreloader() {
       const preloader = document.getElementById('preloader');
       if (preloader && !preloader.classList.contains('fade-out')) {
-        setTimeout(() => {
-          preloader.classList.add('fade-out');
-        }, 800); 
+        preloader.classList.add('fade-out');
       }
     }
 
     function initHeaderSlideshow() {
       const slides = document.querySelectorAll('#headerSlideshow .bg-slide');
       if (!slides.length) return;
-      let currentSlideIndex = 0;
 
+      // Load the remaining slide images lazily, after the important content
+      // (article data) has had a chance to load first.
+      setTimeout(() => {
+        slides.forEach(s => {
+          const bg = s.getAttribute('data-bg');
+          if (bg) { s.style.backgroundImage = `url('${bg}')`; s.removeAttribute('data-bg'); }
+        });
+      }, 2500);
+
+      let currentSlideIndex = 0;
       setInterval(() => {
         slides[currentSlideIndex].classList.remove('active');
         currentSlideIndex = (currentSlideIndex + 1) % slides.length;
@@ -1349,6 +1368,29 @@ header > * {
     }
 
     async function loadData(){
+      // 1) Instant paint: if we have cached data from a previous visit, show it right away
+      //    so a shared link's article can pop open immediately without waiting on the network.
+      let hasCachedData = false;
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && (parsed.articles || []).length > 0) {
+            // Cached data was already stored newest-first on the previous save, so use as-is
+            siteData = {
+              ticker: parsed.ticker || [],
+              articles: sanitizeArticles(parsed.articles),
+              ads: parsed.ads || []
+            };
+            renderSite();
+            hidePreloader();
+            checkUrlHashModal();
+            hasCachedData = true;
+          }
+        }
+      } catch(e) { /* ignore corrupt cache */ }
+
+      // 2) Always fetch fresh data in the background and update once it arrives
       if(SCRIPT_URL && SCRIPT_URL.trim() !== ""){
         try{
           const res = await fetch(SCRIPT_URL, { method: 'GET', redirect: 'follow' });
@@ -1362,23 +1404,21 @@ header > * {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData));
             renderSite();
             hidePreloader();
-            checkUrlHashModal();
+            if (!hasCachedData) checkUrlHashModal();
             return;
           }
         }catch(e){
           console.error('Fetch error:', e);
         }
       }
-      const raw = localStorage.getItem(STORAGE_KEY);
-      const parsed = raw ? JSON.parse(raw) : { ticker: [], articles: [], ads: [] };
-      siteData = {
-        ticker: parsed.ticker || [],
-        articles: orderNewestFirst(sanitizeArticles(parsed.articles)),
-        ads: parsed.ads || []
-      };
-      renderSite();
-      hidePreloader();
-      checkUrlHashModal();
+
+      if (!hasCachedData) {
+        // No cache and the network fetch failed/returned nothing usable
+        siteData = { ticker: [], articles: [], ads: [] };
+        renderSite();
+        hidePreloader();
+        checkUrlHashModal();
+      }
     }
 
     function checkUrlHashModal() {
@@ -1389,6 +1429,47 @@ header > * {
     }
 
     function esc(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    function setMeta(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.setAttribute('content', value);
+    }
+
+    /* Updates document title + og/twitter meta tags to match the open article.
+       NOTE: this only affects browsers that read the live DOM (in-app browsers,
+       Web Share, etc). WhatsApp/Facebook/Telegram link-preview crawlers do NOT
+       run JavaScript - they only read the raw HTML once, before any script runs.
+       So this alone cannot make WhatsApp/Facebook show the article photo for a
+       shared link; that requires generating the meta tags server-side (see the
+       Apps Script snippet shared alongside this file). */
+    function updateShareMeta(a) {
+      if (!a) return;
+      const img = getArticleImage(a) || 'https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png';
+      const title = a.title || 'ලංකා NEWS NOW';
+      const desc = (a.desc || '').substring(0, 150);
+      const url = window.location.origin + window.location.pathname + '#art_' + a.id;
+
+      document.title = title + ' | Lanka News Now';
+      setMeta('meta-og-title', title);
+      setMeta('meta-og-desc', desc);
+      setMeta('meta-og-image', img);
+      setMeta('meta-og-url', url);
+      setMeta('meta-tw-title', title);
+      setMeta('meta-tw-desc', desc);
+      setMeta('meta-tw-image', img);
+    }
+
+    /* Builds the URL that should actually be shared. If the Apps Script backend
+       has a doGet(?id=...) share-card route added (see chat), this points there
+       so WhatsApp/Facebook fetch real per-article OG tags before redirecting the
+       visitor into the site. Falls back to a plain hash link otherwise. */
+    function buildShareUrl(id) {
+      const siteUrl = window.location.origin + window.location.pathname + '#art_' + id;
+      if (SCRIPT_URL && SCRIPT_URL.trim() !== '') {
+        return SCRIPT_URL + '?id=' + encodeURIComponent(id) + '&redirect=' + encodeURIComponent(siteUrl);
+      }
+      return siteUrl;
+    }
     
     function getYouTubeId(url) {
       if (!url || typeof url !== 'string') return null;
@@ -1426,7 +1507,7 @@ header > * {
       const isVideo = !!getArticleYouTubeLink(a);
       
       let imgContent = (src && src.trim() !== '') ? 
-        `<img class="ph ${cls||''}" src="${esc(src)}" alt="" onerror="this.style.display='none'">` : 
+        `<img class="ph ${cls||''}" src="${esc(src)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">` : 
         `<div class="ph ${cls||''}"></div>`;
 
       return isVideo ? `<div class="img-wrapper">${imgContent}<div class="play-overlay"></div></div>` : imgContent;
@@ -1669,12 +1750,15 @@ header > * {
       const a = siteData.articles.find(x => String(x.id) === String(id));
       if(!a) return;
 
+      updateShareMeta(a);
+
       const ytEmbed = getYouTubeEmbedUrl(getArticleYouTubeLink(a));
       const imgSrc = getArticleImage(a);
       const safeTitle = (a.title || '').replace(/'/g, "\\'");
+      const shareUrlSafe = buildShareUrl(a.id).replace(/'/g, "\\'");
 
       const content = `
-        ${ytEmbed ? `<div class="video-wrapper"><iframe src="${ytEmbed}" title="${esc(a.title)}" frameborder="0" allowfullscreen></iframe></div>` : (imgSrc ? `<img src="${esc(imgSrc)}" alt="${esc(a.title)}">` : '')}
+        ${ytEmbed ? `<div class="video-wrapper"><iframe src="${ytEmbed}" title="${esc(a.title)}" frameborder="0" allowfullscreen></iframe></div>` : (imgSrc ? `<img src="${esc(imgSrc)}" alt="${esc(a.title)}" loading="eager">` : '')}
         <div style="display:flex; justify-content:space-between; align-items:center; margin: 10px 0 6px;">
           <span style="color:var(--brand-red-maroon); font-weight:700; font-size:12px; text-transform:uppercase;">📌 ${esc(a.category || 'General')}</span>
           ${a.time ? `<span style="font-size:12px; color:var(--text-muted); font-weight:500;">🕒 ${esc(a.time)}</span>` : ''}
@@ -1686,7 +1770,7 @@ header > * {
           <button class="modal-share-btn wa" onclick="shareViaPlatform('wa', '${safeTitle}', '${a.id}')">WhatsApp</button>
           <button class="modal-share-btn fb" onclick="shareViaPlatform('fb', '${safeTitle}', '${a.id}')">Facebook</button>
           <button class="modal-share-btn tw" onclick="shareViaPlatform('tw', '${safeTitle}', '${a.id}')">X</button>
-          <button class="modal-share-btn copy" onclick="copyToClipboard(window.location.origin + window.location.pathname + '#art_${a.id}')">Copy Link</button>
+          <button class="modal-share-btn copy" onclick="copyToClipboard('${shareUrlSafe}')">Copy Link</button>
         </div>
       `;
       showGenericModal(content);
@@ -1780,7 +1864,8 @@ header > * {
 
     window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
     window.onclick = function(e) { if (e.target === document.getElementById('articleModal')) closeModal(); };
-    window.addEventListener('load', hidePreloader);
+    // Safety fallback: if data fetch is very slow/fails silently, don't leave the preloader stuck forever
+    setTimeout(hidePreloader, 6000);
 
     // Initialization
     updateDate();
