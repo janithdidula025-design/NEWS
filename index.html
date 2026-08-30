@@ -18,7 +18,7 @@
     font-src https://fonts.gstatic.com;
     img-src 'self' https: data:;
     frame-src https://www.youtube-nocookie.com https://translate.google.com;
-    connect-src 'self' https://script.google.com https://script.googleusercontent.com https://api.open-meteo.com https://api.bigdatacloud.net;
+    connect-src 'self' https://script.google.com https://script.googleusercontent.com https://api.open-meteo.com https://api.bigdatacloud.net https://translate.googleapis.com https://translate.google.com;
     object-src 'none';
     base-uri 'self';
     form-action 'self';
@@ -1133,6 +1133,7 @@ header > * {
 
   <!-- Google Translate Engine Script -->
   <script type="text/javascript">
+    window.__gtLoadFailed = false;
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
         pageLanguage: 'si',
@@ -1140,9 +1141,10 @@ header > * {
         layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
         autoDisplay: false
       }, 'google_translate_element');
+      window.__gtReady = true;
     }
   </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" onerror="window.__gtLoadFailed = true;"></script>
 
   <script>
     'use strict';
@@ -1356,10 +1358,20 @@ header > * {
       return (articles || []).slice().reverse();
     }
 
+    let __translateWaitInterval = null;
+
     function translatePage(langCode) {
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
       const activeBtn = document.getElementById(`btn-lang-${langCode}`);
       if(activeBtn) activeBtn.classList.add('active');
+
+      if (window.__gtLoadFailed) {
+        // The translate script itself never loaded (network blocked / offline /
+        // CSP blocked it) - retrying the combo-box loop would just spin forever
+        // with no feedback, so tell the user plainly instead.
+        console.error('Google Translate script failed to load - check network/CSP.');
+        return;
+      }
 
       if (langCode === 'si') {
         document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -1372,17 +1384,31 @@ header > * {
         document.cookie = `googtrans=${cookieVal}; domain=${window.location.hostname}; path=/; SameSite=Lax`;
       }
 
+      // Clear any wait-loop still running from a previous rapid click so we
+      // never end up with two intervals racing to set the combo box.
+      if (__translateWaitInterval) {
+        clearInterval(__translateWaitInterval);
+        __translateWaitInterval = null;
+      }
+
       let attempts = 0;
-      const interval = setInterval(() => {
+      const maxAttempts = 50; // ~10s - the widget iframe can be slow on first load
+      __translateWaitInterval = setInterval(() => {
         const select = document.querySelector('.goog-te-combo');
         if (select) {
           const targetValue = (langCode === 'si') ? '' : langCode;
           select.value = targetValue;
           select.dispatchEvent(new Event('change', { bubbles: true }));
-          clearInterval(interval);
+          clearInterval(__translateWaitInterval);
+          __translateWaitInterval = null;
+          return;
         }
         attempts++;
-        if (attempts > 25) clearInterval(interval);
+        if (attempts > maxAttempts) {
+          clearInterval(__translateWaitInterval);
+          __translateWaitInterval = null;
+          console.error('Google Translate widget did not initialize in time.');
+        }
       }, 200);
     }
 
