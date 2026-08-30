@@ -13,11 +13,11 @@
        entries if Google Translate's asset domains change. -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' 'unsafe-inline' https://translate.google.com https://translate.googleapis.com https://www.gstatic.com;
+    script-src 'self' 'unsafe-inline' https://translate.google.com https://translate.googleapis.com https://www.gstatic.com https://www.google.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src https://fonts.gstatic.com;
     img-src 'self' https: data:;
-    frame-src https://www.youtube-nocookie.com https://translate.google.com;
+    frame-src https://www.youtube-nocookie.com https://translate.google.com https://translate.googleapis.com https://www.google.com;
     connect-src 'self' https://script.google.com https://script.googleusercontent.com https://api.open-meteo.com https://api.bigdatacloud.net https://translate.googleapis.com https://translate.google.com;
     object-src 'none';
     base-uri 'self';
@@ -1421,15 +1421,48 @@ header > * {
       }, 200);
     }
 
+    // ---------------------------------------------------------------------
+    // TRANSLATE FIX
+    // ---------------------------------------------------------------------
+    // The previous approach tried to translate WITHOUT reloading, by finding
+    // the hidden .goog-te-combo <select> and firing a synthetic 'change'
+    // event on it. That depends on internal markup/timing details of
+    // Google's widget that change without notice and are not officially
+    // supported, which is why it was unreliable / silently doing nothing.
+    //
+    // The approach Google's own widget is actually built to support is:
+    // set the `googtrans` cookie, then reload the page. On the fresh load,
+    // Google's own translate_a/element.js script reads that cookie itself
+    // and auto-translates the DOM - no manual combo-box manipulation
+    // needed. This is the standard, dependable pattern.
+    //
+    // We still keep applyTranslateSelection()/waitForTranslateWidget() as a
+    // same-page fallback (used by initActiveLanguage on load, and in case a
+    // browser serves the page from bfcache and skips a real reload), but the
+    // reload+cookie flow is now the primary mechanism.
+    // ---------------------------------------------------------------------
     function translatePage(langCode) {
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
       const activeBtn = document.getElementById(`btn-lang-${langCode}`);
-      if(activeBtn) activeBtn.classList.add('active');
+      if (activeBtn) activeBtn.classList.add('active');
 
-      if (langCode === 'si') {
+      // Nothing to do if we're already on this language and the widget is
+      // already applied - avoids an unnecessary reload loop.
+      const already = document.cookie.match(/googtrans=\/si\/([a-z]{2})/);
+      const alreadyLang = already ? already[1] : 'si';
+      if (alreadyLang === langCode) return;
+
+      // Preserve where the user is (home / a category / search) across the
+      // reload so switching language doesn't bounce them back to the top.
+      try { sessionStorage.setItem('lnn-restore-nav', currentCat); } catch (e) {}
+
+      const clearCookie = () => {
         document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${window.location.hostname}; path=/;`;
-      } else {
+      };
+      clearCookie();
+
+      if (langCode !== 'si') {
         const cookieVal = `/si/${langCode}`;
         // Secure + SameSite added since this cookie only toggles UI language,
         // no reason for it to be sent cross-site or over plain HTTP.
@@ -1437,7 +1470,11 @@ header > * {
         document.cookie = `googtrans=${cookieVal}; domain=${window.location.hostname}; path=/; SameSite=Lax`;
       }
 
-      waitForTranslateWidget(() => applyTranslateSelection(langCode));
+      // Reload so Google's own script picks up the cookie on init - this is
+      // the reliable path. Show the preloader again for a clean transition.
+      const preloader = document.getElementById('preloader');
+      if (preloader) preloader.classList.remove('fade-out');
+      window.location.reload();
     }
 
     // On page load, the cookie only remembers WHICH language was chosen last
@@ -1513,6 +1550,19 @@ header > * {
         renderSite();
         hidePreloader();
         checkUrlHashModal();
+      }
+
+      restoreNavAfterLangSwitch();
+    }
+
+    // If translatePage() just triggered a reload for a language switch, put
+    // the user back on the view (home / a category) they were on before.
+    function restoreNavAfterLangSwitch() {
+      let saved = null;
+      try { saved = sessionStorage.getItem('lnn-restore-nav'); } catch (e) {}
+      if (saved) {
+        try { sessionStorage.removeItem('lnn-restore-nav'); } catch (e) {}
+        if (saved !== 'home') navigateTo(saved);
       }
     }
 
