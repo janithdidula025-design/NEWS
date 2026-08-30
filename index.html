@@ -793,6 +793,72 @@ header > * {
       font-weight: 500;
     }
 
+    /* Related News (inside article popup) */
+    .modal-related-section {
+      margin-top: 22px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+    }
+    .modal-related-section h4 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--brand-green-dark);
+      margin-bottom: 12px;
+    }
+    .modal-related-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .modal-related-item {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .modal-related-item:hover {
+      transform: translateY(-3px);
+      border-color: var(--brand-green-dark);
+      box-shadow: var(--shadow-sm);
+    }
+    .modal-related-item img, .modal-related-item .ph {
+      width: 56px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 6px;
+      background: #e2e8e2;
+      flex-shrink: 0;
+    }
+    .modal-related-item .mri-content { min-width: 0; }
+    .modal-related-item .mri-kicker {
+      font-size: 9.5px;
+      color: var(--brand-green-dark);
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .modal-related-item h5 {
+      font-size: 12.5px;
+      line-height: 1.35;
+      font-weight: 700;
+      color: var(--text-main);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    /* Small phones: single column so thumbnails/titles don't get cramped */
+    @media (max-width: 420px) {
+      .modal-related-grid { grid-template-columns: 1fr; }
+      .modal-related-item img, .modal-related-item .ph { width: 64px; height: 64px; }
+      .modal-related-item h5 { font-size: 13px; -webkit-line-clamp: 2; }
+    }
+
     /* Floating Back to Top Button */
     .back-to-top {
       position: fixed;
@@ -1755,6 +1821,39 @@ header > * {
       document.body.style.overflow = 'hidden';
     }
 
+    /* Picks other articles to show under the article as "related news":
+       same category first, then fills up with the newest other articles. */
+    function getRelatedArticles(current, limit) {
+      const all = siteData.articles || [];
+      const others = all.filter(x => String(x.id) !== String(current.id));
+
+      const sameCat = others.filter(x => matchCategory(x.category, current.category));
+      const rest = others.filter(x => !matchCategory(x.category, current.category));
+
+      const combined = sameCat.concat(rest);
+      return combined.slice(0, limit);
+    }
+
+    function renderRelatedNewsHtml(current) {
+      const related = getRelatedArticles(current, 4);
+      if (related.length === 0) return '';
+
+      const itemsHtml = related.map(r => `
+        <div class="modal-related-item" onclick="openModal('${esc(r.id)}')">
+          ${renderImageHtml(r)}
+          <div class="mri-content">
+            <div class="mri-kicker">${esc(r.category)}</div>
+            <h5>${esc(r.title)}</h5>
+          </div>
+        </div>`).join('');
+
+      return `
+        <div class="modal-related-section">
+          <h4>අදාළ පුවත් (Related News)</h4>
+          <div class="modal-related-grid">${itemsHtml}</div>
+        </div>`;
+    }
+
     function openModal(id){
       const a = siteData.articles.find(x => String(x.id) === String(id));
       if(!a) return;
@@ -1781,8 +1880,12 @@ header > * {
           <button class="modal-share-btn tw" onclick="shareViaPlatform('tw', '${safeTitle}', '${a.id}')">X</button>
           <button class="modal-share-btn copy" onclick="copyToClipboard('${shareUrlSafe}')">Copy Link</button>
         </div>
+        ${renderRelatedNewsHtml(a)}
       `;
       showGenericModal(content);
+
+      const modalBox = document.querySelector('.modal-box');
+      if (modalBox) modalBox.scrollTop = 0;
 
       try { history.pushState(null, '', '#art_' + a.id); } catch(e) {}
     }
