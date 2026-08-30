@@ -1007,6 +1007,7 @@ header > * {
       <button class="lang-btn active" id="btn-lang-si" data-lang="si">සිංහල</button>
       <button class="lang-btn" id="btn-lang-en" data-lang="en">English</button>
       <button class="lang-btn" id="btn-lang-ta" data-lang="ta">தமிழ்</button>
+      <span id="gt-debug-status" style="margin-left:8px;font-size:11px;color:#f5b11c;font-weight:700;"></span>
     </div>
   </div>
 
@@ -1134,17 +1135,28 @@ header > * {
   <!-- Google Translate Engine Script -->
   <script type="text/javascript">
     window.__gtLoadFailed = false;
+    function setGtDebug(msg) {
+      const el = document.getElementById('gt-debug-status');
+      if (el) el.textContent = msg;
+      console.log('[GT DEBUG]', msg);
+    }
     function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'si',
-        includedLanguages: 'si,en,ta',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false
-      }, 'google_translate_element');
-      window.__gtReady = true;
+      setGtDebug('Google script loaded, building widget…');
+      try {
+        new google.translate.TranslateElement({
+          pageLanguage: 'si',
+          includedLanguages: 'si,en,ta',
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false
+        }, 'google_translate_element');
+        window.__gtReady = true;
+        setGtDebug('Widget init called ✅');
+      } catch (e) {
+        setGtDebug('Widget init threw: ' + e.message);
+      }
     }
   </script>
-  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" onerror="window.__gtLoadFailed = true;"></script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" onerror="window.__gtLoadFailed = true; document.getElementById('gt-debug-status') && (document.getElementById('gt-debug-status').textContent = 'Script failed to load ❌ (blocked by network/adblock?)');"></script>
 
   <script>
     'use strict';
@@ -1368,11 +1380,12 @@ header > * {
     // this code, and firing twice is the standard workaround.
     function applyTranslateSelection(langCode) {
       const select = document.querySelector('.goog-te-combo');
-      if (!select) return false;
+      if (!select) { setGtDebug('Combo box not found ❌'); return false; }
       const targetValue = (langCode === 'si') ? '' : langCode;
       select.value = targetValue;
       select.dispatchEvent(new Event('change', { bubbles: true }));
       select.dispatchEvent(new Event('change', { bubbles: true }));
+      setGtDebug(`Applied "${targetValue || 'si'}" to combo ✅`);
       return true;
     }
 
@@ -1381,9 +1394,10 @@ header > * {
     // `callback` as soon as it appears.
     function waitForTranslateWidget(callback) {
       if (window.__gtLoadFailed) {
-        console.error('Google Translate script failed to load - check network/CSP.');
+        setGtDebug('Script failed to load ❌');
         return;
       }
+      setGtDebug('Waiting for combo box…');
       if (__translateWaitInterval) {
         clearInterval(__translateWaitInterval);
         __translateWaitInterval = null;
@@ -1402,7 +1416,7 @@ header > * {
         if (attempts > maxAttempts) {
           clearInterval(__translateWaitInterval);
           __translateWaitInterval = null;
-          console.error('Google Translate widget did not initialize in time.');
+          setGtDebug('Combo box never appeared ⏱ (widget did not init)');
         }
       }, 200);
     }
