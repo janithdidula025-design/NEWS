@@ -1360,18 +1360,57 @@ header > * {
 
     let __translateWaitInterval = null;
 
+    // Sets the hidden Google combo box to the target language and fires the
+    // change event TWICE. This looks redundant but it isn't: Google's own
+    // listener on .goog-te-combo frequently ignores a single programmatic
+    // 'change' event (it only reliably reacts starting from the second
+    // dispatch) - this is a long-standing quirk of the widget, not a bug in
+    // this code, and firing twice is the standard workaround.
+    function applyTranslateSelection(langCode) {
+      const select = document.querySelector('.goog-te-combo');
+      if (!select) return false;
+      const targetValue = (langCode === 'si') ? '' : langCode;
+      select.value = targetValue;
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+      return true;
+    }
+
+    // Polls for the .goog-te-combo select (created asynchronously, once the
+    // Google script has loaded AND finished building the widget) and runs
+    // `callback` as soon as it appears.
+    function waitForTranslateWidget(callback) {
+      if (window.__gtLoadFailed) {
+        console.error('Google Translate script failed to load - check network/CSP.');
+        return;
+      }
+      if (__translateWaitInterval) {
+        clearInterval(__translateWaitInterval);
+        __translateWaitInterval = null;
+      }
+      let attempts = 0;
+      const maxAttempts = 50; // ~10s - the widget iframe can be slow on first load
+      __translateWaitInterval = setInterval(() => {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+          clearInterval(__translateWaitInterval);
+          __translateWaitInterval = null;
+          callback();
+          return;
+        }
+        attempts++;
+        if (attempts > maxAttempts) {
+          clearInterval(__translateWaitInterval);
+          __translateWaitInterval = null;
+          console.error('Google Translate widget did not initialize in time.');
+        }
+      }, 200);
+    }
+
     function translatePage(langCode) {
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
       const activeBtn = document.getElementById(`btn-lang-${langCode}`);
       if(activeBtn) activeBtn.classList.add('active');
-
-      if (window.__gtLoadFailed) {
-        // The translate script itself never loaded (network blocked / offline /
-        // CSP blocked it) - retrying the combo-box loop would just spin forever
-        // with no feedback, so tell the user plainly instead.
-        console.error('Google Translate script failed to load - check network/CSP.');
-        return;
-      }
 
       if (langCode === 'si') {
         document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -1384,34 +1423,14 @@ header > * {
         document.cookie = `googtrans=${cookieVal}; domain=${window.location.hostname}; path=/; SameSite=Lax`;
       }
 
-      // Clear any wait-loop still running from a previous rapid click so we
-      // never end up with two intervals racing to set the combo box.
-      if (__translateWaitInterval) {
-        clearInterval(__translateWaitInterval);
-        __translateWaitInterval = null;
-      }
-
-      let attempts = 0;
-      const maxAttempts = 50; // ~10s - the widget iframe can be slow on first load
-      __translateWaitInterval = setInterval(() => {
-        const select = document.querySelector('.goog-te-combo');
-        if (select) {
-          const targetValue = (langCode === 'si') ? '' : langCode;
-          select.value = targetValue;
-          select.dispatchEvent(new Event('change', { bubbles: true }));
-          clearInterval(__translateWaitInterval);
-          __translateWaitInterval = null;
-          return;
-        }
-        attempts++;
-        if (attempts > maxAttempts) {
-          clearInterval(__translateWaitInterval);
-          __translateWaitInterval = null;
-          console.error('Google Translate widget did not initialize in time.');
-        }
-      }, 200);
+      waitForTranslateWidget(() => applyTranslateSelection(langCode));
     }
 
+    // On page load, the cookie only remembers WHICH language was chosen last
+    // time - it does not, by itself, repaint the DOM. The old code only
+    // highlighted the matching button and stopped there, so a reload never
+    // actually reapplied the translation ("auto translate" never happened).
+    // Now it waits for the widget and reapplies the saved language too.
     function initActiveLanguage() {
       const match = document.cookie.match(/googtrans=\/si\/([a-z]{2})/);
       if (match && match[1]) {
@@ -1419,6 +1438,7 @@ header > * {
         document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
         const btn = document.getElementById(`btn-lang-${currentLang}`);
         if (btn) btn.classList.add('active');
+        waitForTranslateWidget(() => applyTranslateSelection(currentLang));
       }
     }
 
