@@ -4,26 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lanka News Now</title>
-
-  <!-- Defense-in-depth: even though the app no longer builds executable
-       strings from article data, a CSP blocks inline event-handler
-       attributes/scripts and restricts where scripts/images/frames can be
-       loaded from, so a future regression (or a bug we missed) is far less
-       likely to be exploitable. Adjust the *.googleapis.com / translate.google.com
-       entries if Google Translate's asset domains change. -->
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    script-src 'self' 'unsafe-inline' https://translate.google.com https://translate.googleapis.com https://www.gstatic.com https://www.google.com;
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    font-src https://fonts.gstatic.com;
-    img-src 'self' https: data:;
-    frame-src https://www.youtube-nocookie.com https://translate.google.com https://translate.googleapis.com https://www.google.com;
-    connect-src 'self' https://script.google.com https://script.googleusercontent.com https://api.open-meteo.com https://api.bigdatacloud.net https://translate.googleapis.com https://translate.google.com;
-    object-src 'none';
-    base-uri 'self';
-    form-action 'self';
-  ">
-
+  
   <!-- Browser Tab Favicon Logo -->
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png">
   <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png">
@@ -84,6 +65,7 @@
       overflow-x: hidden;
     }
 
+    /* Page Intro Preloader Animation Styles */
     #preloader {
       position: fixed;
       top: 0;
@@ -162,6 +144,7 @@
       100% { opacity: 1; transform: translateY(-2px); }
     }
 
+    /* Page load fade-in animation */
     @keyframes fadeInPage {
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
@@ -171,6 +154,7 @@
       animation: fadeInPage 0.5s ease-out;
     }
 
+    /* Hide Google Translate top frame & toolbars */
     .goog-te-banner-frame, 
     .goog-te-balloon-frame,
     .skiptranslate,
@@ -186,6 +170,7 @@
       pointer-events: none !important;
     }
 
+    /* Top Utility Bar */
     .utility-bar { 
       background-color: var(--top-bar-bg); 
       color: #e2e8e2; 
@@ -245,8 +230,10 @@
       transform: translateY(-1px);
     }
 
+   /* Header with Compact Height & Larger Logo */
 header { 
   position: relative;
+  /* Dark shade reduced further to a lighter, softer greenish-gray background */
   background-color: #2e3b35; 
   border-bottom: 1px solid var(--border-color); 
   padding: 12px 16px; 
@@ -281,6 +268,7 @@ header {
 }
 
 .bg-slide.active {
+  /* Increased opacity for brighter background image visibility */
   opacity: 0.45; 
   transform: scale(1.05);
 }
@@ -291,6 +279,7 @@ header {
   left: 0;
   width: 100%;
   height: 100%;
+  /* Lowered black tint opacity in the gradient (0.15 - 0.3) to make background much brighter */
   background: linear-gradient(180deg, rgba(11, 17, 14, 0.15) 0%, rgba(11, 17, 14, 0.3) 100%);
   z-index: 2;
 }
@@ -316,7 +305,7 @@ header > * {
   background: #fff; 
   padding: 6px 14px;
   border-radius: var(--radius-sm);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Reduced shadow intensity */
 }
 
 .brand-logo {
@@ -331,6 +320,7 @@ header > * {
   transform: scale(1.03); 
 }
 
+    /* Search Bar */
     .search-box { margin-top: 10px; display: flex; justify-content: center; width: 100%; max-width: 450px; }
     .search-box input { 
       padding: 8px 14px; 
@@ -358,6 +348,7 @@ header > * {
     .search-box button:hover { background: #6b1832; }
     .search-box button:active { transform: scale(0.95); }
 
+    /* Share Button Universal Style */
     .share-btn {
       background: rgba(18, 76, 62, 0.08);
       border: 1px solid rgba(18, 76, 62, 0.2);
@@ -384,6 +375,7 @@ header > * {
       fill: currentColor;
     }
 
+    /* Navigation Bar */
     nav { 
       background-color: var(--brand-green-dark); 
       position: sticky; 
@@ -421,6 +413,7 @@ header > * {
       transform: translateY(-1px);
     }
 
+    /* Ticker */
     .ticker-container { 
       background: var(--card-bg); 
       border-bottom: 1px solid var(--border-color); 
@@ -447,8 +440,10 @@ header > * {
     .ticker-text span { padding: 0 20px; font-size: 13.5px; color: var(--text-main); font-weight: 500; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
+    /* Container Layout */
     .container { max-width: 1280px; margin: 24px auto; padding: 0 16px; width: 100%; }
 
+    /* Hero Section */
     .hero-grid { 
       display: grid; 
       grid-template-columns: 1fr; 
@@ -529,6 +524,7 @@ header > * {
       transform: translateY(-2px);
     }
 
+    /* Video Play Overlay */
     .img-wrapper {
       position: relative;
       width: 100%;
@@ -579,6 +575,7 @@ header > * {
       box-shadow: 0 6px 15px rgba(133, 30, 62, 0.4);
     }
 
+    /* Dynamic Ads Container */
     .ad-slot-container {
       margin: 0 !important;
       padding: 0 !important;
@@ -635,6 +632,7 @@ header > * {
     .ad-banner h5 { font-size: 16px; font-weight: 700; color: #f8fafc; margin-bottom: 4px; }
     .ad-banner p { font-size: 13px; color: #a3b0a8; }
 
+    /* Cards Grid */
     .section-title { 
       font-size: 18px; 
       font-weight: 800; 
@@ -680,6 +678,7 @@ header > * {
       padding: 10px 14px 14px;
     }
 
+    /* Load More & Back Buttons */
     .back-btn, .load-more-btn { 
       background: var(--brand-red-maroon); 
       color: #fff; 
@@ -701,6 +700,7 @@ header > * {
     
     .load-more-container { text-align: center; margin: 24px 0 40px; }
 
+    /* Split Section */
     .split-section { 
       display: grid; 
       grid-template-columns: 1fr; 
@@ -746,6 +746,7 @@ header > * {
     .strip-row a { color: var(--text-main); font-weight: 600; text-decoration: none; flex-grow: 1; transition: color 0.2s ease; }
     .strip-row .time-badge { font-size: 11px; color: var(--text-muted); margin-left: 4px; flex-shrink: 0; }
 
+    /* Media Gallery Grid in Modal */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -792,6 +793,7 @@ header > * {
       font-weight: 500;
     }
 
+    /* Floating Back to Top Button */
     .back-to-top {
       position: fixed;
       bottom: 25px;
@@ -816,6 +818,7 @@ header > * {
     .back-to-top.show { opacity: 1; visibility: visible; }
     .back-to-top:hover { background-color: #6b1832; transform: translateY(-5px) scale(1.05); }
 
+    /* Modal (Popup) */
     .modal { 
       display: none; 
       position: fixed; 
@@ -863,6 +866,7 @@ header > * {
     .modal-close:hover { background: #e2e8e2; color: var(--text-main); transform: rotate(90deg); }
     .modal-box img { width: 100%; max-height: 380px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 14px; }
     
+    /* Share modal actions */
     .modal-share-bar {
       display: flex;
       align-items: center;
@@ -890,6 +894,7 @@ header > * {
     .modal-share-btn.copy { background: var(--brand-green-dark); }
     .modal-share-btn:hover { opacity: 0.9; transform: translateY(-2px); }
 
+    /* Responsive Video Player Embed */
     .video-wrapper {
       position: relative;
       padding-bottom: 56.25%;
@@ -907,6 +912,7 @@ header > * {
 
     .empty-note { padding: 24px; text-align: center; color: var(--text-muted); font-style: italic; width: 100%; background: var(--card-bg); border-radius: var(--radius); border: 1px dashed var(--border-color); }
 
+    /* Footer & Social Icons */
     footer { 
       background: var(--top-bar-bg); 
       color: #a3b0a8; 
@@ -928,6 +934,7 @@ header > * {
       transform: scale(1.04);
     }
     
+    /* Social Media Links Bar */
     .social-links {
       display: flex;
       justify-content: center;
@@ -959,6 +966,7 @@ header > * {
     .footer-links a:hover { color: var(--brand-gold); text-decoration: underline; transform: translateY(-1px); }
     #txt-footer-copy { color: #f8fafc; font-weight: 600; }
 
+    /* Responsive Breakpoints */
     @media (max-width: 640px) {
       .brand-logo { max-height: 150px; }
       .utility-bar { justify-content: center; text-align: center; }
@@ -1004,10 +1012,9 @@ header > * {
       </div>
     </div>
     <div>
-      <button class="lang-btn active" id="btn-lang-si" data-lang="si">සිංහල</button>
-      <button class="lang-btn" id="btn-lang-en" data-lang="en">English</button>
-      <button class="lang-btn" id="btn-lang-ta" data-lang="ta">தமிழ்</button>
-      <span id="gt-debug-status" style="margin-left:8px;font-size:11px;color:#f5b11c;font-weight:700;"></span>
+      <button class="lang-btn active" id="btn-lang-si" onclick="translatePage('si')">සිංහල</button>
+      <button class="lang-btn" id="btn-lang-en" onclick="translatePage('en')">English</button>
+      <button class="lang-btn" id="btn-lang-ta" onclick="translatePage('ta')">தமிழ்</button>
     </div>
   </div>
 
@@ -1024,13 +1031,13 @@ header > * {
 
     <div class="eyebrow" id="txt-eyebrow">දිනපතා ප්‍රකාශනය · ශ්‍රී ලංකාව</div>
     
-    <a href="#" class="brand-logo-wrap" id="brandLogoLink">
+    <a href="#" class="brand-logo-wrap" onclick="navigateTo('home'); return false;">
       <img src="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png" alt="ලංකා NEWS NOW" class="brand-logo">
     </a>
     
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="සොයන්න..." maxlength="120">
-      <button id="searchBtn">Search</button>
+      <input type="text" id="searchInput" placeholder="සොයන්න..." onkeydown="if(event.key === 'Enter') doSearch()">
+      <button onclick="doSearch()">Search</button>
     </div>
   </header>
 
@@ -1075,7 +1082,7 @@ header > * {
 
     <!-- Category / Search View -->
     <div id="categoryView" style="display:none;">
-      <button class="back-btn" id="backHomeBtn">← ප්‍රධාන පිටුවට</button>
+      <button class="back-btn" onclick="navigateTo('home')" id="txt-back-home">← ප්‍රධාන පිටුවට</button>
       <div class="section-title" id="catTitle">Category</div>
       
       <div class="card-grid" id="catGrid"></div>
@@ -1083,7 +1090,7 @@ header > * {
       <div id="ad-slot-cat" class="ad-slot-container"></div>
 
       <div class="load-more-container" id="loadMoreBox" style="display:none;">
-        <button class="load-more-btn" id="loadMoreBtn">පරණ පුවත් බලන්න 📜</button>
+        <button class="load-more-btn" onclick="loadMoreCategoryItems()" id="txt-load-more">පරණ පුවත් බලන්න 📜</button>
       </div>
     </div>
 
@@ -1092,13 +1099,13 @@ header > * {
   <!-- Popup Modal -->
   <div class="modal" id="articleModal">
     <div class="modal-box">
-      <button class="modal-close" id="modalCloseBtn">&times;</button>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
       <div id="modalContent"></div>
     </div>
   </div>
 
   <!-- Back to Top Button -->
-  <button class="back-to-top" id="backToTopBtn">▲</button>
+  <button class="back-to-top" id="backToTopBtn" onclick="scrollToTop()">▲</button>
 
   <!-- Footer -->
   <footer>
@@ -1122,10 +1129,10 @@ header > * {
     </div>
 
     <div class="footer-links">
-      <a id="aboutLink" href="#">අප ගැන</a>
-      <a id="contactLink" href="#">සම්බන්ධ වන්න</a>
-      <a id="privacyLink" href="#">පෞද්ගලිකත්ව ප්‍රතිපත්තිය</a>
-      <a id="mediaLink" href="#" style="color: var(--brand-gold); font-weight: 700;">මාධ්‍ය 📸</a>
+      <a onclick="openAboutModal()" id="txt-about">අප ගැන</a>
+      <a onclick="openContactModal()" id="txt-contact">සම්බන්ධ වන්න</a>
+      <a onclick="openPrivacyModal()" id="txt-privacy">පෞද්ගලිකත්ව ප්‍රතිපත්තිය</a>
+      <a onclick="openMediaGalleryModal()" id="txt-media" style="color: var(--brand-gold); font-weight: 700;">මාධ්‍ය 📸</a>
     </div>
     
     <div id="txt-footer-copy">ලංකා NEWS NOW — සියලු හිමිකම් ඇවිරිණි</div>
@@ -1134,56 +1141,19 @@ header > * {
 
   <!-- Google Translate Engine Script -->
   <script type="text/javascript">
-    window.__gtLoadFailed = false;
-    function setGtDebug(msg) {
-      const el = document.getElementById('gt-debug-status');
-      if (el) el.textContent = msg;
-      console.log('[GT DEBUG]', msg);
-    }
     function googleTranslateElementInit() {
-      setGtDebug('Google script loaded, building widget…');
-      try {
-        new google.translate.TranslateElement({
-          pageLanguage: 'si',
-          includedLanguages: 'si,en,ta',
-          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: false
-        }, 'google_translate_element');
-        window.__gtReady = true;
-        setGtDebug('Widget init called ✅');
-      } catch (e) {
-        setGtDebug('Widget init threw: ' + e.message);
-      }
+      new google.translate.TranslateElement({
+        pageLanguage: 'si',
+        includedLanguages: 'si,en,ta',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
     }
   </script>
-  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" onerror="window.__gtLoadFailed = true; document.getElementById('gt-debug-status') && (document.getElementById('gt-debug-status').textContent = 'Script failed to load ❌ (blocked by network/adblock?)');"></script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
   <script>
-    'use strict';
-
-    // ---------------------------------------------------------------------
-    // SECURITY NOTE
-    // ---------------------------------------------------------------------
-    // Article data (title / desc / id / category / img / links) comes from a
-    // Google Sheet via Apps Script. That means the content is NOT fully
-    // trusted - anyone with edit access to the sheet (or anyone who manages
-    // to tamper with the Apps Script response) can put arbitrary text into
-    // a title/desc/id field. The old version of this file built onclick="..."
-    // attributes by string-concatenating that data directly into inline HTML
-    // (e.g. onclick="openModal('${esc(a.id)}')"). HTML-escaping alone does
-    // NOT protect that pattern: the browser decodes HTML entities in the
-    // attribute value BEFORE it treats it as JavaScript, so a title like
-    //   1'); alert(document.cookie); //
-    // could break out of the JS string and execute. This is a classic
-    // stored-XSS vector.
-    //
-    // Fix: never build onclick attributes from data. All click handling now
-    // goes through addEventListener + data-* attributes, and all inserted
-    // text goes through .textContent or a strict esc() for markup contexts
-    // only (never inside an inline event-handler string).
-    // ---------------------------------------------------------------------
-
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyncpmyH_zNZZH3Bas4LadYFOK09foPa3kyuYGL-oC79qpLty4IqI7mynaMER-JS_Q_/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPKA-lhmoD0kxTYOzJzZx8Krdxy3XXL1_UG2Ow1NRHmDol26-0vrIvtdbr26n7Q3If/exec";
     const STORAGE_KEY = "site-data";
 
     const categories = ['ප්‍රධාන පුවත්','ක්‍රීඩා','ව්‍යාපාර','ලෝකය','තාක්ෂණය'];
@@ -1194,27 +1164,16 @@ header > * {
     let showOlderArticlesState = false;
     let showOlderHomeMainState = false;
 
-    function esc(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-    // Only allow http/https (and mailto/tel for contact-style links) URLs to
-    // ever be used as an href/src/window.open target. Blocks javascript:,
-    // data:, vbscript: etc. that could otherwise come from ad or article data.
-    function safeUrl(u) {
-      if (!u || typeof u !== 'string') return '#';
-      const trimmed = u.trim();
-      try {
-        const parsed = new URL(trimmed, window.location.href);
-        if (['http:', 'https:', 'mailto:', 'tel:'].includes(parsed.protocol)) {
-          return parsed.href;
-        }
-      } catch (e) { /* fall through */ }
-      return '#';
-    }
-
-    /* ---- share helpers ---- */
-    function shareArticle(title, desc, id) {
+    /* Share functionality helper */
+    function shareArticle(event, title, desc, id) {
+      if (event) event.stopPropagation();
       const shareUrl = buildShareUrl(id);
-      const shareData = { title: title || 'ලංකා News Now', text: desc || title, url: shareUrl };
+      const shareData = {
+        title: title || 'ලංකා News Now',
+        text: desc || title,
+        url: shareUrl
+      };
+
       if (navigator.share) {
         navigator.share(shareData).catch(() => {});
       } else {
@@ -1226,10 +1185,12 @@ header > * {
       const shareUrl = encodeURIComponent(buildShareUrl(id));
       const shareText = encodeURIComponent(title);
       let target = '';
+
       if (platform === 'wa') target = `https://api.whatsapp.com/send?text=${shareText}%20${shareUrl}`;
       else if (platform === 'fb') target = `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`;
       else if (platform === 'tw') target = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
-      if (target) window.open(target, '_blank', 'noopener,noreferrer');
+
+      if (target) window.open(target, '_blank');
     }
 
     function copyToClipboard(text) {
@@ -1240,24 +1201,14 @@ header > * {
       });
     }
 
-    // Builds a share-icon button as a DOM node with data-* attributes instead
-    // of an inline onclick string - the click is handled by delegation below,
-    // so raw article text never gets concatenated into executable JS.
-    function buildShareBtn(id, title, desc) {
-      const btn = document.createElement('button');
-      btn.className = 'share-btn';
-      btn.type = 'button';
-      btn.title = 'බෙදාහරින්න (Share)';
-      btn.dataset.action = 'share';
-      btn.dataset.id = id;
-      btn.dataset.title = title || '';
-      btn.dataset.desc = desc || '';
-      btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>';
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        shareArticle(btn.dataset.title, btn.dataset.desc, btn.dataset.id);
-      });
-      return btn;
+    function getShareIconHtml(id, title, desc) {
+      const safeTitle = (title || '').replace(/'/g, "\\'");
+      const safeDesc = (desc || '').replace(/'/g, "\\'");
+      return `
+        <button class="share-btn" onclick="shareArticle(event, '${safeTitle}', '${safeDesc}', '${id}')" title="බෙදාහරින්න (Share)">
+          <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
+        </button>
+      `;
     }
 
     function hidePreloader() {
@@ -1270,6 +1221,9 @@ header > * {
     function initHeaderSlideshow() {
       const slides = document.querySelectorAll('#headerSlideshow .bg-slide');
       if (!slides.length) return;
+
+      // Load the remaining slide images lazily, after the important content
+      // (article data) has had a chance to load first.
       setTimeout(() => {
         slides.forEach(s => {
           const bg = s.getAttribute('data-bg');
@@ -1310,7 +1264,7 @@ header > * {
 
     async function getCityName(lat, lon) {
       try {
-        const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&localityLanguage=en`);
+        const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
         const data = await res.json();
         return data.city || data.locality || data.principalSubdivision || "ඔබ සිටින ස්ථානය";
       } catch (e) {
@@ -1320,7 +1274,7 @@ header > * {
 
     async function fetchWeatherForCoords(lat, lon, locationName = "කොළඹ") {
       try {
-        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&current_weather=true`);
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
         const data = await res.json();
         if (data && data.current_weather) {
           const temp = Math.round(data.current_weather.temperature);
@@ -1332,7 +1286,6 @@ header > * {
           else if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) icon = '🌧️';
           else if ([95, 96, 99].includes(code)) icon = '⛈️';
 
-          // textContent, not innerHTML - location name comes from a third-party API
           document.getElementById('weather-location').textContent = locationName;
           document.getElementById('weather-temp').textContent = `${temp}°C`;
           document.getElementById('weather-condition').textContent = icon;
@@ -1370,118 +1323,34 @@ header > * {
       return (articles || []).slice().reverse();
     }
 
-    let __translateWaitInterval = null;
-
-    // Sets the hidden Google combo box to the target language and fires the
-    // change event TWICE. This looks redundant but it isn't: Google's own
-    // listener on .goog-te-combo frequently ignores a single programmatic
-    // 'change' event (it only reliably reacts starting from the second
-    // dispatch) - this is a long-standing quirk of the widget, not a bug in
-    // this code, and firing twice is the standard workaround.
-    function applyTranslateSelection(langCode) {
-      const select = document.querySelector('.goog-te-combo');
-      if (!select) { setGtDebug('Combo box not found ❌'); return false; }
-      const targetValue = (langCode === 'si') ? '' : langCode;
-      select.value = targetValue;
-      select.dispatchEvent(new Event('change', { bubbles: true }));
-      select.dispatchEvent(new Event('change', { bubbles: true }));
-      setGtDebug(`Applied "${targetValue || 'si'}" to combo ✅`);
-      return true;
-    }
-
-    // Polls for the .goog-te-combo select (created asynchronously, once the
-    // Google script has loaded AND finished building the widget) and runs
-    // `callback` as soon as it appears.
-    function waitForTranslateWidget(callback) {
-      if (window.__gtLoadFailed) {
-        setGtDebug('Script failed to load ❌');
-        return;
-      }
-      setGtDebug('Waiting for combo box…');
-      if (__translateWaitInterval) {
-        clearInterval(__translateWaitInterval);
-        __translateWaitInterval = null;
-      }
-      let attempts = 0;
-      const maxAttempts = 50; // ~10s - the widget iframe can be slow on first load
-      __translateWaitInterval = setInterval(() => {
-        const select = document.querySelector('.goog-te-combo');
-        if (select) {
-          clearInterval(__translateWaitInterval);
-          __translateWaitInterval = null;
-          callback();
-          return;
-        }
-        attempts++;
-        if (attempts > maxAttempts) {
-          clearInterval(__translateWaitInterval);
-          __translateWaitInterval = null;
-          setGtDebug('Combo box never appeared ⏱ (widget did not init)');
-        }
-      }, 200);
-    }
-
-    // ---------------------------------------------------------------------
-    // TRANSLATE FIX
-    // ---------------------------------------------------------------------
-    // The previous approach tried to translate WITHOUT reloading, by finding
-    // the hidden .goog-te-combo <select> and firing a synthetic 'change'
-    // event on it. That depends on internal markup/timing details of
-    // Google's widget that change without notice and are not officially
-    // supported, which is why it was unreliable / silently doing nothing.
-    //
-    // The approach Google's own widget is actually built to support is:
-    // set the `googtrans` cookie, then reload the page. On the fresh load,
-    // Google's own translate_a/element.js script reads that cookie itself
-    // and auto-translates the DOM - no manual combo-box manipulation
-    // needed. This is the standard, dependable pattern.
-    //
-    // We still keep applyTranslateSelection()/waitForTranslateWidget() as a
-    // same-page fallback (used by initActiveLanguage on load, and in case a
-    // browser serves the page from bfcache and skips a real reload), but the
-    // reload+cookie flow is now the primary mechanism.
-    // ---------------------------------------------------------------------
     function translatePage(langCode) {
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
       const activeBtn = document.getElementById(`btn-lang-${langCode}`);
-      if (activeBtn) activeBtn.classList.add('active');
+      if(activeBtn) activeBtn.classList.add('active');
 
-      // Nothing to do if we're already on this language and the widget is
-      // already applied - avoids an unnecessary reload loop.
-      const already = document.cookie.match(/googtrans=\/si\/([a-z]{2})/);
-      const alreadyLang = already ? already[1] : 'si';
-      if (alreadyLang === langCode) return;
-
-      // Preserve where the user is (home / a category / search) across the
-      // reload so switching language doesn't bounce them back to the top.
-      try { sessionStorage.setItem('lnn-restore-nav', currentCat); } catch (e) {}
-
-      const clearCookie = () => {
+      if (langCode === 'si') {
         document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${window.location.hostname}; path=/;`;
-      };
-      clearCookie();
-
-      if (langCode !== 'si') {
+      } else {
         const cookieVal = `/si/${langCode}`;
-        // Secure + SameSite added since this cookie only toggles UI language,
-        // no reason for it to be sent cross-site or over plain HTTP.
-        document.cookie = `googtrans=${cookieVal}; path=/; SameSite=Lax`;
-        document.cookie = `googtrans=${cookieVal}; domain=${window.location.hostname}; path=/; SameSite=Lax`;
+        document.cookie = `googtrans=${cookieVal}; path=/;`;
+        document.cookie = `googtrans=${cookieVal}; domain=${window.location.hostname}; path=/;`;
       }
 
-      // Reload so Google's own script picks up the cookie on init - this is
-      // the reliable path. Show the preloader again for a clean transition.
-      const preloader = document.getElementById('preloader');
-      if (preloader) preloader.classList.remove('fade-out');
-      window.location.reload();
+      let attempts = 0;
+      const interval = setInterval(() => {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+          const targetValue = (langCode === 'si') ? '' : langCode;
+          select.value = targetValue;
+          select.dispatchEvent(new Event('change', { bubbles: true }));
+          clearInterval(interval);
+        }
+        attempts++;
+        if (attempts > 25) clearInterval(interval);
+      }, 200);
     }
 
-    // On page load, the cookie only remembers WHICH language was chosen last
-    // time - it does not, by itself, repaint the DOM. The old code only
-    // highlighted the matching button and stopped there, so a reload never
-    // actually reapplied the translation ("auto translate" never happened).
-    // Now it waits for the widget and reapplies the saved language too.
     function initActiveLanguage() {
       const match = document.cookie.match(/googtrans=\/si\/([a-z]{2})/);
       if (match && match[1]) {
@@ -1489,7 +1358,6 @@ header > * {
         document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
         const btn = document.getElementById(`btn-lang-${currentLang}`);
         if (btn) btn.classList.add('active');
-        waitForTranslateWidget(() => applyTranslateSelection(currentLang));
       }
     }
 
@@ -1505,12 +1373,15 @@ header > * {
     }
 
     async function loadData(){
+      // 1) Instant paint: if we have cached data from a previous visit, show it right away
+      //    so a shared link's article can pop open immediately without waiting on the network.
       let hasCachedData = false;
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw);
           if (parsed && (parsed.articles || []).length > 0) {
+            // Cached data was already stored newest-first on the previous save, so use as-is
             siteData = {
               ticker: parsed.ticker || [],
               articles: sanitizeArticles(parsed.articles),
@@ -1524,6 +1395,7 @@ header > * {
         }
       } catch(e) { /* ignore corrupt cache */ }
 
+      // 2) Always fetch fresh data in the background and update once it arrives
       if(SCRIPT_URL && SCRIPT_URL.trim() !== ""){
         try{
           const res = await fetch(SCRIPT_URL, { method: 'GET', redirect: 'follow' });
@@ -1546,47 +1418,41 @@ header > * {
       }
 
       if (!hasCachedData) {
+        // No cache and the network fetch failed/returned nothing usable
         siteData = { ticker: [], articles: [], ads: [] };
         renderSite();
         hidePreloader();
         checkUrlHashModal();
       }
-
-      restoreNavAfterLangSwitch();
     }
 
-    // If translatePage() just triggered a reload for a language switch, put
-    // the user back on the view (home / a category) they were on before.
-    function restoreNavAfterLangSwitch() {
-      let saved = null;
-      try { saved = sessionStorage.getItem('lnn-restore-nav'); } catch (e) {}
-      if (saved) {
-        try { sessionStorage.removeItem('lnn-restore-nav'); } catch (e) {}
-        if (saved !== 'home') navigateTo(saved);
-      }
-    }
-
-    // Article ids are only ever used to look up an in-memory record and to
-    // build a URL fragment (which safeUrl-equivalent encoding covers via
-    // encodeURIComponent below) - never concatenated into HTML/JS strings.
     function checkUrlHashModal() {
       if (window.location.hash && window.location.hash.startsWith('#art_')) {
-        const artId = decodeURIComponent(window.location.hash.replace('#art_', ''));
+        const artId = window.location.hash.replace('#art_', '');
         if (artId) openModal(artId);
       }
     }
+
+    function esc(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
     function setMeta(id, value) {
       const el = document.getElementById(id);
       if (el) el.setAttribute('content', value);
     }
 
+    /* Updates document title + og/twitter meta tags to match the open article.
+       NOTE: this only affects browsers that read the live DOM (in-app browsers,
+       Web Share, etc). WhatsApp/Facebook/Telegram link-preview crawlers do NOT
+       run JavaScript - they only read the raw HTML once, before any script runs.
+       So this alone cannot make WhatsApp/Facebook show the article photo for a
+       shared link; that requires generating the meta tags server-side (see the
+       Apps Script snippet shared alongside this file). */
     function updateShareMeta(a) {
       if (!a) return;
-      const img = safeUrl(getArticleImage(a) || 'https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png');
+      const img = getArticleImage(a) || 'https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png';
       const title = a.title || 'ලංකා NEWS NOW';
       const desc = (a.desc || '').substring(0, 150);
-      const url = window.location.origin + window.location.pathname + '#art_' + encodeURIComponent(a.id);
+      const url = window.location.origin + window.location.pathname + '#art_' + a.id;
 
       document.title = title + ' | Lanka News Now';
       setMeta('meta-og-title', title);
@@ -1598,8 +1464,12 @@ header > * {
       setMeta('meta-tw-image', img);
     }
 
+    /* Builds the URL that should actually be shared. Always points directly at
+       this site (with the article's #art_ID hash), so opening the link always
+       loads the site itself and checkUrlHashModal() opens the right article
+       automatically. */
     function buildShareUrl(id) {
-      return window.location.origin + window.location.pathname + '#art_' + encodeURIComponent(id);
+      return window.location.origin + window.location.pathname + '#art_' + id;
     }
     
     function getYouTubeId(url) {
@@ -1612,10 +1482,14 @@ header > * {
 
     function getArticleYouTubeLink(a) {
       if (!a) return null;
+      // Check the common/expected field names first (fastest path)
       const candidates = [a.youtube, a.youtubelink, a.youtube_link, a.youtubeLink, a.video, a.videourl, a.videoUrl, a.video_url, a.img];
       for (const link of candidates) {
         if (link && typeof link === 'string' && getYouTubeId(link)) return link;
       }
+      // Fallback: scan every field on the article in case the Google Sheet
+      // column has a different/unexpected name (e.g. a Sinhala header) - any
+      // text value that happens to be a YouTube URL will still be detected.
       for (const key in a) {
         const val = a[key];
         if (val && typeof val === 'string' && getYouTubeId(val)) return val;
@@ -1637,37 +1511,15 @@ header > * {
       return '';
     }
 
-    // Builds the thumbnail/video preview as real DOM nodes (not a string of
-    // HTML) so the image src always goes through safeUrl() and can never be
-    // a javascript:/data: URL smuggled in via the sheet.
-    function buildImageNode(a) {
-      const src = safeUrl(getArticleImage(a));
+    function renderImageHtml(a, cls) {
+      const src = getArticleImage(a);
       const isVideo = !!getArticleYouTubeLink(a);
-      const wrapper = document.createElement(isVideo ? 'div' : 'span');
-      if (isVideo) wrapper.className = 'img-wrapper';
+      
+      let imgContent = (src && src.trim() !== '') ? 
+        `<img class="ph ${cls||''}" src="${esc(src)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">` : 
+        `<div class="ph ${cls||''}"></div>`;
 
-      let imgEl;
-      if (src && src !== '#') {
-        imgEl = document.createElement('img');
-        imgEl.className = 'ph';
-        imgEl.loading = 'lazy';
-        imgEl.decoding = 'async';
-        imgEl.src = src;
-        imgEl.alt = '';
-        imgEl.addEventListener('error', () => { imgEl.style.display = 'none'; }, { once: true });
-      } else {
-        imgEl = document.createElement('div');
-        imgEl.className = 'ph';
-      }
-
-      if (isVideo) {
-        wrapper.appendChild(imgEl);
-        const overlay = document.createElement('div');
-        overlay.className = 'play-overlay';
-        wrapper.appendChild(overlay);
-        return wrapper;
-      }
-      return imgEl;
+      return isVideo ? `<div class="img-wrapper">${imgContent}<div class="play-overlay"></div></div>` : imgContent;
     }
 
     function getYouTubeEmbedUrl(url) {
@@ -1697,58 +1549,29 @@ header > * {
       return false;
     }
 
-    // Ad slots: link href and image src both go through safeUrl(). Title/
-    // subtitle are inserted with textContent, never innerHTML, so an ad
-    // record can't inject markup or event handlers.
     function renderAdSlot(elementId, adIndex) {
       const slotEl = document.getElementById(elementId);
       if (!slotEl) return;
 
       const ad = (siteData.ads && siteData.ads[adIndex]) ? siteData.ads[adIndex] : null;
+
       const img = ad && ad.img ? ad.img.trim() : '';
       const title = ad && ad.title ? ad.title.trim() : '';
       const subtitle = ad && ad.subtitle ? ad.subtitle.trim() : '';
       const link = ad && ad.link ? ad.link.trim() : '#';
 
-      slotEl.innerHTML = '';
-
       if (!ad || (!img && !title)) {
         slotEl.classList.remove('active');
         slotEl.style.setProperty('display', 'none', 'important');
+        slotEl.innerHTML = '';
         return;
       }
 
-      const a = document.createElement('a');
-      a.href = safeUrl(link);
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
+      let content = img ? 
+        `<a href="${esc(link)}" target="_blank" rel="noopener"><img src="${esc(img)}" alt="${esc(title || 'Advertisement')}" onerror="this.closest('.ad-slot-container').classList.remove('active');"></a>` :
+        `<a href="${esc(link)}" target="_blank" rel="noopener" style="text-decoration:none;"><div class="ad-banner"><span class="ad-tag">ADVERTISEMENT</span><h5>${esc(title)}</h5>${subtitle ? `<p>${esc(subtitle)}</p>` : ''}</div></a>`;
 
-      if (img) {
-        const imgEl = document.createElement('img');
-        imgEl.src = safeUrl(img);
-        imgEl.alt = title || 'Advertisement';
-        imgEl.addEventListener('error', () => { slotEl.classList.remove('active'); }, { once: true });
-        a.appendChild(imgEl);
-      } else {
-        a.style.textDecoration = 'none';
-        const banner = document.createElement('div');
-        banner.className = 'ad-banner';
-        const tag = document.createElement('span');
-        tag.className = 'ad-tag';
-        tag.textContent = 'ADVERTISEMENT';
-        const h5 = document.createElement('h5');
-        h5.textContent = title;
-        banner.appendChild(tag);
-        banner.appendChild(h5);
-        if (subtitle) {
-          const p = document.createElement('p');
-          p.textContent = subtitle;
-          banner.appendChild(p);
-        }
-        a.appendChild(banner);
-      }
-
-      slotEl.appendChild(a);
+      slotEl.innerHTML = content;
       slotEl.classList.add('active');
       slotEl.style.setProperty('display', 'block', 'important');
     }
@@ -1763,18 +1586,10 @@ header > * {
 
     function buildNav(){
       const nav = document.getElementById('navList');
-      nav.innerHTML = '';
-      categories.forEach((c, i) => {
+      nav.innerHTML = categories.map((c, i)=>{
         const key = i === 0 ? 'home' : c;
-        const li = document.createElement('li');
-        li.dataset.navkey = key;
-        if (key === currentCat) li.classList.add('active');
-        const a = document.createElement('a');
-        a.textContent = c; // category names are hardcoded, but textContent is always the safe default
-        a.addEventListener('click', () => navigateTo(key));
-        li.appendChild(a);
-        nav.appendChild(li);
-      });
+        return `<li data-navkey="${esc(key)}" class="${key === currentCat ? 'active' : ''}"><a onclick="navigateTo('${esc(key)}')">${esc(c)}</a></li>`;
+      }).join('');
     }
 
     function navigateTo(catKey){
@@ -1798,46 +1613,20 @@ header > * {
       scrollToTop();
     }
 
-    // Builds an article <article class="card"> as real DOM nodes. Title/desc/
-    // category/time are set via textContent (auto-escaped by the DOM, safe
-    // in every context) and the open-article click is a real event listener
-    // reading a data-id attribute - never string-built JS.
-    function buildCardNode(a) {
-      const article = document.createElement('article');
-      article.className = 'card';
-      article.dataset.id = a.id;
-      article.addEventListener('click', () => openModal(a.id));
-
-      article.appendChild(buildImageNode(a));
-
-      const metaBar = document.createElement('div');
-      metaBar.className = 'meta-bar';
-      const kicker = document.createElement('span');
-      kicker.className = 'kicker';
-      kicker.textContent = a.category || '';
-      metaBar.appendChild(kicker);
-      if (a.time) {
-        const time = document.createElement('span');
-        time.className = 'time-badge';
-        time.textContent = `🕒 ${a.time}`;
-        metaBar.appendChild(time);
-      }
-      article.appendChild(metaBar);
-
-      const h3 = document.createElement('h3');
-      h3.textContent = a.title || '';
-      article.appendChild(h3);
-
-      const p = document.createElement('p');
-      p.textContent = a.desc || '';
-      article.appendChild(p);
-
-      const footer = document.createElement('div');
-      footer.className = 'card-footer-action';
-      footer.appendChild(buildShareBtn(a.id, a.title, a.desc));
-      article.appendChild(footer);
-
-      return article;
+    function renderCardHtml(a) {
+      return `
+        <article class="card" onclick="openModal('${esc(a.id)}')">
+          ${renderImageHtml(a)}
+          <div class="meta-bar">
+            <span class="kicker">${esc(a.category)}</span>
+            ${a.time ? `<span class="time-badge">🕒 ${esc(a.time)}</span>` : ''}
+          </div>
+          <h3>${esc(a.title)}</h3>
+          <p>${esc(a.desc)}</p>
+          <div class="card-footer-action">
+            ${getShareIconHtml(a.id, a.title, a.desc)}
+          </div>
+        </article>`;
     }
 
     function toggleHomeSideNews() {
@@ -1848,13 +1637,9 @@ header > * {
     function renderCategoryGrid() {
       const catGrid = document.getElementById('catGrid');
       const loadMoreBox = document.getElementById('loadMoreBox');
-      catGrid.innerHTML = '';
 
       if (categoryFilteredArticles.length === 0) {
-        const note = document.createElement('div');
-        note.className = 'empty-note';
-        note.textContent = 'මෙම වර්ගීකරණය යටතේ පුවත් තවම නැත';
-        catGrid.appendChild(note);
+        catGrid.innerHTML = `<div class="empty-note">මෙම වර්ගීකරණය යටතේ පුවත් තවම නැත</div>`;
         loadMoreBox.style.display = 'none';
         return;
       }
@@ -1863,17 +1648,13 @@ header > * {
       const olderArticles = categoryFilteredArticles.filter(a => !isTodayArticle(a));
 
       if (!showOlderArticlesState) {
-        if (todayArticles.length > 0) {
-          todayArticles.forEach(a => catGrid.appendChild(buildCardNode(a)));
-        } else {
-          const note = document.createElement('div');
-          note.className = 'empty-note';
-          note.textContent = 'අද දින නිකුත් වූ නවතම පුවත් නොමැත. පරණ පුවත් බැලීමට පහත බොත්තම ඔබන්න.';
-          catGrid.appendChild(note);
-        }
+        catGrid.innerHTML = todayArticles.length > 0 ? 
+          todayArticles.map(renderCardHtml).join('') : 
+          `<div class="empty-note">අද දින නිකුත් වූ නවතම පුවත් නොමැත. පරණ පුවත් බැලීමට පහත බොත්තම ඔබන්න.</div>`;
+
         loadMoreBox.style.display = olderArticles.length > 0 ? 'block' : 'none';
       } else {
-        categoryFilteredArticles.forEach(a => catGrid.appendChild(buildCardNode(a)));
+        catGrid.innerHTML = categoryFilteredArticles.map(renderCardHtml).join('');
         loadMoreBox.style.display = 'none';
       }
     }
@@ -1881,57 +1662,6 @@ header > * {
     function loadMoreCategoryItems() {
       showOlderArticlesState = true;
       renderCategoryGrid();
-    }
-
-    function buildSideItemNode(s) {
-      const item = document.createElement('div');
-      item.className = 'side-item';
-      item.addEventListener('click', () => openModal(s.id));
-
-      item.appendChild(buildImageNode(s));
-
-      const content = document.createElement('div');
-      content.className = 'side-item-content';
-      const kicker = document.createElement('div');
-      kicker.className = 'kicker';
-      kicker.textContent = s.category || '';
-      content.appendChild(kicker);
-      const h3 = document.createElement('h3');
-      h3.textContent = s.title || '';
-      content.appendChild(h3);
-      if (s.time) {
-        const time = document.createElement('div');
-        time.className = 'time-badge';
-        time.textContent = `🕒 ${s.time}`;
-        content.appendChild(time);
-      }
-      item.appendChild(content);
-      item.appendChild(buildShareBtn(s.id, s.title, s.desc));
-      return item;
-    }
-
-    function buildStripRowNode(s, i) {
-      const row = document.createElement('div');
-      row.className = 'strip-row';
-      row.addEventListener('click', () => openModal(s.id));
-
-      const num = document.createElement('span');
-      num.className = 'num';
-      num.textContent = i + 1;
-      row.appendChild(num);
-
-      const a = document.createElement('a');
-      a.textContent = s.title || '';
-      row.appendChild(a);
-
-      if (s.time) {
-        const time = document.createElement('span');
-        time.className = 'time-badge';
-        time.textContent = s.time;
-        row.appendChild(time);
-      }
-      row.appendChild(buildShareBtn(s.id, s.title, s.desc));
-      return row;
     }
 
     function renderSite(){
@@ -1959,105 +1689,68 @@ header > * {
       const sports = arts.filter(a => matchCategory(a.category, 'ක්‍රීඩා')).slice(0, 6);
       const biz = arts.filter(a => matchCategory(a.category, 'ව්‍යාපාර')).slice(0, 6);
 
-      // --- hero section ---
-      const heroSection = document.getElementById('heroSection');
-      heroSection.innerHTML = '';
+      const sideItemsHtml = sideDisplayArticles.length > 0 ? 
+        sideDisplayArticles.map(s => `
+          <div class="side-item" onclick="openModal('${esc(s.id)}')">
+            ${renderImageHtml(s)}
+            <div class="side-item-content">
+              <div class="kicker">${esc(s.category)}</div>
+              <h3>${esc(s.title)}</h3>
+              ${s.time ? `<div class="time-badge">🕒 ${esc(s.time)}</div>` : ''}
+            </div>
+            ${getShareIconHtml(s.id, s.title, s.desc)}
+          </div>`).join('') : 
+        `<div class="empty-note">අද දින නිකුත් වූ වෙනත් ප්‍රධාන පුවත් නොමැත</div>`;
 
-      const heroMain = document.createElement('article');
-      heroMain.className = 'hero-main';
-      if (hero) heroMain.addEventListener('click', () => openModal(hero.id));
-      heroMain.appendChild(hero ? buildImageNode(hero) : (() => { const d = document.createElement('div'); d.className = 'ph'; return d; })());
+      const seeMoreBtnHtml = hasOlderSideArticles ? `
+        <button class="see-more-side-btn" onclick="toggleHomeSideNews()">
+          ${showOlderHomeMainState ? 'අඩු කරන්න 🔼' : 'පරණ පුවත් බලන්න 📜'}
+        </button>` : '';
 
-      const kickerWrap = document.createElement('div');
-      kickerWrap.className = 'kicker-wrap';
-      const kicker = document.createElement('span');
-      kicker.className = 'kicker';
-      kicker.textContent = hero ? (hero.category || '') : 'ප්‍රධාන පුවත්';
-      kickerWrap.appendChild(kicker);
-      const kickerRight = document.createElement('div');
-      kickerRight.style.cssText = 'display:flex;align-items:center;gap:8px;';
-      if (hero && hero.time) {
-        const time = document.createElement('span');
-        time.className = 'time-badge';
-        time.textContent = `🕒 ${hero.time}`;
-        kickerRight.appendChild(time);
-      }
-      if (hero) kickerRight.appendChild(buildShareBtn(hero.id, hero.title, hero.desc));
-      kickerWrap.appendChild(kickerRight);
-      heroMain.appendChild(kickerWrap);
+      document.getElementById('heroSection').innerHTML = `
+        <article class="hero-main" onclick="${hero ? `openModal('${esc(hero.id)}')` : ''}">
+          ${hero ? renderImageHtml(hero) : `<div class="ph"></div>`}
+          <div class="kicker-wrap">
+            <span class="kicker">${esc(hero ? hero.category : 'ප්‍රධාන පුවත්')}</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+              ${hero && hero.time ? `<span class="time-badge">🕒 ${esc(hero.time)}</span>` : ''}
+              ${hero ? getShareIconHtml(hero.id, hero.title, hero.desc) : ''}
+            </div>
+          </div>
+          <h2>${esc(hero ? hero.title : 'මෙම කොටසේ තවම පුවත් නොමැත')}</h2>
+          <p class="dek">${esc(hero ? hero.desc : '')}</p>
+        </article>
+        <aside class="hero-side">
+          ${sideItemsHtml}
+          ${seeMoreBtnHtml}
+        </aside>`;
 
-      const h2 = document.createElement('h2');
-      h2.textContent = hero ? (hero.title || '') : 'මෙම කොටසේ තවම පුවත් නොමැත';
-      heroMain.appendChild(h2);
+      document.getElementById('sportsList').innerHTML = sports.map((s,i)=>`
+        <div class="strip-row" onclick="openModal('${esc(s.id)}')">
+          <span class="num">${i+1}</span>
+          <a>${esc(s.title)}</a>
+          ${s.time ? `<span class="time-badge">${esc(s.time)}</span>` : ''}
+          ${getShareIconHtml(s.id, s.title, s.desc)}
+        </div>`).join('') || `<div class="empty-note">ක්‍රීඩා පුවත් නොමැත</div>`;
 
-      const dek = document.createElement('p');
-      dek.className = 'dek';
-      dek.textContent = hero ? (hero.desc || '') : '';
-      heroMain.appendChild(dek);
+      document.getElementById('bizList').innerHTML = biz.map((b,i)=>`
+        <div class="strip-row" onclick="openModal('${esc(b.id)}')">
+          <span class="num">${i+1}</span>
+          <a>${esc(b.title)}</a>
+          ${b.time ? `<span class="time-badge">${esc(b.time)}</span>` : ''}
+          ${getShareIconHtml(b.id, b.title, b.desc)}
+        </div>`).join('') || `<div class="empty-note">ව්‍යාපාරික පුවත් නොමැත</div>`;
 
-      heroSection.appendChild(heroMain);
-
-      const aside = document.createElement('aside');
-      aside.className = 'hero-side';
-      if (sideDisplayArticles.length > 0) {
-        sideDisplayArticles.forEach(s => aside.appendChild(buildSideItemNode(s)));
-      } else {
-        const note = document.createElement('div');
-        note.className = 'empty-note';
-        note.textContent = 'අද දින නිකුත් වූ වෙනත් ප්‍රධාන පුවත් නොමැත';
-        aside.appendChild(note);
-      }
-      if (hasOlderSideArticles) {
-        const btn = document.createElement('button');
-        btn.className = 'see-more-side-btn';
-        btn.textContent = showOlderHomeMainState ? 'අඩු කරන්න 🔼' : 'පරණ පුවත් බලන්න 📜';
-        btn.addEventListener('click', toggleHomeSideNews);
-        aside.appendChild(btn);
-      }
-      heroSection.appendChild(aside);
-
-      // --- sports / business strips ---
-      const sportsList = document.getElementById('sportsList');
-      sportsList.innerHTML = '';
-      if (sports.length) {
-        sports.forEach((s, i) => sportsList.appendChild(buildStripRowNode(s, i)));
-      } else {
-        const note = document.createElement('div');
-        note.className = 'empty-note';
-        note.textContent = 'ක්‍රීඩා පුවත් නොමැත';
-        sportsList.appendChild(note);
-      }
-
-      const bizList = document.getElementById('bizList');
-      bizList.innerHTML = '';
-      if (biz.length) {
-        biz.forEach((b, i) => bizList.appendChild(buildStripRowNode(b, i)));
-      } else {
-        const note = document.createElement('div');
-        note.className = 'empty-note';
-        note.textContent = 'ව්‍යාපාරික පුවත් නොමැත';
-        bizList.appendChild(note);
-      }
-
-      // --- ticker ---
       const tick = siteData.ticker && siteData.ticker.length ? siteData.ticker : ['ලංකා NEWS NOW වෙත සාදරයෙන් පිළිගනිමු'];
       const doubled = tick.concat(tick);
-      const tickerText = document.getElementById('tickerText');
-      tickerText.innerHTML = '';
-      doubled.forEach(x => {
-        const span = document.createElement('span');
-        span.textContent = x;
-        tickerText.appendChild(span);
-      });
+      document.getElementById('tickerText').innerHTML = doubled.map(x=>`<span>${esc(x)}</span>`).join('');
 
       renderAllAds();
       if(currentCat !== 'home') navigateTo(currentCat);
     }
 
-    function showGenericModal(buildFn) {
-      const modalContent = document.getElementById('modalContent');
-      modalContent.innerHTML = '';
-      buildFn(modalContent);
+    function showGenericModal(htmlContent) {
+      document.getElementById('modalContent').innerHTML = htmlContent;
       document.getElementById('articleModal').classList.add('active');
       document.body.style.overflow = 'hidden';
     }
@@ -2069,203 +1762,80 @@ header > * {
       updateShareMeta(a);
 
       const ytEmbed = getYouTubeEmbedUrl(getArticleYouTubeLink(a));
-      const imgSrc = safeUrl(getArticleImage(a));
+      const imgSrc = getArticleImage(a);
+      const safeTitle = (a.title || '').replace(/'/g, "\\'");
+      const shareUrlSafe = buildShareUrl(a.id).replace(/'/g, "\\'");
 
-      showGenericModal((container) => {
-        if (ytEmbed) {
-          const wrap = document.createElement('div');
-          wrap.className = 'video-wrapper';
-          const iframe = document.createElement('iframe');
-          iframe.src = ytEmbed; // built internally from a regex-extracted 11-char video id only
-          iframe.title = a.title || '';
-          iframe.setAttribute('frameborder', '0');
-          iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
-          iframe.allowFullscreen = true;
-          wrap.appendChild(iframe);
-          container.appendChild(wrap);
-        } else if (imgSrc && imgSrc !== '#') {
-          const img = document.createElement('img');
-          img.src = imgSrc;
-          img.alt = a.title || '';
-          img.loading = 'eager';
-          container.appendChild(img);
-        }
+      const content = `
+        ${ytEmbed ? `<div class="video-wrapper"><iframe src="${ytEmbed}" title="${esc(a.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>` : (imgSrc ? `<img src="${esc(imgSrc)}" alt="${esc(a.title)}" loading="eager">` : '')}
+        <div style="display:flex; justify-content:space-between; align-items:center; margin: 10px 0 6px;">
+          <span style="color:var(--brand-red-maroon); font-weight:700; font-size:12px; text-transform:uppercase;">📌 ${esc(a.category || 'General')}</span>
+          ${a.time ? `<span style="font-size:12px; color:var(--text-muted); font-weight:500;">🕒 ${esc(a.time)}</span>` : ''}
+        </div>
+        <h2 style="margin-top:0; font-size:clamp(18px, 4vw, 22px); color:var(--text-main); font-weight:800; line-height:1.35;">${esc(a.title)}</h2>
+        <div class="content" style="margin-top:14px; font-size:15px; color:#334155; line-height:1.75; white-space: pre-line;">${esc(a.desc)}</div>
+        <div class="modal-share-bar">
+          <span style="font-size:13px; font-weight:700; color:var(--text-main);">බෙදාහරින්න:</span>
+          <button class="modal-share-btn wa" onclick="shareViaPlatform('wa', '${safeTitle}', '${a.id}')">WhatsApp</button>
+          <button class="modal-share-btn fb" onclick="shareViaPlatform('fb', '${safeTitle}', '${a.id}')">Facebook</button>
+          <button class="modal-share-btn tw" onclick="shareViaPlatform('tw', '${safeTitle}', '${a.id}')">X</button>
+          <button class="modal-share-btn copy" onclick="copyToClipboard('${shareUrlSafe}')">Copy Link</button>
+        </div>
+      `;
+      showGenericModal(content);
 
-        const metaRow = document.createElement('div');
-        metaRow.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin:10px 0 6px;';
-        const cat = document.createElement('span');
-        cat.style.cssText = 'color:var(--brand-red-maroon);font-weight:700;font-size:12px;text-transform:uppercase;';
-        cat.textContent = `📌 ${a.category || 'General'}`;
-        metaRow.appendChild(cat);
-        if (a.time) {
-          const time = document.createElement('span');
-          time.style.cssText = 'font-size:12px;color:var(--text-muted);font-weight:500;';
-          time.textContent = `🕒 ${a.time}`;
-          metaRow.appendChild(time);
-        }
-        container.appendChild(metaRow);
-
-        const h2 = document.createElement('h2');
-        h2.style.cssText = "margin-top:0;font-size:clamp(18px, 4vw, 22px);color:var(--text-main);font-weight:800;line-height:1.35;";
-        h2.textContent = a.title || '';
-        container.appendChild(h2);
-
-        const body = document.createElement('div');
-        body.className = 'content';
-        body.style.cssText = 'margin-top:14px;font-size:15px;color:#334155;line-height:1.75;white-space:pre-line;';
-        body.textContent = a.desc || '';
-        container.appendChild(body);
-
-        const shareBar = document.createElement('div');
-        shareBar.className = 'modal-share-bar';
-        const label = document.createElement('span');
-        label.style.cssText = 'font-size:13px;font-weight:700;color:var(--text-main);';
-        label.textContent = 'බෙදාහරින්න:';
-        shareBar.appendChild(label);
-
-        const waBtn = document.createElement('button');
-        waBtn.className = 'modal-share-btn wa';
-        waBtn.textContent = 'WhatsApp';
-        waBtn.addEventListener('click', () => shareViaPlatform('wa', a.title, a.id));
-        shareBar.appendChild(waBtn);
-
-        const fbBtn = document.createElement('button');
-        fbBtn.className = 'modal-share-btn fb';
-        fbBtn.textContent = 'Facebook';
-        fbBtn.addEventListener('click', () => shareViaPlatform('fb', a.title, a.id));
-        shareBar.appendChild(fbBtn);
-
-        const twBtn = document.createElement('button');
-        twBtn.className = 'modal-share-btn tw';
-        twBtn.textContent = 'X';
-        twBtn.addEventListener('click', () => shareViaPlatform('tw', a.title, a.id));
-        shareBar.appendChild(twBtn);
-
-        const copyBtn = document.createElement('button');
-        copyBtn.className = 'modal-share-btn copy';
-        copyBtn.textContent = 'Copy Link';
-        copyBtn.addEventListener('click', () => copyToClipboard(buildShareUrl(a.id)));
-        shareBar.appendChild(copyBtn);
-
-        container.appendChild(shareBar);
-      });
-
-      try { history.pushState(null, '', '#art_' + encodeURIComponent(a.id)); } catch(e) {}
+      try { history.pushState(null, '', '#art_' + a.id); } catch(e) {}
     }
 
     function openAboutModal() {
-      showGenericModal((container) => {
-        const wrap = document.createElement('div');
-        wrap.style.cssText = 'text-align:center;padding-top:10px;';
-        const img = document.createElement('img');
-        img.src = 'https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png';
-        img.style.cssText = 'max-height:90px;width:auto;margin-bottom:14px;background:#fff;padding:5px;border-radius:8px;';
-        wrap.appendChild(img);
-        const h2 = document.createElement('h2');
-        h2.style.cssText = 'font-size:22px;color:var(--brand-green-dark);font-weight:800;margin-bottom:12px;';
-        h2.textContent = 'අප ගැන (About Us)';
-        wrap.appendChild(h2);
-        container.appendChild(wrap);
-
-        const p = document.createElement('p');
-        p.style.cssText = 'font-size:14.5px;line-height:1.8;color:#334155;text-align:justify;';
-        p.innerHTML = ''; // ensure clean
-        const b = document.createElement('b');
-        b.textContent = 'ලංකා NEWS NOW';
-        p.appendChild(b);
-        p.appendChild(document.createTextNode(' යනු ශ්‍රී ලංකාවේ සහ විදේශයන්හි සිදු වන නවතම, විශ්වාසනීය සහ තහවුරු කරන ලද පුවත් එසැනින් ඔබ වෙත ගෙන එන ප්‍රමුඛතම ඩිජිටල් පුවත් මාධ්‍ය වේදිකාවයි.'));
-        container.appendChild(p);
-      });
+      showGenericModal(`
+        <div style="text-align:center; padding-top:10px;">
+          <img src="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png" style="max-height:90px; width:auto; margin-bottom:14px; background:#fff; padding:5px; border-radius:8px;">
+          <h2 style="font-size:22px; color:var(--brand-green-dark); font-weight:800; margin-bottom:12px;">අප ගැන (About Us)</h2>
+        </div>
+        <p style="font-size:14.5px; line-height:1.8; color:#334155; text-align:justify;">
+          <b>ලංකා NEWS NOW</b> යනු ශ්‍රී ලංකාවේ සහ විදේශයන්හි සිදු වන නවතම, විශ්වාසනීය සහ තහවුරු කරන ලද පුවත් එසැනින් ඔබ වෙත ගෙන එන ප්‍රමුඛතම ඩිජිටල් පුවත් මාධ්‍ය වේදිකාවයි.
+        </p>
+      `);
     }
 
     function openContactModal() {
-      showGenericModal((container) => {
-        const h2 = document.createElement('h2');
-        h2.style.cssText = 'font-size:22px;color:var(--brand-green-dark);font-weight:800;margin-bottom:16px;text-align:center;';
-        h2.textContent = 'සම්බන්ධ වන්න (Contact Us)';
-        container.appendChild(h2);
-
-        const wrap = document.createElement('div');
-        wrap.style.cssText = 'font-size:14.5px;line-height:1.9;color:#334155;';
-        const lines = [
-          ['📍 ', 'ලිපිනය:', ' ලංකා News Now ප්‍රධාන කාර්යාලය, කොළඹ, ශ්‍රී ලංකාව.'],
-          ['📞 ', 'දුරකථන අංක:', ' +94 11 234 5678 / +94 77 123 4567'],
-          ['✉️ ', 'විද්‍යුත් තැපෑල:', ' info@lankanewsnow.lk'],
-          ['🌐 ', 'වෙබ් අඩවිය:', ' www.lankanewsnow.lk']
-        ];
-        lines.forEach(([emoji, label, rest]) => {
-          const p = document.createElement('p');
-          const b = document.createElement('b');
-          b.textContent = label;
-          p.appendChild(document.createTextNode(emoji));
-          p.appendChild(b);
-          p.appendChild(document.createTextNode(rest));
-          wrap.appendChild(p);
-        });
-        container.appendChild(wrap);
-      });
+      showGenericModal(`
+        <h2 style="font-size:22px; color:var(--brand-green-dark); font-weight:800; margin-bottom:16px; text-align:center;">සම්බන්ධ වන්න (Contact Us)</h2>
+        <div style="font-size:14.5px; line-height:1.9; color:#334155;">
+          <p>📍 <b>ලිපිනය:</b> ලංකා News Now ප්‍රධාන කාර්යාලය, කොළඹ, ශ්‍රී ලංකාව.</p>
+          <p>📞 <b>දුරකථන අංක:</b> +94 11 234 5678 / +94 77 123 4567</p>
+          <p>✉️ <b>විද්‍යුත් තැපෑල:</b> info@lankanewsnow.lk</p>
+          <p>🌐 <b>වෙබ් අඩවිය:</b> www.lankanewsnow.lk</p>
+        </div>
+      `);
     }
 
     function openPrivacyModal() {
-      showGenericModal((container) => {
-        const h2 = document.createElement('h2');
-        h2.style.cssText = 'font-size:22px;color:var(--brand-green-dark);font-weight:800;margin-bottom:14px;text-align:center;';
-        h2.textContent = 'පෞද්ගලිකත්ව ප්‍රතිපත්තිය (Privacy Policy)';
-        container.appendChild(h2);
-
-        const wrap = document.createElement('div');
-        wrap.style.cssText = 'font-size:14px;line-height:1.75;color:#334155;';
-        const p = document.createElement('p');
-        p.style.marginBottom = '12px';
-        p.textContent = 'අපගේ පරිශීලකයින්ගේ පෞද්ගලිකත්වය සුරැකීම අපගේ ප්‍රමුඛතාවයයි. ලංකා NEWS NOW භාවිතයේදී ඔබගේ දත්ත සුරක්ෂිතව තබාගැනීමට අප බැඳී සිටිමු.';
-        wrap.appendChild(p);
-        container.appendChild(wrap);
-      });
+      showGenericModal(`
+        <h2 style="font-size:22px; color:var(--brand-green-dark); font-weight:800; margin-bottom:14px; text-align:center;">පෞද්ගලිකත්ව ප්‍රතිපත්තිය (Privacy Policy)</h2>
+        <div style="font-size:14px; line-height:1.75; color:#334155;">
+          <p style="margin-bottom:12px;">අපගේ පරිශීලකයින්ගේ පෞද්ගලිකත්වය සුරැකීම අපගේ ප්‍රමුඛතාවයයි. ලංකා NEWS NOW භාවිතයේදී ඔබගේ දත්ත සුරක්ෂිතව තබාගැනීමට අප බැඳී සිටිමු.</p>
+        </div>
+      `);
     }
 
     function openMediaGalleryModal() {
       const arts = siteData.articles || [];
-      showGenericModal((container) => {
-        const h2 = document.createElement('h2');
-        h2.style.cssText = 'font-size:20px;color:var(--brand-green-dark);font-weight:800;margin-bottom:4px;text-align:center;';
-        h2.textContent = '📸 මාධ්‍ය එකතුව (Media Gallery)';
-        container.appendChild(h2);
+      let galleryHtml = arts.map(a => {
+        const img = getArticleImage(a);
+        return (img && img.trim() !== '') ? `
+          <div class="gallery-item" onclick="openModal('${esc(a.id)}')">
+            <img src="${esc(img)}" alt="${esc(a.title)}" onerror="this.parentElement.style.display='none'">
+            <div class="gallery-title">${esc(a.title)}</div>
+          </div>` : '';
+      }).join('');
 
-        const sub = document.createElement('p');
-        sub.style.cssText = 'text-align:center;font-size:12.5px;color:var(--text-muted);margin-bottom:16px;';
-        sub.textContent = 'සියලුම පුවත්වල ඡායාරූප';
-        container.appendChild(sub);
-
-        const grid = document.createElement('div');
-        grid.className = 'gallery-grid';
-        let count = 0;
-        arts.forEach(a => {
-          const img = safeUrl(getArticleImage(a));
-          if (!img || img === '#') return;
-          count++;
-          const item = document.createElement('div');
-          item.className = 'gallery-item';
-          item.addEventListener('click', () => openModal(a.id));
-          const imgEl = document.createElement('img');
-          imgEl.src = img;
-          imgEl.alt = a.title || '';
-          imgEl.addEventListener('error', () => { item.style.display = 'none'; }, { once: true });
-          item.appendChild(imgEl);
-          const title = document.createElement('div');
-          title.className = 'gallery-title';
-          title.textContent = a.title || '';
-          item.appendChild(title);
-          grid.appendChild(item);
-        });
-        if (count === 0) {
-          const note = document.createElement('div');
-          note.className = 'empty-note';
-          note.style.gridColumn = '1/-1';
-          note.textContent = 'ඡායාරූප නොමැත';
-          grid.appendChild(note);
-        }
-        container.appendChild(grid);
-      });
+      showGenericModal(`
+        <h2 style="font-size:20px; color:var(--brand-green-dark); font-weight:800; margin-bottom:4px; text-align:center;">📸 මාධ්‍ය එකතුව (Media Gallery)</h2>
+        <p style="text-align:center; font-size:12.5px; color:var(--text-muted); margin-bottom:16px;">සියලුම පුවත්වල ඡායාරූප</p>
+        <div class="gallery-grid">${galleryHtml || `<div class="empty-note" style="grid-column: 1/-1;">ඡායාරූප නොමැත</div>`}</div>
+      `);
     }
 
     function closeModal(){
@@ -2299,31 +1869,15 @@ header > * {
 
     function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-    // ---- wire up all previously-inline handlers via addEventListener ----
     window.addEventListener('scroll', () => {
       const btn = document.getElementById('backToTopBtn');
       btn.classList.toggle('show', window.scrollY > 300);
     });
-    window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-    window.addEventListener('click', (e) => { if (e.target === document.getElementById('articleModal')) closeModal(); });
-    setTimeout(hidePreloader, 6000);
 
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('btn-lang-si').addEventListener('click', () => translatePage('si'));
-      document.getElementById('btn-lang-en').addEventListener('click', () => translatePage('en'));
-      document.getElementById('btn-lang-ta').addEventListener('click', () => translatePage('ta'));
-      document.getElementById('brandLogoLink').addEventListener('click', (e) => { e.preventDefault(); navigateTo('home'); });
-      document.getElementById('searchBtn').addEventListener('click', doSearch);
-      document.getElementById('searchInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') doSearch(); });
-      document.getElementById('backHomeBtn').addEventListener('click', () => navigateTo('home'));
-      document.getElementById('loadMoreBtn').addEventListener('click', loadMoreCategoryItems);
-      document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
-      document.getElementById('backToTopBtn').addEventListener('click', scrollToTop);
-      document.getElementById('aboutLink').addEventListener('click', (e) => { e.preventDefault(); openAboutModal(); });
-      document.getElementById('contactLink').addEventListener('click', (e) => { e.preventDefault(); openContactModal(); });
-      document.getElementById('privacyLink').addEventListener('click', (e) => { e.preventDefault(); openPrivacyModal(); });
-      document.getElementById('mediaLink').addEventListener('click', (e) => { e.preventDefault(); openMediaGalleryModal(); });
-    });
+    window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+    window.onclick = function(e) { if (e.target === document.getElementById('articleModal')) closeModal(); };
+    // Safety fallback: if data fetch is very slow/fails silently, don't leave the preloader stuck forever
+    setTimeout(hidePreloader, 6000);
 
     // Initialization
     updateDate();
