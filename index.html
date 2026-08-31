@@ -144,7 +144,6 @@
       100% { opacity: 1; transform: translateY(-2px); }
     }
 
-    /* Page load fade-in animation */
     @keyframes fadeInPage {
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
@@ -230,7 +229,7 @@
       transform: translateY(-1px);
     }
 
-    /* Header with Compact Height & Larger Logo */
+    /* Header */
     header { 
       position: relative;
       background-color: #2e3b35; 
@@ -345,7 +344,7 @@
     .search-box button:hover { background: #6b1832; }
     .search-box button:active { transform: scale(0.95); }
 
-    /* Share Button Universal Style */
+    /* Share Button Style */
     .share-btn {
       background: rgba(18, 76, 62, 0.08);
       border: 1px solid rgba(18, 76, 62, 0.2);
@@ -675,6 +674,18 @@
       padding: 10px 14px 14px;
     }
 
+    /* Description Embedded Links Style */
+    .article-desc-link {
+      color: var(--brand-green-dark);
+      font-weight: 600;
+      text-decoration: underline;
+      word-break: break-all;
+      transition: color 0.2s ease;
+    }
+    .article-desc-link:hover {
+      color: var(--brand-gold-dark);
+    }
+
     /* Load More & Back Buttons */
     .back-btn, .load-more-btn { 
       background: var(--brand-red-maroon); 
@@ -790,7 +801,7 @@
       font-weight: 500;
     }
 
-    /* Related News (inside article popup) */
+    /* Related News */
     .modal-related-section {
       margin-top: 22px;
       padding-top: 16px;
@@ -849,6 +860,7 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
+
     @media (max-width: 420px) {
       .modal-related-grid { grid-template-columns: 1fr; }
       .modal-related-item img, .modal-related-item .ph { width: 64px; height: 64px; }
@@ -1081,7 +1093,7 @@
     </div>
   </div>
 
-  <!-- Compact Header with Larger Logo -->
+  <!-- Header -->
   <header>
     <div class="header-bg-slideshow" id="headerSlideshow">
       <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=70&w=900&auto=format&fit=crop');"></div>
@@ -1226,6 +1238,26 @@
     let categoryFilteredArticles = [];
     let showOlderArticlesState = false;
     let showOlderHomeMainState = false;
+
+    /* Safe HTML Escaper */
+    function esc(s){ 
+      return (s || "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); 
+    }
+
+    /* Converts plain text links inside description to clickable anchor tags */
+    function renderDescriptionWithLinks(text) {
+      if (!text) return '';
+      const safeText = esc(text);
+      const urlRegex = /(https?:\/\/[^\s<]+|www\.[^\s<]+)/gi;
+      
+      return safeText.replace(urlRegex, function(url) {
+        let href = url;
+        if (!href.match(/^https?:\/\//i)) {
+          href = 'http://' + href;
+        }
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="article-desc-link" onclick="event.stopPropagation();">${url}</a>`;
+      });
+    }
 
     /* Share functionality helper */
     function shareArticle(event, title, desc, id) {
@@ -1489,8 +1521,6 @@
       }
     }
 
-    function esc(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
     function setMeta(id, value) {
       const el = document.getElementById(id);
       if (el) el.setAttribute('content', value);
@@ -1568,6 +1598,7 @@
       return ytId ? `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0` : null;
     }
 
+    /* Enhanced Exact & Alias Matching for News Categories */
     function matchCategory(artCat, targetCat) {
       if (!artCat || !targetCat) return false;
       const c1 = artCat.trim().toLowerCase();
@@ -1576,9 +1607,9 @@
       
       const aliases = {
         'ප්‍රධාන පුවත්': ['main news', 'main', 'general', 'ප්‍රධාන', 'ප්‍රධාන පුවත'],
-        'ක්‍රීඩා': ['sports', 'sport', 'ක්‍රීඩා'],
-        'ව්‍යාපාර': ['business', 'biz', 'economy', 'ව්‍යාපාර'],
-        'ලෝකය': ['world', 'international', 'ලෝකය'],
+        'ක්‍රීඩා': ['sports', 'sport', 'ක්‍රීඩා', 'ක්‍රීඩා පුවත්'],
+        'ව්‍යාපාර': ['business', 'biz', 'economy', 'ව්‍යාපාර', 'ව්‍යාපාරික', 'ව්‍යාපාරික පුවත්'],
+        'ලෝකය': ['world', 'international', 'ලෝකය', 'විදේශීය'],
         'තාක්ෂණය': ['tech', 'technology', 'තාක්ෂණය']
       };
 
@@ -1663,7 +1694,7 @@
             ${a.time ? `<span class="time-badge">🕒 ${esc(a.time)}</span>` : ''}
           </div>
           <h3>${esc(a.title)}</h3>
-          <p>${esc(a.desc)}</p>
+          <p>${renderDescriptionWithLinks(a.desc)}</p>
           <div class="card-footer-action">
             ${getShareIconHtml(a.id, a.title, a.desc)}
           </div>
@@ -1709,13 +1740,11 @@
       if(!siteData) return;
       const arts = siteData.articles || [];
 
+      /* Strictly filter main news section only */
       const mainNewsArticles = arts.filter(a => matchCategory(a.category, 'ප්‍රධාන පුවත්'));
-      let hero = mainNewsArticles.find(a => a.position === 'hero') || (mainNewsArticles.length > 0 ? mainNewsArticles[0] : arts[0]);
+      let hero = mainNewsArticles.find(a => a.position === 'hero') || (mainNewsArticles.length > 0 ? mainNewsArticles[0] : null);
       
       let sideCandidates = mainNewsArticles.filter(a => a !== hero);
-      if (sideCandidates.length === 0) {
-        sideCandidates = arts.filter(a => a !== hero);
-      }
 
       const todaySideArticles = sideCandidates.filter(isTodayArticle);
       const hasOlderSideArticles = sideCandidates.some(a => !isTodayArticle(a));
@@ -1727,6 +1756,7 @@
         sideDisplayArticles = sideCandidates;
       }
 
+      /* Strictly filter Sports & Business sections only */
       const sports = arts.filter(a => matchCategory(a.category, 'ක්‍රීඩා')).slice(0, 6);
       const biz = arts.filter(a => matchCategory(a.category, 'ව්‍යාපාර')).slice(0, 6);
 
@@ -1759,7 +1789,7 @@
             </div>
           </div>
           <h2>${esc(hero ? hero.title : 'මෙම කොටසේ තවම පුවත් නොමැත')}</h2>
-          <p class="dek">${esc(hero ? hero.desc : '')}</p>
+          <p class="dek">${renderDescriptionWithLinks(hero ? hero.desc : '')}</p>
         </article>
         <aside class="hero-side">
           ${sideItemsHtml}
@@ -1845,7 +1875,7 @@
           ${a.time ? `<span style="font-size:12px; color:var(--text-muted); font-weight:500;">🕒 ${esc(a.time)}</span>` : ''}
         </div>
         <h2 style="margin-top:0; font-size:clamp(18px, 4vw, 22px); color:var(--text-main); font-weight:800; line-height:1.35;">${esc(a.title)}</h2>
-        <div class="content" style="margin-top:14px; font-size:15px; color:#334155; line-height:1.75; white-space: pre-line;">${esc(a.desc)}</div>
+        <div class="content" style="margin-top:14px; font-size:15px; color:#334155; line-height:1.75; white-space: pre-line;">${renderDescriptionWithLinks(a.desc)}</div>
         <div class="modal-share-bar">
           <span style="font-size:13px; font-weight:700; color:var(--text-main);">බෙදාහරින්න:</span>
           <button class="modal-share-btn wa" onclick="shareViaPlatform('wa', '${safeTitle}', '${a.id}')">WhatsApp</button>
