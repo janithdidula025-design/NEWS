@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png">
   <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png">
 
-  <!-- Share Preview Meta Tags (updated by JS per-article; see note in chat about WhatsApp/Facebook needing server-side rendering too) -->
+  <!-- Share Preview Meta Tags -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Lanka News Now">
   <meta id="meta-og-title" property="og:title" content="ලංකා NEWS NOW - නවතම පුවත්">
@@ -230,95 +230,92 @@
       transform: translateY(-1px);
     }
 
-   /* Header with Compact Height & Larger Logo */
-header { 
-  position: relative;
-  /* Dark shade reduced further to a lighter, softer greenish-gray background */
-  background-color: #2e3b35; 
-  border-bottom: 1px solid var(--border-color); 
-  padding: 12px 16px; 
-  text-align: center; 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden;
-  color: #ffffff;
-}
+    /* Header with Compact Height & Larger Logo */
+    header { 
+      position: relative;
+      background-color: #2e3b35; 
+      border-bottom: 1px solid var(--border-color); 
+      padding: 12px 16px; 
+      text-align: center; 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+      color: #ffffff;
+    }
 
-.header-bg-slideshow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
+    .header-bg-slideshow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
 
-.bg-slide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transition: opacity 1.5s ease-in-out, transform 6s ease-out;
-  transform: scale(1);
-}
+    .bg-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out, transform 6s ease-out;
+      transform: scale(1);
+    }
 
-.bg-slide.active {
-  /* Increased opacity for brighter background image visibility */
-  opacity: 0.45; 
-  transform: scale(1.05);
-}
+    .bg-slide.active {
+      opacity: 0.45; 
+      transform: scale(1.05);
+    }
 
-.header-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  /* Lowered black tint opacity in the gradient (0.15 - 0.3) to make background much brighter */
-  background: linear-gradient(180deg, rgba(11, 17, 14, 0.15) 0%, rgba(11, 17, 14, 0.3) 100%);
-  z-index: 2;
-}
+    .header-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(11, 17, 14, 0.15) 0%, rgba(11, 17, 14, 0.3) 100%);
+      z-index: 2;
+    }
 
-header > * {
-  position: relative;
-  z-index: 3;
-}
+    header > * {
+      position: relative;
+      z-index: 3;
+    }
 
-.eyebrow { 
-  font-size: 10px; 
-  letter-spacing: 1.5px; 
-  color: #a3b0a8; 
-  text-transform: uppercase; 
-  font-weight: 700;
-  margin-bottom: 2px;
-}
+    .eyebrow { 
+      font-size: 10px; 
+      letter-spacing: 1.5px; 
+      color: #a3b0a8; 
+      text-transform: uppercase; 
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
 
-.brand-logo-wrap {
-  display: inline-block;
-  text-decoration: none;
-  margin: 2px 0;
-  background: #fff; 
-  padding: 6px 14px;
-  border-radius: var(--radius-sm);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Reduced shadow intensity */
-}
+    .brand-logo-wrap {
+      display: inline-block;
+      text-decoration: none;
+      margin: 2px 0;
+      background: #fff; 
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
 
-.brand-logo {
-  max-height: 220px; 
-  width: auto;
-  max-width: 100%;
-  object-fit: contain;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
+    .brand-logo {
+      max-height: 220px; 
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
 
-.brand-logo:hover { 
-  transform: scale(1.03); 
-}
+    .brand-logo:hover { 
+      transform: scale(1.03); 
+    }
 
     /* Search Bar */
     .search-box { margin-top: 10px; display: flex; justify-content: center; width: 100%; max-width: 450px; }
@@ -852,7 +849,6 @@ header > * {
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
-    /* Small phones: single column so thumbnails/titles don't get cramped */
     @media (max-width: 420px) {
       .modal-related-grid { grid-template-columns: 1fr; }
       .modal-related-item img, .modal-related-item .ph { width: 64px; height: 64px; }
@@ -940,6 +936,7 @@ header > * {
       margin-top: 20px;
       padding-top: 14px;
       border-top: 1px solid var(--border-color);
+      flex-wrap: wrap;
     }
     .modal-share-btn {
       display: inline-flex;
@@ -1288,8 +1285,6 @@ header > * {
       const slides = document.querySelectorAll('#headerSlideshow .bg-slide');
       if (!slides.length) return;
 
-      // Load the remaining slide images lazily, after the important content
-      // (article data) has had a chance to load first.
       setTimeout(() => {
         slides.forEach(s => {
           const bg = s.getAttribute('data-bg');
@@ -1439,15 +1434,12 @@ header > * {
     }
 
     async function loadData(){
-      // 1) Instant paint: if we have cached data from a previous visit, show it right away
-      //    so a shared link's article can pop open immediately without waiting on the network.
       let hasCachedData = false;
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw);
           if (parsed && (parsed.articles || []).length > 0) {
-            // Cached data was already stored newest-first on the previous save, so use as-is
             siteData = {
               ticker: parsed.ticker || [],
               articles: sanitizeArticles(parsed.articles),
@@ -1461,7 +1453,6 @@ header > * {
         }
       } catch(e) { /* ignore corrupt cache */ }
 
-      // 2) Always fetch fresh data in the background and update once it arrives
       if(SCRIPT_URL && SCRIPT_URL.trim() !== ""){
         try{
           const res = await fetch(SCRIPT_URL, { method: 'GET', redirect: 'follow' });
@@ -1484,7 +1475,6 @@ header > * {
       }
 
       if (!hasCachedData) {
-        // No cache and the network fetch failed/returned nothing usable
         siteData = { ticker: [], articles: [], ads: [] };
         renderSite();
         hidePreloader();
@@ -1506,13 +1496,6 @@ header > * {
       if (el) el.setAttribute('content', value);
     }
 
-    /* Updates document title + og/twitter meta tags to match the open article.
-       NOTE: this only affects browsers that read the live DOM (in-app browsers,
-       Web Share, etc). WhatsApp/Facebook/Telegram link-preview crawlers do NOT
-       run JavaScript - they only read the raw HTML once, before any script runs.
-       So this alone cannot make WhatsApp/Facebook show the article photo for a
-       shared link; that requires generating the meta tags server-side (see the
-       Apps Script snippet shared alongside this file). */
     function updateShareMeta(a) {
       if (!a) return;
       const img = getArticleImage(a) || 'https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png';
@@ -1530,10 +1513,6 @@ header > * {
       setMeta('meta-tw-image', img);
     }
 
-    /* Builds the URL that should actually be shared. Always points directly at
-       this site (with the article's #art_ID hash), so opening the link always
-       loads the site itself and checkUrlHashModal() opens the right article
-       automatically. */
     function buildShareUrl(id) {
       return window.location.origin + window.location.pathname + '#art_' + id;
     }
@@ -1548,14 +1527,10 @@ header > * {
 
     function getArticleYouTubeLink(a) {
       if (!a) return null;
-      // Check the common/expected field names first (fastest path)
       const candidates = [a.youtube, a.youtubelink, a.youtube_link, a.youtubeLink, a.video, a.videourl, a.videoUrl, a.video_url, a.img];
       for (const link of candidates) {
         if (link && typeof link === 'string' && getYouTubeId(link)) return link;
       }
-      // Fallback: scan every field on the article in case the Google Sheet
-      // column has a different/unexpected name (e.g. a Sinhala header) - any
-      // text value that happens to be a YouTube URL will still be detected.
       for (const key in a) {
         const val = a[key];
         if (val && typeof val === 'string' && getYouTubeId(val)) return val;
@@ -1821,8 +1796,6 @@ header > * {
       document.body.style.overflow = 'hidden';
     }
 
-    /* Picks other articles to show under the article as "related news":
-       same category first, then fills up with the newest other articles. */
     function getRelatedArticles(current, limit) {
       const all = siteData.articles || [];
       const others = all.filter(x => String(x.id) !== String(current.id));
@@ -1979,7 +1952,6 @@ header > * {
 
     window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
     window.onclick = function(e) { if (e.target === document.getElementById('articleModal')) closeModal(); };
-    // Safety fallback: if data fetch is very slow/fails silently, don't leave the preloader stuck forever
     setTimeout(hidePreloader, 6000);
 
     // Initialization
