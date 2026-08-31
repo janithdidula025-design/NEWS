@@ -9,8 +9,8 @@
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png">
   <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png">
 
-  <!-- Share Preview Meta Tags -->
-  <meta property="og:type" content="website">
+  <!-- Dynamic Share Preview Meta Tags -->
+  <meta property="og:type" content="article">
   <meta property="og:site_name" content="Lanka News Now">
   <meta id="meta-og-title" property="og:title" content="ලංකා NEWS NOW - නවතම පුවත්">
   <meta id="meta-og-desc" property="og:description" content="ශ්‍රී ලංකාවේ නවතම, විශ්වාසනීය පුවත් එසැනින්">
@@ -1259,9 +1259,12 @@
       });
     }
 
-    /* Share functionality helper */
+    /* Native & Platform Share functionality */
     function shareArticle(event, title, desc, id) {
       if (event) event.stopPropagation();
+      const a = (siteData.articles || []).find(x => String(x.id) === String(id));
+      if (a) updateShareMeta(a);
+
       const shareUrl = buildShareUrl(id);
       const shareData = {
         title: title || 'ලංකා News Now',
@@ -1277,6 +1280,9 @@
     }
 
     function shareViaPlatform(platform, title, id) {
+      const a = (siteData.articles || []).find(x => String(x.id) === String(id));
+      if (a) updateShareMeta(a);
+
       const shareUrl = encodeURIComponent(buildShareUrl(id));
       const shareText = encodeURIComponent(title);
       let target = '';
@@ -1526,6 +1532,7 @@
       if (el) el.setAttribute('content', value);
     }
 
+    /* Dynamically updates article preview meta tags for social shares */
     function updateShareMeta(a) {
       if (!a) return;
       const img = getArticleImage(a) || 'https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png';
