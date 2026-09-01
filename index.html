@@ -457,15 +457,45 @@
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
     }
     .hero-main:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: rgba(18, 76, 62, 0.3); }
-    .hero-main img, .hero-main .ph { 
-      width: 100%; 
-      height: 250px; 
-      object-fit: cover; 
-      background: #e2e8e2; 
-      display: block; 
+    /* FIX: full-photo display — the frame keeps a fixed aspect-ratio, but the image itself
+       uses object-fit: contain so the ENTIRE photo is always visible with nothing cropped,
+       regardless of its original orientation (portrait/landscape/square). A blurred, scaled
+       copy of the same photo fills the empty space behind it so there's no plain gray gap. */
+    .media-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: #e2e8e2;
+      display: block;
+    }
+    .media-frame .media-fg {
       transition: transform 0.5s ease;
     }
-    .hero-main:hover img { transform: scale(1.03); }
+    .media-frame .ph {
+      width: 100%;
+      height: 100%;
+      background: #e2e8e2;
+    }
+    .media-frame .media-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(18px) brightness(0.75) saturate(1.2);
+      transform: scale(1.15);
+    }
+    .media-frame .media-fg {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      z-index: 1;
+    }
+    .hero-main .media-frame { aspect-ratio: 16 / 9; }
+    .hero-main:hover .media-fg { transform: scale(1.03); }
     .hero-main .kicker-wrap {
       display: flex;
       justify-content: space-between;
@@ -492,8 +522,9 @@
       align-items: center;
     }
     .side-item:hover { transform: translateX(6px); border-color: var(--brand-green-dark); box-shadow: var(--shadow-md); }
-    .side-item img, .side-item .ph { width: 85px; height: 85px; object-fit: cover; border-radius: var(--radius-sm); background: #e2e8e2; flex-shrink: 0; transition: transform 0.3s ease; }
-    .side-item:hover img { transform: scale(1.06); }
+    .side-item .media-frame { width: 85px; height: 85px; aspect-ratio: unset; border-radius: var(--radius-sm); flex-shrink: 0; }
+    .side-item .ph { width: 85px; height: 85px; object-fit: cover; border-radius: var(--radius-sm); background: #e2e8e2; flex-shrink: 0; }
+    .side-item:hover .media-fg { transform: scale(1.06); }
     .side-item .kicker { font-size: 10px; color: var(--brand-green-dark); font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
     .side-item h3 { font-size: 13.5px; line-height: 1.4; color: var(--text-main); font-weight: 700; transition: color 0.2s ease; }
     .side-item:hover h3 { color: var(--brand-green-dark); }
@@ -520,16 +551,12 @@
       transform: translateY(-2px);
     }
 
-    /* Video Play Overlay */
+    /* Video Play Overlay (sits on top of .media-frame, no visual size of its own) */
     .img-wrapper {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-    }
-    .side-item .img-wrapper {
-      width: 85px;
-      height: 85px;
-      flex-shrink: 0;
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
     }
     .play-overlay {
       position: absolute;
@@ -658,8 +685,8 @@
       flex-direction: column;
     }
     .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--brand-green-dark); }
-    .card img, .card .ph { width: 100%; height: 180px; object-fit: cover; background: #e2e8e2; transition: transform 0.5s ease; }
-    .card:hover img { transform: scale(1.05); }
+    .card .media-frame { aspect-ratio: 16 / 10; }
+    .card:hover .media-fg { transform: scale(1.05); }
     .card .meta-bar { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px 0; }
     .card .kicker { font-size: 11px; color: var(--brand-green-dark); font-weight: 700; text-transform: uppercase; }
     .card .time-badge { font-size: 11px; color: var(--text-muted); }
@@ -834,7 +861,14 @@
       border-color: var(--brand-green-dark);
       box-shadow: var(--shadow-sm);
     }
-    .modal-related-item img, .modal-related-item .ph {
+    .modal-related-item .media-frame {
+      width: 56px;
+      height: 56px;
+      aspect-ratio: unset;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .modal-related-item .ph {
       width: 56px;
       height: 56px;
       object-fit: cover;
@@ -863,7 +897,7 @@
 
     @media (max-width: 420px) {
       .modal-related-grid { grid-template-columns: 1fr; }
-      .modal-related-item img, .modal-related-item .ph { width: 64px; height: 64px; }
+      .modal-related-item .media-frame, .modal-related-item .ph { width: 64px; height: 64px; }
       .modal-related-item h5 { font-size: 13px; -webkit-line-clamp: 2; }
     }
 
@@ -938,7 +972,7 @@
       z-index: 5;
     }
     .modal-close:hover { background: #e2e8e2; color: var(--text-main); transform: rotate(90deg); }
-    .modal-box img { width: 100%; max-height: 380px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 14px; }
+    .modal-box .media-frame { aspect-ratio: 16 / 10; max-height: 420px; border-radius: var(--radius-sm); margin-bottom: 14px; }
     
     /* Share modal actions */
     .modal-share-bar {
@@ -1051,12 +1085,10 @@
     @media (min-width: 640px) {
       .card-grid { grid-template-columns: repeat(2, 1fr); }
       .split-section { grid-template-columns: repeat(2, 1fr); }
-      .hero-main img, .hero-main .ph { height: 300px; }
     }
 
     @media (min-width: 900px) {
       .hero-grid { grid-template-columns: 2.1fr 1.1fr; gap: 24px; }
-      .hero-main img, .hero-main .ph { height: 360px; }
     }
 
     @media (min-width: 1024px) {
@@ -1189,7 +1221,7 @@
     </div>
 
     <div class="social-links">
-      <a href="https://www.facebook.com/share/1DL1r2zzA6/" target="_blank" rel="noopener noreferrer" class="social-btn facebook" title="Facebook">
+      <a href="https://www.facebook.com/share/18x3PQp5au/" target="_blank" rel="noopener noreferrer" class="social-btn facebook" title="Facebook">
         <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
       </a>
       <a href="https://www.instagram.com/lankanewsnow?igsh=dmxhOG82ZXdncnIy" target="_blank" rel="noopener noreferrer" class="social-btn instagram" title="Instagram">
@@ -1532,7 +1564,11 @@
       if (el) el.setAttribute('content', value);
     }
 
-    /* Dynamically updates article preview meta tags for social shares */
+    /* Dynamically updates article preview meta tags for social shares
+       (this only affects the tab title/meta while the user is browsing —
+       it does NOT affect what WhatsApp/Facebook/X bots see when the link
+       is shared, because those bots do not execute JavaScript. See
+       buildShareUrl() below + the Apps Script doGet() for the real fix.) */
     function updateShareMeta(a) {
       if (!a) return;
       const img = getArticleImage(a) || 'https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png';
@@ -1550,8 +1586,17 @@
       setMeta('meta-tw-image', img);
     }
 
+    /* FIX: share links point back to the site's own URL (#art_id hash), not the
+       Apps Script endpoint. The Apps Script id-based preview page was causing the
+       broken/error link, since that endpoint doesn't have article-lookup logic
+       set up. This version always works — clicking a shared link opens the site
+       and the exact article modal directly. (Note: WhatsApp/Facebook/X preview
+       bots still won't show the article's own photo this way, since they don't
+       run JavaScript — they'll show the site logo. Getting the correct photo in
+       link previews needs a small server-side page, which is a separate, optional
+       step — this fix is just about the link working without errors.) */
     function buildShareUrl(id) {
-      return window.location.origin + window.location.pathname + '#art_' + id;
+      return window.location.origin + window.location.pathname + '#art_' + encodeURIComponent(id);
     }
     
     function getYouTubeId(url) {
@@ -1589,15 +1634,26 @@
       return '';
     }
 
+    /* Renders the full photo, uncropped, inside a fixed-ratio frame.
+       A blurred/scaled copy of the same image fills the frame as backdrop
+       (so there's no empty gray gap), and the sharp full image sits on top
+       using object-fit: contain so nothing gets cut off. */
     function renderImageHtml(a, cls) {
       const src = getArticleImage(a);
       const isVideo = !!getArticleYouTubeLink(a);
-      
-      let imgContent = (src && src.trim() !== '') ? 
-        `<img class="ph ${cls||''}" src="${esc(src)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">` : 
-        `<div class="ph ${cls||''}"></div>`;
+      const playOverlay = isVideo ? `<div class="img-wrapper"><div class="play-overlay"></div></div>` : '';
 
-      return isVideo ? `<div class="img-wrapper">${imgContent}<div class="play-overlay"></div></div>` : imgContent;
+      if (!src || src.trim() === '') {
+        return `<div class="media-frame ${cls||''}"><div class="ph"></div>${playOverlay}</div>`;
+      }
+
+      const safeSrc = esc(src);
+      return `
+        <div class="media-frame ${cls||''}">
+          <img class="media-bg" src="${safeSrc}" alt="" loading="lazy" decoding="async" aria-hidden="true">
+          <img class="media-fg" src="${safeSrc}" alt="" loading="lazy" decoding="async" onerror="this.closest('.media-frame').innerHTML='<div class=\\'ph\\'></div>'">
+          ${playOverlay}
+        </div>`;
     }
 
     function getYouTubeEmbedUrl(url) {
@@ -1876,7 +1932,7 @@
       const shareUrlSafe = buildShareUrl(a.id).replace(/'/g, "\\'");
 
       const content = `
-        ${ytEmbed ? `<div class="video-wrapper"><iframe src="${ytEmbed}" title="${esc(a.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>` : (imgSrc ? `<img src="${esc(imgSrc)}" alt="${esc(a.title)}" loading="eager">` : '')}
+        ${ytEmbed ? `<div class="video-wrapper"><iframe src="${ytEmbed}" title="${esc(a.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>` : (imgSrc ? `<div class="media-frame"><img class="media-bg" src="${esc(imgSrc)}" alt="" aria-hidden="true"><img class="media-fg" src="${esc(imgSrc)}" alt="${esc(a.title)}" loading="eager" onerror="this.closest('.media-frame').style.display='none'"></div>` : '')}
         <div style="display:flex; justify-content:space-between; align-items:center; margin: 10px 0 6px;">
           <span style="color:var(--brand-red-maroon); font-weight:700; font-size:12px; text-transform:uppercase;">📌 ${esc(a.category || 'General')}</span>
           ${a.time ? `<span style="font-size:12px; color:var(--text-muted); font-weight:500;">🕒 ${esc(a.time)}</span>` : ''}
@@ -1907,7 +1963,12 @@
           <h2 style="font-size:22px; color:var(--brand-green-dark); font-weight:800; margin-bottom:12px;">අප ගැන (About Us)</h2>
         </div>
         <p style="font-size:14.5px; line-height:1.8; color:#334155; text-align:justify;">
-          <b>ලංකා NEWS NOW</b> යනු ශ්‍රී ලංකාවේ සහ විදේශයන්හි සිදු වන නවතම, විශ්වාසනීය සහ තහවුරු කරන ලද පුවත් එසැනින් ඔබ වෙත ගෙන එන ප්‍රමුඛතම ඩිජිටල් පුවත් මාධ්‍ය වේදිකාවයි.
+                📰 ශ්‍රී ලංකාවේ සහ ලොව පුරා වැදගත් පුවත්
+⚖️ පක්ෂග්‍රාහී නොවූ, අවංක හා කරුණු මත පදනම් වූ තොරතුරු
+🎙️ ඔබේ හඬට ඉඩක් — සත්‍යය සොයා, සම්පූර්ණ කතාව ඔබ වෙත.
+Follow Us for the Whole Story.
+
+<a href="https://www.lankanewsnow.com">Lanka News Now</a>
         </p>
       `);
     }
@@ -1916,9 +1977,6 @@
       showGenericModal(`
         <h2 style="font-size:22px; color:var(--brand-green-dark); font-weight:800; margin-bottom:16px; text-align:center;">සම්බන්ධ වන්න (Contact Us)</h2>
         <div style="font-size:14.5px; line-height:1.9; color:#334155;">
-          <p>📍 <b>ලිපිනය:</b> ලංකා News Now ප්‍රධාන කාර්යාලය, කොළඹ, ශ්‍රී ලංකාව.</p>
-          <p>📞 <b>දුරකථන අංක:</b> +94 11 234 5678 / +94 77 123 4567</p>
-          <p>✉️ <b>විද්‍යුත් තැපෑල:</b> info@lankanewsnow.lk</p>
           <p>🌐 <b>වෙබ් අඩවිය:</b> www.lankanewsnow.lk</p>
         </div>
       `);
