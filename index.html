@@ -1807,12 +1807,15 @@
     async function loadData(){
       let cached = null;
 
+      // 1) Render cached news immediately, if available.
       try {
         cached = readCachedSiteData();
         if (cached && cached.articles.length) {
           siteData = cached;
           homeVisibleCount = HOME_PAGE_BATCH;
           categoryVisibleCount = CATEGORY_PAGE_BATCH;
+          galleryVisibleCount = GALLERY_PAGE_BATCH;
+          categoryFilteredArticles = [];
           renderSite();
           hidePreloader();
           checkUrlHashModal();
@@ -1821,28 +1824,31 @@
         console.warn('Cached data unavailable:', e);
       }
 
-      const fresh = await fetchFreshSiteData();
-      if (fresh) {
-        siteData = fresh;
-        homeVisibleCount = HOME_PAGE_BATCH;
-        categoryVisibleCount = CATEGORY_PAGE_BATCH;
-        galleryVisibleCount = GALLERY_PAGE_BATCH;
-        categoryFilteredArticles = [];
-        saveCachedSiteData(siteData);
-        renderSite();
-        hidePreloader();
-        if (!cached) checkUrlHashModal();
-        return;
+      // 2) Fetch fresh news in the background. Existing news stays visible.
+      try {
+        const fresh = await fetchFreshSiteData();
+        if (fresh && Array.isArray(fresh.articles)) {
+          siteData = fresh;
+          homeVisibleCount = HOME_PAGE_BATCH;
+          categoryVisibleCount = CATEGORY_PAGE_BATCH;
+          galleryVisibleCount = GALLERY_PAGE_BATCH;
+          categoryFilteredArticles = [];
+          saveCachedSiteData(siteData);
+          renderSite();
+          hidePreloader();
+          if (!cached) checkUrlHashModal();
+          return;
+        }
+      } catch(e) {
+        console.error('Fresh news load failed:', e);
       }
 
-      // Offline / temporary backend failure: keep cached content visible.
+      // 3) Never blank the page because the backend is temporarily unavailable.
       if (!cached) {
         siteData = { ticker: [], articles: [], ads: [] };
         renderSite();
         hidePreloader();
         checkUrlHashModal();
-      } else {
-        hidePreloader();
       }
     }
 
@@ -2363,8 +2369,6 @@
 
     window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
     window.onclick = function(e) { if (e.target === document.getElementById('articleModal')) closeModal(); };
-    setTimeout(hidePreloader, 6000);
-
     // Initialization
     updateDate();
     initUserWeather();
