@@ -409,7 +409,7 @@
       transform: translateY(-1px);
     }
 
-    /* Ticker */
+    /* Ticker - REDUCED SPEED (240s for smooth, readable speed) */
     .ticker-container { 
       background: var(--card-bg); 
       border-bottom: 1px solid var(--border-color); 
@@ -432,8 +432,9 @@
       white-space: nowrap; 
       z-index: 2;
     }
-    .ticker-text { display: flex; white-space: nowrap; animation: ticker 80s linear infinite; }
-    .ticker-text span { padding: 0 20px; font-size: 13.5px; color: var(--text-main); font-weight: 500; }
+    .ticker-text { display: flex; white-space: nowrap; animation: ticker 240s linear infinite; }
+    .ticker-text:hover { animation-play-state: paused; } /* Pauses on hover for reading */
+    .ticker-text span { padding: 0 24px; font-size: 13.5px; color: var(--text-main); font-weight: 500; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
     /* Container Layout */
@@ -454,48 +455,22 @@
       box-shadow: var(--shadow-sm); 
       cursor: pointer; 
       border: 1px solid var(--border-color); 
+      display: flex;
+      flex-direction: column;
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
     }
     .hero-main:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: rgba(18, 76, 62, 0.3); }
-    /* FIX: full-photo display — the frame keeps a fixed aspect-ratio, but the image itself
-       uses object-fit: contain so the ENTIRE photo is always visible with nothing cropped,
-       regardless of its original orientation (portrait/landscape/square). A blurred, scaled
-       copy of the same photo fills the empty space behind it so there's no plain gray gap. */
-    .media-frame {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      overflow: hidden;
-      background: #e2e8e2;
-      display: block;
-    }
-    .media-frame .media-fg {
+    .hero-main img, .hero-main .ph { 
+      width: 100%; 
+      height: 150px; 
+      object-fit: contain; 
+      background: #e2e8e2; 
+      display: block; 
+      flex-shrink: 0;
+      min-height: 0;
       transition: transform 0.5s ease;
     }
-    .media-frame .ph {
-      width: 100%;
-      height: 100%;
-      background: #e2e8e2;
-    }
-    .media-frame .media-bg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: blur(18px) brightness(0.75) saturate(1.2);
-      transform: scale(1.15);
-    }
-    .media-frame .media-fg {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-      z-index: 1;
-    }
-    .hero-main .media-frame { aspect-ratio: 16 / 9; }
-    .hero-main:hover .media-fg { transform: scale(1.03); }
+    .hero-main:hover img { transform: scale(1.03); }
     .hero-main .kicker-wrap {
       display: flex;
       justify-content: space-between;
@@ -517,19 +492,19 @@
       border-radius: var(--radius); 
       border: 1px solid var(--border-color); 
       cursor: pointer; 
+      overflow: hidden;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       box-shadow: var(--shadow-sm);
       align-items: center;
     }
     .side-item:hover { transform: translateX(6px); border-color: var(--brand-green-dark); box-shadow: var(--shadow-md); }
-    .side-item .media-frame { width: 85px; height: 85px; aspect-ratio: unset; border-radius: var(--radius-sm); flex-shrink: 0; }
-    .side-item .ph { width: 85px; height: 85px; object-fit: cover; border-radius: var(--radius-sm); background: #e2e8e2; flex-shrink: 0; }
-    .side-item:hover .media-fg { transform: scale(1.06); }
+    .side-item img, .side-item .ph { width: 56px; height: 56px; object-fit: contain; border-radius: var(--radius-sm); background: #e2e8e2; display: block; flex-shrink: 0; min-height: 0; min-width: 0; transition: transform 0.3s ease; }
+    .side-item:hover img { transform: scale(1.06); }
     .side-item .kicker { font-size: 10px; color: var(--brand-green-dark); font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
     .side-item h3 { font-size: 13.5px; line-height: 1.4; color: var(--text-main); font-weight: 700; transition: color 0.2s ease; }
     .side-item:hover h3 { color: var(--brand-green-dark); }
     .side-item .time-badge { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
-    .side-item-content { flex-grow: 1; }
+    .side-item-content { flex-grow: 1; min-width: 0; }
 
     .see-more-side-btn {
       background: var(--brand-green-dark);
@@ -551,12 +526,18 @@
       transform: translateY(-2px);
     }
 
-    /* Video Play Overlay (sits on top of .media-frame, no visual size of its own) */
+    /* Video Play Overlay */
     .img-wrapper {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      flex-shrink: 0;
+      min-height: 0;
+    }
+    .side-item .img-wrapper {
+      width: 56px;
+      height: 56px;
+      flex-shrink: 0;
     }
     .play-overlay {
       position: absolute;
@@ -655,6 +636,150 @@
     .ad-banner h5 { font-size: 16px; font-weight: 700; color: #f8fafc; margin-bottom: 4px; }
     .ad-banner p { font-size: 13px; color: #a3b0a8; }
 
+    /* HOME: ALL LATEST NEWS */
+    .home-news-section {
+      margin-bottom: 28px;
+    }
+
+    .home-news-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      border-bottom: 3px solid var(--brand-green-dark);
+      padding-bottom: 6px;
+    }
+
+    .home-news-heading .section-title {
+      margin: 2px 0 0;
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .home-news-badge {
+      display: inline-flex;
+      align-items: center;
+      background: var(--brand-green-dark);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
+
+    .home-news-count {
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .home-news-grid {
+      margin-bottom: 0;
+    }
+
+    /* Stability on very large datasets */
+    .home-news-grid, #catGrid {
+      contain: layout paint style;
+    }
+    .card {
+      content-visibility: auto;
+      contain-intrinsic-size: 360px;
+    }
+
+    /* Headline first, then fixed media, then short description. */
+    .home-news-grid .card h3 {
+      order: 1;
+      padding: 14px 14px 8px;
+      margin: 0;
+      line-height: 1.45;
+      min-height: 48px;
+    }
+
+    .home-news-grid .card .img-wrapper,
+    .home-news-grid .card > img,
+    .home-news-grid .card > .ph {
+      order: 2;
+    }
+
+    .home-news-grid .card .meta-bar {
+      order: 0;
+    }
+
+    .home-news-grid .card .home-card-desc {
+      order: 3;
+      display: -webkit-box !important;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      margin: 0;
+      padding: 10px 14px 4px;
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.6;
+      min-height: 62px;
+    }
+
+    .home-news-grid .card .card-footer-action {
+      order: 4;
+      margin-top: auto;
+    }
+
+    .home-news-grid .card img,
+    .home-news-grid .card .ph {
+      width: 100%;
+      height: 190px !important;
+      object-fit: cover !important;
+      object-position: center;
+      background: #e2e8e2;
+      display: block;
+    }
+
+    .home-news-grid .card .img-wrapper {
+      width: 100%;
+      height: 190px !important;
+      overflow: hidden;
+      position: relative;
+      flex: 0 0 190px;
+    }
+
+    .home-news-grid .card .img-wrapper img {
+      width: 100%;
+      height: 100% !important;
+      object-fit: cover !important;
+      object-position: center;
+      display: block;
+    }
+
+    @media (max-width: 639px) {
+      .home-news-heading {
+        align-items: flex-start;
+      }
+      .home-news-grid .card img,
+      .home-news-grid .card .ph,
+      .home-news-grid .card .img-wrapper {
+        height: 180px !important;
+      }
+      .home-news-grid .card .img-wrapper {
+        flex-basis: 180px;
+      }
+    }
+
+    .home-news-grid .media-failed {
+      background: linear-gradient(135deg, #eef2ee, #dfe7df);
+    }
+    .home-news-grid .media-failed::after {
+      content: '📷';
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      opacity: .45;
+    }
+
     /* Cards Grid */
     .section-title { 
       font-size: 18px; 
@@ -685,8 +810,8 @@
       flex-direction: column;
     }
     .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--brand-green-dark); }
-    .card .media-frame { aspect-ratio: 16 / 10; }
-    .card:hover .media-fg { transform: scale(1.05); }
+    .card img, .card .ph { width: 100%; height: 110px; object-fit: contain; background: #e2e8e2; display: block; flex-shrink: 0; min-height: 0; transition: transform 0.5s ease; }
+    .card:hover img { transform: scale(1.05); }
     .card .meta-bar { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px 0; }
     .card .kicker { font-size: 11px; color: var(--brand-green-dark); font-weight: 700; text-transform: uppercase; }
     .card .time-badge { font-size: 11px; color: var(--text-muted); }
@@ -778,7 +903,7 @@
     .strip-row:hover { transform: translateX(6px); background-color: rgba(18, 76, 62, 0.04); }
     .strip-row:hover a { color: var(--brand-green-dark); }
     .strip-row .num { font-weight: 800; color: var(--brand-gold); width: 26px; font-size: 15px; flex-shrink: 0; }
-    .strip-row a { color: var(--text-main); font-weight: 600; text-decoration: none; flex-grow: 1; transition: color 0.2s ease; }
+    .strip-row a { color: var(--text-main); font-weight: 600; text-decoration: none; flex-grow: 1; min-width: 0; transition: color 0.2s ease; }
     .strip-row .time-badge { font-size: 11px; color: var(--text-muted); margin-left: 4px; flex-shrink: 0; }
 
     /* Media Gallery Grid in Modal */
@@ -828,55 +953,49 @@
       font-weight: 500;
     }
 
-    /* Related News */
+    /* Related News Bottom Cards in Popup (Enhanced with Photo, Title & Short Desc) */
     .modal-related-section {
-      margin-top: 22px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border-color);
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 2px dashed var(--border-color);
     }
     .modal-related-section h4 {
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 800;
       color: var(--brand-green-dark);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
     .modal-related-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 12px;
     }
     .modal-related-item {
       display: flex;
-      gap: 10px;
-      align-items: center;
+      flex-direction: column;
       background: var(--bg-color);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-sm);
-      padding: 8px;
+      padding: 10px;
       cursor: pointer;
+      overflow: hidden;
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .modal-related-item:hover {
       transform: translateY(-3px);
       border-color: var(--brand-green-dark);
       box-shadow: var(--shadow-sm);
+      background: #ffffff;
     }
-    .modal-related-item .media-frame {
-      width: 56px;
-      height: 56px;
-      aspect-ratio: unset;
-      border-radius: 6px;
-      flex-shrink: 0;
-    }
-    .modal-related-item .ph {
-      width: 56px;
-      height: 56px;
+    .modal-related-item img, .modal-related-item .ph {
+      width: 100%;
+      height: 90px;
       object-fit: cover;
-      border-radius: 6px;
+      border-radius: 4px;
       background: #e2e8e2;
-      flex-shrink: 0;
+      display: block;
+      margin-bottom: 8px;
     }
-    .modal-related-item .mri-content { min-width: 0; }
     .modal-related-item .mri-kicker {
       font-size: 9.5px;
       color: var(--brand-green-dark);
@@ -885,7 +1004,7 @@
       margin-bottom: 2px;
     }
     .modal-related-item h5 {
-      font-size: 12.5px;
+      font-size: 13px;
       line-height: 1.35;
       font-weight: 700;
       color: var(--text-main);
@@ -893,12 +1012,61 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      margin-bottom: 4px;
+    }
+    .modal-related-item .mri-desc {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.4;
     }
 
-    @media (max-width: 420px) {
+    /* Modal Navigation Actions (Home & Close at Popup Bottom) */
+    .modal-footer-nav {
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .modal-nav-btn {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .modal-nav-btn.home-btn {
+      background: var(--brand-green-dark);
+      color: #fff;
+    }
+    .modal-nav-btn.home-btn:hover {
+      background: var(--brand-gold);
+      color: #121a15;
+    }
+    .modal-nav-btn.close-btn {
+      background: #e2e8e2;
+      color: var(--text-main);
+    }
+    .modal-nav-btn.close-btn:hover {
+      background: var(--brand-red-maroon);
+      color: #fff;
+    }
+
+    @media (max-width: 480px) {
       .modal-related-grid { grid-template-columns: 1fr; }
-      .modal-related-item .media-frame, .modal-related-item .ph { width: 64px; height: 64px; }
-      .modal-related-item h5 { font-size: 13px; -webkit-line-clamp: 2; }
+      .modal-related-item img, .modal-related-item .ph { height: 110px; }
     }
 
     /* Floating Back to Top Button */
@@ -972,7 +1140,7 @@
       z-index: 5;
     }
     .modal-close:hover { background: #e2e8e2; color: var(--text-main); transform: rotate(90deg); }
-    .modal-box .media-frame { aspect-ratio: 16 / 10; max-height: 420px; border-radius: var(--radius-sm); margin-bottom: 14px; }
+    .modal-box img { width: 100%; max-height: 320px; object-fit: contain; background: #e2e8e2; border-radius: var(--radius-sm); margin-bottom: 14px; display: block; }
     
     /* Share modal actions */
     .modal-share-bar {
@@ -1085,10 +1253,12 @@
     @media (min-width: 640px) {
       .card-grid { grid-template-columns: repeat(2, 1fr); }
       .split-section { grid-template-columns: repeat(2, 1fr); }
+      .hero-main img, .hero-main .ph { height: 180px; }
     }
 
     @media (min-width: 900px) {
       .hero-grid { grid-template-columns: 2.1fr 1.1fr; gap: 24px; }
+      .hero-main img, .hero-main .ph { height: 210px; }
     }
 
     @media (min-width: 1024px) {
@@ -1153,7 +1323,7 @@
     <ul id="navList"></ul>
   </nav>
 
-  <!-- Ticker -->
+  <!-- Ticker (Slower speed applied) -->
   <div class="ticker-container">
     <div class="ticker-label" id="txt-breaking">නවතම</div>
     <div class="ticker-text" id="tickerText"></div>
@@ -1165,25 +1335,26 @@
     <!-- Top Ad Placement 1 -->
     <div id="ad-slot-1" class="ad-slot-container"></div>
 
-    <!-- Home View -->
+    <!-- HOME VIEW: ALL LATEST NEWS -->
     <div id="homeView">
-      <div class="hero-grid" id="heroSection"></div>
-      
+      <section class="home-news-section">
+        <div class="home-news-heading">
+          <div>
+            <span class="home-news-badge">📰 සියලුම අංශ</span>
+            <h2 class="section-title" id="txt-latest-news">නවතම පුවත්</h2>
+          </div>
+          <span class="home-news-count" id="homeNewsCount"></span>
+        </div>
+
+        <div class="card-grid home-news-grid" id="homeNewsGrid"></div>
+
+        <div class="load-more-container" id="homeLoadMoreBox" style="display:none;">
+          <button class="load-more-btn" onclick="loadMoreHomeNews()" id="txt-home-load-more">තවත් පුවත් බලන්න 📜</button>
+        </div>
+      </section>
+
       <div id="ad-slot-2" class="ad-slot-container"></div>
       <div id="ad-slot-3" class="ad-slot-container"></div>
-
-      <div class="section-title" id="txt-sports-biz-title">ක්‍රීඩා සහ ව්‍යාපාර</div>
-      <div class="split-section">
-        <div class="strip-card">
-          <h4 class="section-sub-hdr" id="txt-sports-hdr">ක්‍රීඩා</h4>
-          <div id="sportsList"></div>
-        </div>
-        <div class="strip-card">
-          <h4 class="section-sub-hdr" id="txt-biz-hdr">ව්‍යාපාර</h4>
-          <div id="bizList"></div>
-        </div>
-      </div>
-
       <div id="ad-slot-4" class="ad-slot-container"></div>
     </div>
 
@@ -1260,10 +1431,10 @@
   <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyncpmyH_zNZZH3Bas4LadYFOK09foPa3kyuYGL-oC79qpLty4IqI7mynaMER-JS_Q_/exec";
-    const STORAGE_KEY = "site-data";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwjTMvftkHWGpygFBKFl7NTOYr6ADHF1g8N8F_zgqjhdiWOlX4RU7jbovnizzfKA0qd/exec";
+    const STORAGE_KEY = "site-data-v8";
 
-    const categories = ['ප්‍රධාන පුවත්','ක්‍රීඩා','ව්‍යාපාර','ලෝකය','තාක්ෂණය'];
+    const categories = ['නවතම පුවත්','ක්‍රීඩා','ව්‍යාපාර','ලෝකය','තාක්ෂණය'];
 
     let siteData = { ticker: [], articles: [], ads: [] };
     let currentCat = 'home';
@@ -1292,15 +1463,17 @@
     }
 
     /* Native & Platform Share functionality */
-    function shareArticle(event, title, desc, id) {
+    function shareArticle(event, encodedId){
       if (event) event.stopPropagation();
+      const id = fromJsArg(encodedId);
       const a = (siteData.articles || []).find(x => String(x.id) === String(id));
-      if (a) updateShareMeta(a);
+      if (!a) return;
 
-      const shareUrl = buildShareUrl(id);
+      updateShareMeta(a);
+      const shareUrl = buildShareUrl(a.id);
       const shareData = {
-        title: title || 'ලංකා News Now',
-        text: desc || title,
+        title: a.title || 'ලංකා News Now',
+        text: a.desc || a.title || '',
         url: shareUrl
       };
 
@@ -1311,19 +1484,21 @@
       }
     }
 
-    function shareViaPlatform(platform, title, id) {
+    function shareViaPlatform(platform, encodedId){
+      const id = fromJsArg(encodedId);
       const a = (siteData.articles || []).find(x => String(x.id) === String(id));
-      if (a) updateShareMeta(a);
+      if (!a) return;
 
-      const shareUrl = encodeURIComponent(buildShareUrl(id));
-      const shareText = encodeURIComponent(title);
+      updateShareMeta(a);
+      const shareUrl = encodeURIComponent(buildShareUrl(a.id));
+      const shareText = encodeURIComponent(a.title || 'ලංකා NEWS NOW');
       let target = '';
 
       if (platform === 'wa') target = `https://api.whatsapp.com/send?text=${shareText}%20${shareUrl}`;
       else if (platform === 'fb') target = `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`;
       else if (platform === 'tw') target = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
 
-      if (target) window.open(target, '_blank');
+      if (target) window.open(target, '_blank', 'noopener,noreferrer');
     }
 
     function copyToClipboard(text) {
@@ -1334,11 +1509,10 @@
       });
     }
 
-    function getShareIconHtml(id, title, desc) {
-      const safeTitle = (title || '').replace(/'/g, "\\'");
-      const safeDesc = (desc || '').replace(/'/g, "\\'");
+    function getShareIconHtml(id){
+      const encodedId = jsArg(id);
       return `
-        <button class="share-btn" onclick="shareArticle(event, '${safeTitle}', '${safeDesc}', '${id}')" title="බෙදාහරින්න (Share)">
+        <button class="share-btn" onclick="shareArticle(event, '${encodedId}')" title="බෙදාහරින්න (Share)">
           <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
         </button>
       `;
@@ -1444,14 +1618,38 @@
     }
 
     function sanitizeArticles(articles) {
-      return (articles || []).map((a, idx) => ({
-        ...a,
-        id: (a.id !== undefined && a.id !== null && String(a.id).trim() !== '') ? String(a.id) : `art_${idx}`
-      }));
+      const list = Array.isArray(articles) ? articles : [];
+      return list.map((a, idx) => {
+        const item = (a && typeof a === 'object') ? a : {};
+        return {
+          ...item,
+          id: (item.id !== undefined && item.id !== null && String(item.id).trim() !== '')
+            ? String(item.id)
+            : `art_${idx}`
+        };
+      });
     }
 
+    /*
+     * Always place the newest article first.
+     * The backend may return rows oldest->newest, newest->oldest, or with
+     * different date/time field names. Prefer an actual timestamp whenever
+     * one is available, and keep records without a usable date at the end.
+     */
+    /*
+     * IMPORTANT:
+     * The Google Sheets backend already returns articles newest -> oldest
+     * by reading the Articles sheet from the bottom upward.
+     *
+     * Do NOT re-sort by `time` here because `time` is often only a clock
+     * value (for example 08:30 / 21:15) without the article date. Sorting
+     * such values can move an older article above a newer article from a
+     * different day.
+     *
+     * Keep the backend order exactly as received.
+     */
     function orderNewestFirst(articles) {
-      return (articles || []).slice().reverse();
+      return Array.isArray(articles) ? articles.slice() : [];
     }
 
     function translatePage(langCode) {
@@ -1503,59 +1701,159 @@
       document.getElementById('year').textContent = d.getFullYear();
     }
 
-    async function loadData(){
-      let hasCachedData = false;
+    const CACHE_VERSION = 'lankanewsnow-home-v7';
+    const CACHE_MAX_AGE = 1000 * 60 * 60 * 24 * 7;
+    const FETCH_TIMEOUT = 45000;
+    const MAX_NEWS = 200000;
+    const HOME_PAGE_BATCH = 24;
+    const CATEGORY_PAGE_BATCH = 24;
+    const GALLERY_PAGE_BATCH = 48;
+
+    let homeVisibleCount = HOME_PAGE_BATCH;
+    let categoryVisibleCount = CATEGORY_PAGE_BATCH;
+    let galleryVisibleCount = GALLERY_PAGE_BATCH;
+    let currentSearchQuery = '';
+
+    /* Encode arbitrary IDs/titles before placing them in inline handlers.
+       This prevents apostrophes/quotes in spreadsheet values from breaking JS. */
+    function jsArg(value){
+      return encodeURIComponent(String(value ?? '')).replace(/'/g, '%27');
+    }
+    function fromJsArg(value){
+      try { return decodeURIComponent(value); } catch(e) { return String(value ?? ''); }
+    }
+
+    function limitArticles(articles){
+      return Array.isArray(articles) ? articles.slice(0, MAX_NEWS) : [];
+    }
+
+    function readCachedSiteData(){
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (parsed && (parsed.articles || []).length > 0) {
-            siteData = {
-              ticker: parsed.ticker || [],
-              articles: sanitizeArticles(parsed.articles),
-              ads: parsed.ads || []
-            };
-            renderSite();
-            hidePreloader();
-            checkUrlHashModal();
-            hasCachedData = true;
-          }
-        }
-      } catch(e) { /* ignore corrupt cache */ }
+        if (!raw) return null;
 
-      if(SCRIPT_URL && SCRIPT_URL.trim() !== ""){
-        try{
-          const res = await fetch(SCRIPT_URL, { method: 'GET', redirect: 'follow' });
-          const json = await res.json();
-          if(json && (json.articles || json.ticker)){
-            siteData = {
-              ticker: json.ticker || [],
-              articles: orderNewestFirst(sanitizeArticles(json.articles)),
-              ads: json.ads || []
-            };
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(siteData));
-            renderSite();
-            hidePreloader();
-            if (!hasCachedData) checkUrlHashModal();
-            return;
-          }
-        }catch(e){
-          console.error('Fetch error:', e);
+        const parsed = JSON.parse(raw);
+        if (!parsed || parsed.version !== CACHE_VERSION || !Array.isArray(parsed.articles)) return null;
+
+        const savedAt = Number(parsed.savedAt || 0);
+        if (savedAt && (Date.now() - savedAt > CACHE_MAX_AGE)) return null;
+
+        return {
+          ticker: Array.isArray(parsed.ticker) ? parsed.ticker.slice(0, 30) : [],
+          articles: limitArticles(sanitizeArticles(parsed.articles)),
+          ads: Array.isArray(parsed.ads) ? parsed.ads : []
+        };
+      } catch(e) {
+        try { localStorage.removeItem(STORAGE_KEY); } catch(_) {}
+        return null;
+      }
+    }
+
+    function saveCachedSiteData(data){
+      try {
+        const payload = {
+          version: CACHE_VERSION,
+          savedAt: Date.now(),
+          ticker: Array.isArray(data?.ticker) ? data.ticker.slice(0, 30) : [],
+          // Only cache a small slice. The live in-memory dataset can still contain 200k.
+          articles: limitArticles(data?.articles || []).slice(0, 120),
+          ads: Array.isArray(data?.ads) ? data.ads : []
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      } catch(e) {
+        console.warn('News cache skipped:', e);
+      }
+    }
+
+    async function fetchFreshSiteData(timeoutMs = FETCH_TIMEOUT){
+      if(!SCRIPT_URL || !SCRIPT_URL.trim()) return null;
+
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+      try {
+        const apiSeparator = SCRIPT_URL.includes('?') ? '&' : '?';
+        const apiUrl = `${SCRIPT_URL}${apiSeparator}action=latest&page=1&limit=100&_=${Date.now()}`;
+
+        const res = await fetch(apiUrl, {
+          method: 'GET',
+          redirect: 'follow',
+          cache: 'no-store',
+          signal: controller.signal,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const json = await res.json();
+        if (!json || (!Array.isArray(json.articles) && !Array.isArray(json.ticker))) return null;
+
+        const rawArticles = Array.isArray(json.articles) ? json.articles : [];
+        const articles = limitArticles(orderNewestFirst(sanitizeArticles(rawArticles)));
+
+        return {
+          ticker: Array.isArray(json.ticker) ? json.ticker.slice(0, 100) : [],
+          articles,
+          ads: Array.isArray(json.ads) ? json.ads : []
+        };
+      } catch(e) {
+        console.error('News fetch error:', e);
+      } finally {
+        clearTimeout(timer);
+      }
+      return null;
+    }
+
+    async function loadData(){
+      let cached = null;
+
+      try {
+        cached = readCachedSiteData();
+        if (cached && cached.articles.length) {
+          siteData = cached;
+          homeVisibleCount = HOME_PAGE_BATCH;
+          categoryVisibleCount = CATEGORY_PAGE_BATCH;
+          renderSite();
+          hidePreloader();
+          checkUrlHashModal();
         }
+      } catch(e) {
+        console.warn('Cached data unavailable:', e);
       }
 
-      if (!hasCachedData) {
+      const fresh = await fetchFreshSiteData();
+      if (fresh) {
+        siteData = fresh;
+        homeVisibleCount = HOME_PAGE_BATCH;
+        categoryVisibleCount = CATEGORY_PAGE_BATCH;
+        galleryVisibleCount = GALLERY_PAGE_BATCH;
+        categoryFilteredArticles = [];
+        saveCachedSiteData(siteData);
+        renderSite();
+        hidePreloader();
+        if (!cached) checkUrlHashModal();
+        return;
+      }
+
+      // Offline / temporary backend failure: keep cached content visible.
+      if (!cached) {
         siteData = { ticker: [], articles: [], ads: [] };
         renderSite();
         hidePreloader();
         checkUrlHashModal();
+      } else {
+        hidePreloader();
       }
     }
 
     function checkUrlHashModal() {
       if (window.location.hash && window.location.hash.startsWith('#art_')) {
-        const artId = window.location.hash.replace('#art_', '');
-        if (artId) openModal(artId);
+        const encoded = window.location.hash.replace('#art_', '');
+        if (encoded) {
+          let artId = encoded;
+          try { artId = decodeURIComponent(encoded); } catch(e) {}
+          openModal(artId);
+        }
       }
     }
 
@@ -1564,11 +1862,7 @@
       if (el) el.setAttribute('content', value);
     }
 
-    /* Dynamically updates article preview meta tags for social shares
-       (this only affects the tab title/meta while the user is browsing —
-       it does NOT affect what WhatsApp/Facebook/X bots see when the link
-       is shared, because those bots do not execute JavaScript. See
-       buildShareUrl() below + the Apps Script doGet() for the real fix.) */
+    /* Dynamically updates article preview meta tags for social shares */
     function updateShareMeta(a) {
       if (!a) return;
       const img = getArticleImage(a) || 'https://raw.githubusercontent.com/janithdidula025-design/NEWS/980f314110608d93055083d6dd44838372baede4/LOGO.png';
@@ -1586,17 +1880,8 @@
       setMeta('meta-tw-image', img);
     }
 
-    /* FIX: share links point back to the site's own URL (#art_id hash), not the
-       Apps Script endpoint. The Apps Script id-based preview page was causing the
-       broken/error link, since that endpoint doesn't have article-lookup logic
-       set up. This version always works — clicking a shared link opens the site
-       and the exact article modal directly. (Note: WhatsApp/Facebook/X preview
-       bots still won't show the article's own photo this way, since they don't
-       run JavaScript — they'll show the site logo. Getting the correct photo in
-       link previews needs a small server-side page, which is a separate, optional
-       step — this fix is just about the link working without errors.) */
     function buildShareUrl(id) {
-      return window.location.origin + window.location.pathname + '#art_' + encodeURIComponent(id);
+      return window.location.origin + window.location.pathname + '#art_' + id;
     }
     
     function getYouTubeId(url) {
@@ -1634,26 +1919,15 @@
       return '';
     }
 
-    /* Renders the full photo, uncropped, inside a fixed-ratio frame.
-       A blurred/scaled copy of the same image fills the frame as backdrop
-       (so there's no empty gray gap), and the sharp full image sits on top
-       using object-fit: contain so nothing gets cut off. */
     function renderImageHtml(a, cls) {
       const src = getArticleImage(a);
       const isVideo = !!getArticleYouTubeLink(a);
-      const playOverlay = isVideo ? `<div class="img-wrapper"><div class="play-overlay"></div></div>` : '';
+      
+      let imgContent = (src && src.trim() !== '') ? 
+        `<img class="ph ${cls||''}" src="${esc(src)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.parentElement && this.parentElement.classList.add('media-failed');">` : 
+        `<div class="ph ${cls||''}"></div>`;
 
-      if (!src || src.trim() === '') {
-        return `<div class="media-frame ${cls||''}"><div class="ph"></div>${playOverlay}</div>`;
-      }
-
-      const safeSrc = esc(src);
-      return `
-        <div class="media-frame ${cls||''}">
-          <img class="media-bg" src="${safeSrc}" alt="" loading="lazy" decoding="async" aria-hidden="true">
-          <img class="media-fg" src="${safeSrc}" alt="" loading="lazy" decoding="async" onerror="this.closest('.media-frame').innerHTML='<div class=\\'ph\\'></div>'">
-          ${playOverlay}
-        </div>`;
+      return isVideo ? `<div class="img-wrapper">${imgContent}<div class="play-overlay"></div></div>` : imgContent;
     }
 
     function getYouTubeEmbedUrl(url) {
@@ -1669,7 +1943,7 @@
       if (c1 === c2) return true;
       
       const aliases = {
-        'ප්‍රධාන පුවත්': ['main news', 'main', 'general', 'ප්‍රධාන', 'ප්‍රධාන පුවත'],
+        'නවතම පුවත්': ['main news', 'main', 'general', 'ප්‍රධාන', 'ප්‍රධාන පුවත'],
         'ක්‍රීඩා': ['sports', 'sport', 'ක්‍රීඩා', 'ක්‍රීඩා පුවත්'],
         'ව්‍යාපාර': ['business', 'biz', 'economy', 'ව්‍යාපාර', 'ව්‍යාපාරික', 'ව්‍යාපාරික පුවත්'],
         'ලෝකය': ['world', 'international', 'ලෝකය', 'විදේශීය'],
@@ -1741,146 +2015,132 @@
         document.getElementById('categoryView').style.display = 'block';
         document.getElementById('catTitle').textContent = catKey;
         
-        categoryFilteredArticles = (siteData.articles || []).filter(a => matchCategory(a.category, catKey));
-        showOlderArticlesState = false; 
+        currentSearchQuery = '';
+        categoryVisibleCount = CATEGORY_PAGE_BATCH;
+        categoryFilteredArticles = limitArticles(siteData.articles || []).filter(a => matchCategory(a.category, catKey));
+        showOlderArticlesState = false;
         renderCategoryGrid();
       }
       scrollToTop();
     }
 
     function renderCardHtml(a) {
+      if (!a || typeof a !== 'object') return '';
+      const encodedId = jsArg(a.id);
+      const imageHtml = renderImageHtml(a);
       return `
-        <article class="card" onclick="openModal('${esc(a.id)}')">
-          ${renderImageHtml(a)}
+        <article class="card" onclick="openModal(decodeURIComponent('${encodedId}'))">
           <div class="meta-bar">
-            <span class="kicker">${esc(a.category)}</span>
+            <span class="kicker">${esc(a.category || 'පුවත්')}</span>
             ${a.time ? `<span class="time-badge">🕒 ${esc(a.time)}</span>` : ''}
           </div>
-          <h3>${esc(a.title)}</h3>
-          <p>${renderDescriptionWithLinks(a.desc)}</p>
+          <h3>${esc(a.title || 'මාතෘකාවක් නොමැත')}</h3>
+          ${imageHtml}
+          <p class="home-card-desc">${renderDescriptionWithLinks(a.desc)}</p>
           <div class="card-footer-action">
-            ${getShareIconHtml(a.id, a.title, a.desc)}
+            ${getShareIconHtml(a.id)}
           </div>
         </article>`;
     }
 
     function toggleHomeSideNews() {
+      // Kept for backwards compatibility with old cached page state.
       showOlderHomeMainState = !showOlderHomeMainState;
       renderSite();
+    }
+
+    function renderHomeNews() {
+      const grid = document.getElementById('homeNewsGrid');
+      const loadBox = document.getElementById('homeLoadMoreBox');
+      const countEl = document.getElementById('homeNewsCount');
+      if (!grid) return;
+
+      const all = limitArticles(siteData.articles || []);
+      const total = all.length;
+      if (countEl) countEl.textContent = total ? `${total.toLocaleString()} පුවත්` : '';
+
+      if (!total) {
+        grid.innerHTML = `<div class="empty-note" style="grid-column:1/-1;">නවතම පුවත් තවම ලබාගෙන නොමැත.</div>`;
+        if (loadBox) loadBox.style.display = 'none';
+        return;
+      }
+
+      const visible = all.slice(0, Math.min(homeVisibleCount, total));
+      let html = '';
+      for (const article of visible) {
+        try { html += renderCardHtml(article); } catch(e) { console.warn('Home card render skipped', e); }
+      }
+      grid.innerHTML = html;
+
+      if (loadBox) {
+        loadBox.style.display = visible.length < total ? 'block' : 'none';
+        const btn = loadBox.querySelector('button');
+        if (btn) btn.textContent = visible.length < total ? `තවත් පුවත් බලන්න 📜 (${visible.length.toLocaleString()} / ${total.toLocaleString()})` : 'සියලු පුවත් පෙන්වා ඇත';
+      }
+    }
+
+    function loadMoreHomeNews() {
+      const total = limitArticles(siteData.articles || []).length;
+      if (homeVisibleCount >= total) return;
+      homeVisibleCount = Math.min(homeVisibleCount + HOME_PAGE_BATCH, total);
+      renderHomeNews();
     }
 
     function renderCategoryGrid() {
       const catGrid = document.getElementById('catGrid');
       const loadMoreBox = document.getElementById('loadMoreBox');
+      if (!catGrid) return;
 
-      if (categoryFilteredArticles.length === 0) {
-        catGrid.innerHTML = `<div class="empty-note">මෙම වර්ගීකරණය යටතේ පුවත් තවම නැත</div>`;
-        loadMoreBox.style.display = 'none';
+      const all = Array.isArray(categoryFilteredArticles) ? categoryFilteredArticles : [];
+      if (!all.length) {
+        catGrid.innerHTML = `<div class="empty-note" style="grid-column:1/-1;">${currentSearchQuery ? `"${esc(currentSearchQuery)}" සඳහා ප්‍රතිඵල නොමැත.` : 'මෙම වර්ගීකරණය යටතේ පුවත් තවම නැත'}</div>`;
+        if (loadMoreBox) loadMoreBox.style.display = 'none';
         return;
       }
 
-      const todayArticles = categoryFilteredArticles.filter(isTodayArticle);
-      const olderArticles = categoryFilteredArticles.filter(a => !isTodayArticle(a));
+      const visible = all.slice(0, Math.min(categoryVisibleCount, all.length));
+      let html = '';
+      for (const article of visible) {
+        try { html += renderCardHtml(article); } catch(e) { console.warn('Category card render skipped', e); }
+      }
+      catGrid.innerHTML = html;
 
-      if (!showOlderArticlesState) {
-        catGrid.innerHTML = todayArticles.length > 0 ? 
-          todayArticles.map(renderCardHtml).join('') : 
-          `<div class="empty-note">අද දින නිකුත් වූ නවතම පුවත් නොමැත. පරණ පුවත් බැලීමට පහත බොත්තම ඔබන්න.</div>`;
-
-        loadMoreBox.style.display = olderArticles.length > 0 ? 'block' : 'none';
-      } else {
-        catGrid.innerHTML = categoryFilteredArticles.map(renderCardHtml).join('');
-        loadMoreBox.style.display = 'none';
+      if (loadMoreBox) {
+        loadMoreBox.style.display = visible.length < all.length ? 'block' : 'none';
+        const btn = loadMoreBox.querySelector('button');
+        if (btn) btn.textContent = visible.length < all.length ? `තවත් පුවත් බලන්න 📜 (${visible.length.toLocaleString()} / ${all.length.toLocaleString()})` : 'සියලු පුවත් පෙන්වා ඇත';
       }
     }
 
     function loadMoreCategoryItems() {
-      showOlderArticlesState = true;
+      const total = Array.isArray(categoryFilteredArticles) ? categoryFilteredArticles.length : 0;
+      if (categoryVisibleCount >= total) return;
+      categoryVisibleCount = Math.min(categoryVisibleCount + CATEGORY_PAGE_BATCH, total);
+      showOlderArticlesState = categoryVisibleCount > CATEGORY_PAGE_BATCH;
       renderCategoryGrid();
     }
 
     function renderSite(){
       if(!siteData) return;
-      const arts = siteData.articles || [];
 
-      /* Strictly filter main news section only */
-      const mainNewsArticles = arts.filter(a => matchCategory(a.category, 'ප්‍රධාන පුවත්'));
-      let hero = mainNewsArticles.find(a => a.position === 'hero') || (mainNewsArticles.length > 0 ? mainNewsArticles[0] : null);
-      
-      let sideCandidates = mainNewsArticles.filter(a => a !== hero);
+      // HOME PAGE = every category, newest first.
+      renderHomeNews();
 
-      const todaySideArticles = sideCandidates.filter(isTodayArticle);
-      const hasOlderSideArticles = sideCandidates.some(a => !isTodayArticle(a));
+      const tick = siteData.ticker && siteData.ticker.length
+        ? siteData.ticker
+        : ['ලංකා NEWS NOW වෙත සාදරයෙන් පිළිගනිමු'];
 
-      let sideDisplayArticles = [];
-      if (!showOlderHomeMainState) {
-        sideDisplayArticles = todaySideArticles.slice(0, 4);
-      } else {
-        sideDisplayArticles = sideCandidates;
+      const doubled = tick.concat(tick);
+      const tickerEl = document.getElementById('tickerText');
+      if (tickerEl) {
+        tickerEl.innerHTML = doubled.map(x => `<span>${esc(x)}</span>`).join('');
       }
 
-      /* Strictly filter Sports & Business sections only */
-      const sports = arts.filter(a => matchCategory(a.category, 'ක්‍රීඩා')).slice(0, 6);
-      const biz = arts.filter(a => matchCategory(a.category, 'ව්‍යාපාර')).slice(0, 6);
-
-      const sideItemsHtml = sideDisplayArticles.length > 0 ? 
-        sideDisplayArticles.map(s => `
-          <div class="side-item" onclick="openModal('${esc(s.id)}')">
-            ${renderImageHtml(s)}
-            <div class="side-item-content">
-              <div class="kicker">${esc(s.category)}</div>
-              <h3>${esc(s.title)}</h3>
-              ${s.time ? `<div class="time-badge">🕒 ${esc(s.time)}</div>` : ''}
-            </div>
-            ${getShareIconHtml(s.id, s.title, s.desc)}
-          </div>`).join('') : 
-        `<div class="empty-note">අද දින නිකුත් වූ වෙනත් ප්‍රධාන පුවත් නොමැත</div>`;
-
-      const seeMoreBtnHtml = hasOlderSideArticles ? `
-        <button class="see-more-side-btn" onclick="toggleHomeSideNews()">
-          ${showOlderHomeMainState ? 'අඩු කරන්න 🔼' : 'පරණ පුවත් බලන්න 📜'}
-        </button>` : '';
-
-      document.getElementById('heroSection').innerHTML = `
-        <article class="hero-main" onclick="${hero ? `openModal('${esc(hero.id)}')` : ''}">
-          ${hero ? renderImageHtml(hero) : `<div class="ph"></div>`}
-          <div class="kicker-wrap">
-            <span class="kicker">${esc(hero ? hero.category : 'ප්‍රධාන පුවත්')}</span>
-            <div style="display:flex; align-items:center; gap:8px;">
-              ${hero && hero.time ? `<span class="time-badge">🕒 ${esc(hero.time)}</span>` : ''}
-              ${hero ? getShareIconHtml(hero.id, hero.title, hero.desc) : ''}
-            </div>
-          </div>
-          <h2>${esc(hero ? hero.title : 'මෙම කොටසේ තවම පුවත් නොමැත')}</h2>
-          <p class="dek">${renderDescriptionWithLinks(hero ? hero.desc : '')}</p>
-        </article>
-        <aside class="hero-side">
-          ${sideItemsHtml}
-          ${seeMoreBtnHtml}
-        </aside>`;
-
-      document.getElementById('sportsList').innerHTML = sports.map((s,i)=>`
-        <div class="strip-row" onclick="openModal('${esc(s.id)}')">
-          <span class="num">${i+1}</span>
-          <a>${esc(s.title)}</a>
-          ${s.time ? `<span class="time-badge">${esc(s.time)}</span>` : ''}
-          ${getShareIconHtml(s.id, s.title, s.desc)}
-        </div>`).join('') || `<div class="empty-note">ක්‍රීඩා පුවත් නොමැත</div>`;
-
-      document.getElementById('bizList').innerHTML = biz.map((b,i)=>`
-        <div class="strip-row" onclick="openModal('${esc(b.id)}')">
-          <span class="num">${i+1}</span>
-          <a>${esc(b.title)}</a>
-          ${b.time ? `<span class="time-badge">${esc(b.time)}</span>` : ''}
-          ${getShareIconHtml(b.id, b.title, b.desc)}
-        </div>`).join('') || `<div class="empty-note">ව්‍යාපාරික පුවත් නොමැත</div>`;
-
-      const tick = siteData.ticker && siteData.ticker.length ? siteData.ticker : ['ලංකා NEWS NOW වෙත සාදරයෙන් පිළිගනිමු'];
-      const doubled = tick.concat(tick);
-      document.getElementById('tickerText').innerHTML = doubled.map(x=>`<span>${esc(x)}</span>`).join('');
-
       renderAllAds();
-      if(currentCat !== 'home') navigateTo(currentCat);
+
+      if(currentCat !== 'home') {
+        navigateTo(currentCat);
+      }
     }
 
     function showGenericModal(htmlContent) {
@@ -1900,60 +2160,72 @@
       return combined.slice(0, limit);
     }
 
+    /* Enhanced Related News Component (Headline + Photo + Short Description) */
     function renderRelatedNewsHtml(current) {
       const related = getRelatedArticles(current, 4);
-      if (related.length === 0) return '';
+      if (!related.length) return '';
 
-      const itemsHtml = related.map(r => `
-        <div class="modal-related-item" onclick="openModal('${esc(r.id)}')">
-          ${renderImageHtml(r)}
-          <div class="mri-content">
+      const itemsHtml = related.map(r => {
+        const encodedId = jsArg(r.id);
+        return `
+          <div class="modal-related-item" onclick="openModal(decodeURIComponent('${encodedId}'))">
+            ${renderImageHtml(r)}
             <div class="mri-kicker">${esc(r.category)}</div>
             <h5>${esc(r.title)}</h5>
-          </div>
-        </div>`).join('');
+            <div class="mri-desc">${esc(r.desc)}</div>
+          </div>`;
+      }).join('');
 
       return `
         <div class="modal-related-section">
-          <h4>අදාළ පුවත් (Related News)</h4>
+          <h4>තවත් පුවත්</h4>
           <div class="modal-related-grid">${itemsHtml}</div>
         </div>`;
     }
 
     function openModal(id){
-      const a = siteData.articles.find(x => String(x.id) === String(id));
+      const wantedId = String(id ?? '');
+      const a = (siteData.articles || []).find(x => String(x.id) === wantedId);
       if(!a) return;
 
       updateShareMeta(a);
-
       const ytEmbed = getYouTubeEmbedUrl(getArticleYouTubeLink(a));
       const imgSrc = getArticleImage(a);
-      const safeTitle = (a.title || '').replace(/'/g, "\\'");
-      const shareUrlSafe = buildShareUrl(a.id).replace(/'/g, "\\'");
+      const encodedId = jsArg(a.id);
+      const shareUrlSafe = jsArg(buildShareUrl(a.id));
 
       const content = `
-        ${ytEmbed ? `<div class="video-wrapper"><iframe src="${ytEmbed}" title="${esc(a.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>` : (imgSrc ? `<div class="media-frame"><img class="media-bg" src="${esc(imgSrc)}" alt="" aria-hidden="true"><img class="media-fg" src="${esc(imgSrc)}" alt="${esc(a.title)}" loading="eager" onerror="this.closest('.media-frame').style.display='none'"></div>` : '')}
-        <div style="display:flex; justify-content:space-between; align-items:center; margin: 10px 0 6px;">
+        ${ytEmbed ? `<div class="video-wrapper"><iframe src="${esc(ytEmbed)}" title="${esc(a.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>` : (imgSrc ? `<img src="${esc(imgSrc)}" alt="${esc(a.title)}" loading="eager" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none';">` : '')}
+        <div style="display:flex; justify-content:space-between; align-items:center; margin:10px 0 6px; gap:10px;">
           <span style="color:var(--brand-red-maroon); font-weight:700; font-size:12px; text-transform:uppercase;">📌 ${esc(a.category || 'General')}</span>
           ${a.time ? `<span style="font-size:12px; color:var(--text-muted); font-weight:500;">🕒 ${esc(a.time)}</span>` : ''}
         </div>
         <h2 style="margin-top:0; font-size:clamp(18px, 4vw, 22px); color:var(--text-main); font-weight:800; line-height:1.35;">${esc(a.title)}</h2>
-        <div class="content" style="margin-top:14px; font-size:15px; color:#334155; line-height:1.75; white-space: pre-line;">${renderDescriptionWithLinks(a.desc)}</div>
+        <div class="content" style="margin-top:14px; font-size:15px; color:#334155; line-height:1.75; white-space:pre-line;">${renderDescriptionWithLinks(a.desc)}</div>
         <div class="modal-share-bar">
           <span style="font-size:13px; font-weight:700; color:var(--text-main);">බෙදාහරින්න:</span>
-          <button class="modal-share-btn wa" onclick="shareViaPlatform('wa', '${safeTitle}', '${a.id}')">WhatsApp</button>
-          <button class="modal-share-btn fb" onclick="shareViaPlatform('fb', '${safeTitle}', '${a.id}')">Facebook</button>
-          <button class="modal-share-btn tw" onclick="shareViaPlatform('tw', '${safeTitle}', '${a.id}')">X</button>
-          <button class="modal-share-btn copy" onclick="copyToClipboard('${shareUrlSafe}')">Copy Link</button>
+          <button class="modal-share-btn wa" onclick="shareViaPlatform('wa', '${encodedId}')">WhatsApp</button>
+          <button class="modal-share-btn fb" onclick="shareViaPlatform('fb', '${encodedId}')">Facebook</button>
+          <button class="modal-share-btn tw" onclick="shareViaPlatform('tw', '${encodedId}')">X</button>
+          <button class="modal-share-btn copy" onclick="copyToClipboard(decodeURIComponent('${shareUrlSafe}'))">Copy Link</button>
         </div>
         ${renderRelatedNewsHtml(a)}
+        <div class="modal-footer-nav">
+          <button class="modal-nav-btn home-btn" onclick="closeModalToHome()">🏠 ප්‍රධාන පිටුවට (Home)</button>
+          <button class="modal-nav-btn close-btn" onclick="closeModal()">❌ වසන්න (Close)</button>
+        </div>
       `;
-      showGenericModal(content);
 
+      showGenericModal(content);
       const modalBox = document.querySelector('.modal-box');
       if (modalBox) modalBox.scrollTop = 0;
 
-      try { history.pushState(null, '', '#art_' + a.id); } catch(e) {}
+      try { history.pushState({ modalOpen: true, articleId: String(a.id) }, '', '#art_' + encodeURIComponent(String(a.id))); } catch(e) {}
+    }
+
+    function closeModalToHome() {
+      closeModal();
+      navigateTo('home');
     }
 
     function openAboutModal() {
@@ -1963,12 +2235,11 @@
           <h2 style="font-size:22px; color:var(--brand-green-dark); font-weight:800; margin-bottom:12px;">අප ගැන (About Us)</h2>
         </div>
         <p style="font-size:14.5px; line-height:1.8; color:#334155; text-align:justify;">
-                📰 ශ්‍රී ලංකාවේ සහ ලොව පුරා වැදගත් පුවත්
-⚖️ පක්ෂග්‍රාහී නොවූ, අවංක හා කරුණු මත පදනම් වූ තොරතුරු
-🎙️ ඔබේ හඬට ඉඩක් — සත්‍යය සොයා, සම්පූර්ණ කතාව ඔබ වෙත.
-Follow Us for the Whole Story.
-
-<a href="https://www.lankanewsnow.com">Lanka News Now</a>
+          📰 ශ්‍රී ලංකාවේ සහ ලොව පුරා වැදගත් පුවත්<br>
+          ⚖️ පක්ෂග්‍රාහී නොවූ, අවංක හා කරුණු මත පදනම් වූ තොරතුරු<br>
+          🎙️ ඔබේ හඬට ඉඩක් — සත්‍යය සොයා, සම්පූර්ණ කතාව ඔබ වෙත.<br>
+          Follow Us for the Whole Story.<br><br>
+          <a href="https://www.lankanewsnow.com" target="_blank" class="article-desc-link">lankanewsnow.com</a>
         </p>
       `);
     }
@@ -1991,49 +2262,94 @@ Follow Us for the Whole Story.
       `);
     }
 
-    function openMediaGalleryModal() {
-      const arts = siteData.articles || [];
-      let galleryHtml = arts.map(a => {
+    function renderMediaGalleryContent(){
+      const arts = Array.isArray(siteData.articles) ? siteData.articles : [];
+      const withImages = arts.filter(a => { const img = getArticleImage(a); return img && img.trim(); });
+      const visible = withImages.slice(0, Math.min(galleryVisibleCount, withImages.length));
+
+      const galleryHtml = visible.map(a => {
         const img = getArticleImage(a);
-        return (img && img.trim() !== '') ? `
-          <div class="gallery-item" onclick="openModal('${esc(a.id)}')">
-            <img src="${esc(img)}" alt="${esc(a.title)}" onerror="this.parentElement.style.display='none'">
+        const encodedId = jsArg(a.id);
+        return `
+          <div class="gallery-item" onclick="openModal(decodeURIComponent('${encodedId}'))">
+            <img src="${esc(img)}" alt="${esc(a.title)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentElement.style.display='none'">
             <div class="gallery-title">${esc(a.title)}</div>
-          </div>` : '';
+          </div>`;
       }).join('');
 
-      showGenericModal(`
+      return `
         <h2 style="font-size:20px; color:var(--brand-green-dark); font-weight:800; margin-bottom:4px; text-align:center;">📸 මාධ්‍ය එකතුව (Media Gallery)</h2>
-        <p style="text-align:center; font-size:12.5px; color:var(--text-muted); margin-bottom:16px;">සියලුම පුවත්වල ඡායාරූප</p>
-        <div class="gallery-grid">${galleryHtml || `<div class="empty-note" style="grid-column: 1/-1;">ඡායාරූප නොමැත</div>`}</div>
-      `);
+        <p style="text-align:center; font-size:12.5px; color:var(--text-muted); margin-bottom:16px;">පුවත්වල ඡායාරූප</p>
+        <div class="gallery-grid">${galleryHtml || `<div class="empty-note" style="grid-column:1/-1;">ඡායාරූප නොමැත</div>`}</div>
+        <div style="text-align:center; margin-top:18px;">
+          <button class="load-more-btn" onclick="loadMoreMediaGallery()" style="display:${visible.length < withImages.length ? 'inline-flex' : 'none'};">තවත් ඡායාරූප බලන්න 📸 (${visible.length.toLocaleString()} / ${withImages.length.toLocaleString()})</button>
+        </div>`;
+    }
+
+    function openMediaGalleryModal() {
+      galleryVisibleCount = GALLERY_PAGE_BATCH;
+      showGenericModal(renderMediaGalleryContent());
+    }
+
+    function loadMoreMediaGallery(){
+      const total = Array.isArray(siteData.articles) ? siteData.articles.filter(a => { const img = getArticleImage(a); return img && img.trim(); }).length : 0;
+      if (galleryVisibleCount >= total) return;
+      galleryVisibleCount = Math.min(galleryVisibleCount + GALLERY_PAGE_BATCH, total);
+      document.getElementById('modalContent').innerHTML = renderMediaGalleryContent();
     }
 
     function closeModal(){
       const modal = document.getElementById('articleModal');
+      if (!modal) return;
       modal.classList.remove('active');
       document.body.style.overflow = '';
       setTimeout(() => {
         const modalBox = document.getElementById('modalContent');
         if(modalBox) modalBox.innerHTML = '';
-      }, 300);
-      try { history.pushState(null, '', window.location.pathname); } catch(e) {}
+      }, 150);
+      try {
+        if(window.location.hash.startsWith('#art_')) {
+          history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+      } catch(e) {}
     }
 
+    /* Device / Browser Back Button Event Handler (Loads Home page on Back press) */
+    window.addEventListener('popstate', function () {
+      const modal = document.getElementById('articleModal');
+      if (modal && modal.classList.contains('active')) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        const modalBox = document.getElementById('modalContent');
+        if (modalBox) modalBox.innerHTML = '';
+      }
+    });
+
     function doSearch(){
-      const q = document.getElementById('searchInput').value.toLowerCase().trim();
-      if(!q) return;
+      const input = document.getElementById('searchInput');
+      const q = (input?.value || '').toLowerCase().trim();
+
+      if(!q) {
+        currentSearchQuery = '';
+        navigateTo('home');
+        return;
+      }
+
+      currentSearchQuery = q;
+      categoryVisibleCount = CATEGORY_PAGE_BATCH;
+      const all = limitArticles(siteData.articles || []);
+
+      categoryFilteredArticles = all.filter(a => {
+        const title = String(a?.title || '').toLowerCase();
+        const desc = String(a?.desc || '').toLowerCase();
+        const category = String(a?.category || '').toLowerCase();
+        return title.includes(q) || desc.includes(q) || category.includes(q);
+      });
+
       document.getElementById('homeView').style.display = 'none';
       document.getElementById('categoryView').style.display = 'block';
       document.getElementById('catTitle').textContent = `Search Result: "${q}"`;
-      
-      categoryFilteredArticles = (siteData.articles || []).filter(a=> 
-        (a.title && a.title.toLowerCase().includes(q)) || 
-        (a.desc && a.desc.toLowerCase().includes(q)) ||
-        (a.category && a.category.toLowerCase().includes(q))
-      );
-      
-      showOlderArticlesState = false;
+      document.querySelectorAll('#navList li').forEach(li => li.classList.remove('active'));
       renderCategoryGrid();
       scrollToTop();
     }
